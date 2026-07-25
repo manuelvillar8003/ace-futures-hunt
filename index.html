@@ -717,10 +717,15 @@ const ENDPOINTS = {
 
 function fmtPrice(p){
   const n = parseFloat(p);
+  if(n === 0 || isNaN(n)) return '0';
   if(n >= 1000) return n.toLocaleString('de-DE', {maximumFractionDigits:2});
   if(n >= 1) return n.toFixed(3);
   if(n >= 0.01) return n.toFixed(5);
-  return n.toExponential(3);
+  // Sehr kleine Preise (z.B. ONE, SHIB etc.): nie wissenschaftliche Notation (1.328e-3),
+  // sondern ausgeschriebene Dezimalzahl mit genug Nachkommastellen für echte Präzision.
+  const magnitude = Math.floor(Math.log10(Math.abs(n)));
+  const decimals = Math.min(18, Math.max(6, -magnitude + 3));
+  return n.toFixed(decimals);
 }
 function fmtVol(v){
   const n = parseFloat(v);
@@ -3315,4 +3320,3 @@ setInterval(runMarketScanner, 30000);
 </script>
 </body>
 </html>
-<!-- test-deploy-1784986257 -->

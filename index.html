@@ -1,0 +1,3317 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#07090a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ACE HUNT">
+<meta name="mobile-web-app-capable" content="yes">
+<title>ACE FUTURES HUNT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #07090a;
+    --bg-elev-1: #0e1310cc;
+    --bg-elev-2: #131a16cc;
+    --glass-border: #ffffff14;
+    --glass-border-strong: #ffffff22;
+    --line-solid: #1d2620;
+    --amber: #ffb632;
+    --amber-soft: #ffb63218;
+    --amber-glow: #ffb63244;
+    --green: #34e0a1;
+    --green-soft: #34e0a118;
+    --red: #ff5d68;
+    --red-soft: #ff5d6818;
+    --blue: #5b9dff;
+    --dim: #7c8d84;
+    --dim-2: #4d5c54;
+    --text: #f2f6f3;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  ::selection{background:var(--amber-glow); color:var(--amber);}
+  ::-webkit-scrollbar{width:10px; height:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--line-solid); border-radius:8px;}
+  ::-webkit-scrollbar-thumb:hover{background:var(--dim-2);}
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 1000px 600px at 20% -10%, #ffb63212, transparent),
+      radial-gradient(ellipse 800px 500px at 90% 10%, #34e0a10c, transparent),
+      radial-gradient(circle at 1px 1px, #ffffff08 1px, transparent 1px) 0 0/28px 28px,
+      var(--bg);
+    color:var(--text);
+    font-family:var(--sans); font-size:13px;
+    padding:0 0 40px 0;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1400px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- Sticky nav ---------- */
+  nav.topnav{
+    position:sticky; top:0; z-index:100;
+    background:linear-gradient(180deg, #0a0d0bf2, #0a0d0be8 70%, #0a0d0b00);
+    backdrop-filter:blur(14px) saturate(140%);
+    border-bottom:1px solid var(--glass-border);
+    padding:14px 0 10px;
+    margin-bottom:22px;
+  }
+  .navbar{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-mark{
+    width:30px; height:30px; border-radius:9px;
+    background:linear-gradient(135deg, var(--amber), #ff8a3d);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 18px var(--amber-glow), inset 0 1px 0 #ffffff55;
+    flex-shrink:0;
+  }
+  .brand-mark svg{width:16px; height:16px;}
+  .brand-text{display:flex; flex-direction:column; line-height:1.15;}
+  .brand-text .title{font-family:var(--sans); font-weight:800; font-size:15px; letter-spacing:0.2px; color:var(--text);}
+  .brand-text .tag{font-size:10px; color:var(--dim); letter-spacing:0.4px;}
+  .pulse{
+    width:7px; height:7px; border-radius:50%; background:var(--green); flex-shrink:0;
+    box-shadow:0 0 0 0 rgba(52,224,161,0.6); animation:pulse 2s infinite; margin-right:2px;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(52,224,161,0.55);}
+    70%{box-shadow:0 0 0 7px rgba(52,224,161,0);}
+    100%{box-shadow:0 0 0 0 rgba(52,224,161,0);}
+  }
+  .navlinks{display:flex; gap:2px; flex-wrap:wrap;}
+  .navlinks a{
+    display:flex; align-items:center; gap:6px;
+    color:var(--dim); text-decoration:none; font-size:11.5px; font-weight:600;
+    padding:7px 12px; border-radius:20px; transition:all .15s; letter-spacing:0.2px;
+  }
+  .navlinks a:hover{color:var(--text); background:#ffffff08;}
+  .navlinks svg{width:13px; height:13px; opacity:0.8;}
+
+  .controls{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  button, input[type=text]{
+    background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text);
+    font-family:var(--sans); font-size:12px; font-weight:600; padding:8px 14px; border-radius:20px;
+    transition:all .15s;
+  }
+  button{cursor:pointer; display:inline-flex; align-items:center; gap:6px;}
+  button svg{width:13px; height:13px;}
+  button:hover{border-color:var(--amber-glow); color:var(--amber); background:var(--amber-soft);}
+  button.active, .navlinks a.active{border-color:var(--green); color:var(--green); background:var(--green-soft); box-shadow:0 0 0 1px var(--green) inset;}
+  input[type=text]{width:150px; border-radius:10px; font-weight:400;}
+  input[type=text]:focus, button:focus-visible{outline:1.5px solid var(--amber); outline-offset:1px;}
+  #status{color:var(--dim); font-size:11px; font-variant-numeric:tabular-nums; font-family:var(--mono);}
+  #status.err{color:var(--red);}
+  #status.ok{color:var(--green);}
+
+  .layout{display:grid; grid-template-columns: 1.3fr 1fr; gap:18px;}
+  @media (max-width:900px){ .layout{grid-template-columns:1fr;} }
+
+  .section{margin-bottom:18px; scroll-margin-top:90px;}
+
+  .panel{
+    position:relative;
+    background:linear-gradient(160deg, #ffffff08, transparent 40%), var(--bg-elev-2);
+    backdrop-filter:blur(18px) saturate(130%);
+    border:1px solid var(--glass-border); border-radius:var(--radius); padding:18px;
+    box-shadow: 0 1px 0 #ffffff0f inset, 0 20px 40px -20px #000000a0;
+    animation:fadeUp .5s ease both;
+  }
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(8px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .panel::before{
+    content:''; position:absolute; inset:0; border-radius:var(--radius); padding:1px;
+    background:linear-gradient(160deg, var(--glass-border-strong), transparent 30%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none;
+  }
+  .panel h2{
+    font-family:var(--sans); font-size:12px; text-transform:uppercase; letter-spacing:1.4px; color:var(--text);
+    margin:0 0 4px 0; font-weight:700; display:flex; align-items:center; gap:8px;
+  }
+  .panel h2 svg{width:15px; height:15px; color:var(--amber); flex-shrink:0;}
+  .panel + .panel{margin-top:18px;}
+
+  .sub{color:var(--dim); font-size:11.5px; margin-top:5px; margin-bottom:12px; max-width:640px; line-height:1.6;}
+
+  table{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; font-family:var(--mono);}
+  thead{position:sticky; top:0; z-index:2;}
+  th{
+    text-align:right; font-size:10px; color:var(--dim); text-transform:uppercase;
+    letter-spacing:0.6px; font-weight:600; padding:8px 8px; border-bottom:1px solid var(--line-solid);
+    cursor:pointer; user-select:none; background:var(--bg-elev-2); font-family:var(--sans);
+  }
+  th:first-child, td:first-child{text-align:left;}
+  th:hover{color:var(--amber);}
+  td{padding:9px 8px; text-align:right; border-bottom:1px solid #ffffff08; transition:background .1s;}
+  tr{transition:background .1s;}
+  tr:hover td{background:var(--amber-soft);}
+  .sym{font-weight:700; color:var(--text); letter-spacing:0.2px;}
+  .up{color:var(--green);}
+  .down{color:var(--red);}
+  .star{cursor:pointer; color:var(--dim-2); margin-right:2px; user-select:none; transition:all .15s; display:inline-block;}
+  .star:hover{color:var(--amber); transform:scale(1.15);}
+  .star.on{color:var(--amber); text-shadow:0 0 8px var(--amber-glow);}
+  .flag{
+    display:inline-block; font-size:9px; padding:2px 7px; border-radius:20px;
+    margin-left:5px; letter-spacing:0.4px; font-weight:700; font-family:var(--sans);
+  }
+  .flag.real{background:var(--green-soft); color:var(--green); border:1px solid #34e0a155;}
+  .flag.thin{background:var(--red-soft); color:var(--red); border:1px solid #ff5d6855;}
+
+  #chart-wrap{position:relative;}
+  svg{width:100%; height:auto; display:block;}
+  .axis-label{fill:var(--dim); font-size:9px; font-family:var(--mono);}
+  .quad-label{fill:var(--dim); font-size:9px; font-family:var(--sans); letter-spacing:0.6px; font-weight:700;}
+  .dot{fill:var(--amber); opacity:0.85; cursor:pointer; transition:opacity .1s;}
+  .dot.up{fill:var(--green);}
+  .dot.down{fill:var(--red);}
+  .dot:hover{opacity:1; stroke:var(--text); stroke-width:1;}
+  .gridline{stroke:var(--line-solid); stroke-width:1;}
+  #tooltip{
+    position:absolute; background:#0a0d0be6; backdrop-filter:blur(6px); border:1px solid var(--glass-border-strong);
+    padding:7px 10px; font-size:11px; border-radius:8px; pointer-events:none; display:none;
+    white-space:nowrap; z-index:10; font-family:var(--mono); box-shadow:0 8px 20px -8px #000000a0;
+  }
+
+  .legend{font-size:10.5px; color:var(--dim); line-height:1.8; margin-top:10px;}
+  .legend b{color:var(--text);}
+  footer{margin-top:20px; color:var(--dim-2); font-size:10px; text-align:center; letter-spacing:0.3px; font-family:var(--sans);}
+
+  .stat-strip{
+    display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin-bottom:18px;
+  }
+  .stat{
+    padding:13px 16px; border-radius:var(--radius-sm); background:var(--bg-elev-2);
+    border:1px solid var(--glass-border); backdrop-filter:blur(14px);
+    animation:fadeUp .5s ease both;
+  }
+  @media (max-width:900px){ .stat-strip{grid-template-columns:repeat(2, 1fr);} }
+  .analytics-strip{grid-template-columns:repeat(6, 1fr) !important;}
+  @media (max-width:900px){ .analytics-strip{grid-template-columns:repeat(2, 1fr) !important;} }
+  .stat .label{font-size:9.5px; color:var(--dim); text-transform:uppercase; letter-spacing:1px; font-weight:600;}
+  .stat .value{font-size:18px; font-weight:800; margin-top:4px; font-family:var(--mono);}
+
+  .fund-row{display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #ffffff08; font-family:var(--mono);}
+  .bar-track{flex:1; height:6px; background:#ffffff0f; border-radius:4px; margin:0 12px; position:relative; overflow:hidden;}
+  .bar-fill{position:absolute; top:0; bottom:0; border-radius:4px; transition:width .4s ease;}
+
+  /* skeleton loading shimmer */
+  .skeleton{
+    border-radius:6px; background:linear-gradient(90deg, #ffffff08 25%, #ffffff14 37%, #ffffff08 63%);
+    background-size:400% 100%; animation:shimmer 1.4s ease infinite; height:14px; margin:6px 0;
+  }
+  @keyframes shimmer{ 0%{background-position:100% 0;} 100%{background-position:0 0;} }
+
+  .section-title-row{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:2px;}
+</style>
+</head>
+
+
+<body>
+
+<nav class="topnav">
+  <div class="wrap navbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0a0d0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>
+      </div>
+      <div class="brand-text">
+        <div class="title"><span class="pulse"></span>ACE FUTURES HUNT</div>
+        <div class="tag">Live Binance Radar · Kein Finanzrat</div>
+      </div>
+    </div>
+    <div class="navlinks">
+      <a href="#overview" id="tabDashboard" class="active" onclick="showPage('dashboard')" style="border-right:1px solid var(--glass-border); padding-right:14px; margin-right:8px; font-weight:700;">Dashboard</a>
+      <a href="#risk" id="tabAccount" onclick="showPage('account')" style="border-right:1px solid var(--glass-border); padding-right:14px; margin-right:8px; font-weight:700;">Konto</a>
+      <a href="#overview" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Übersicht</a>
+      <a href="#briefing" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>Briefing</a>
+      <a href="#scanner" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>Scanner</a>
+      <a href="#replay" onclick="showPage('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>Replay</a>
+      <a href="#backtest" onclick="showPage('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 12l3 3 7-7"/></svg>Backtest</a>
+      <a href="#oidashboard" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="6" y="12" width="3" height="6"/><rect x="11" y="8" width="3" height="10"/><rect x="16" y="5" width="3" height="13"/></svg>OI</a>
+      <a href="#radar" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10h-10z"/></svg>Radar</a>
+      <a href="#coin-detail" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg>Coin-Detail</a>
+      <a href="#scam" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>Warnradar</a>
+      <a href="#funding" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>Funding</a>
+      <a href="#whale" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-4 6-6 10-6s7 3 10 6c-2 3-6 6-10 6-2 0-4-.5-5.5-1.5"/><path d="M6 10c0-1.5 1-2.5 2-2.5"/></svg>Whales</a>
+      <a href="#alerts" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Alerts</a>
+      <a href="#compare" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18"/><path d="M4 8h4M16 8h4M4 16h4M16 16h4"/></svg>Vergleich</a>
+      <a href="#corrmatrix" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Korrelation</a>
+      <a href="#memory" onclick="showPage('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>Memory</a>
+      <a href="#risk" onclick="showPage('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Risk</a>
+      <a href="#portfolio" onclick="showPage('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>Portfolio</a>
+      <a href="#journal" onclick="showPage('account')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Journal</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<div class="controls" style="margin-bottom:18px;">
+  <input type="text" id="globalSearch" placeholder="🔍 Coin suchen..." style="width:150px;" onkeydown="if(event.key==='Enter') document.getElementById('globalSearchBtn').click();">
+  <button id="globalSearchBtn">Suchen</button>
+  <span style="border-right:1px solid var(--glass-border); height:20px; margin:0 2px;"></span>
+  <button id="marketBtn" class="active" data-market="futures">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 9l-5 5-3-3-4 4"/></svg>Futures
+  </button>
+  <button id="marketBtn2" data-market="spot">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Spot
+  </button>
+  <button id="refreshBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Aktualisieren</button>
+  <button id="autoBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Auto 30s: aus</button>
+  <span id="status">lädt...</span>
+</div>
+<div id="globalSearchStatus" style="color:var(--dim); font-size:11px; margin:-10px 0 12px;"></div>
+
+<div class="stat-strip" id="statStrip">
+  <div class="stat" id="overview"><div class="label">Paare aktiv</div><div class="value" id="statCount">—</div></div>
+  <div class="stat"><div class="label">Gainer</div><div class="value up" id="statGainers">—</div></div>
+  <div class="stat"><div class="label">Loser</div><div class="value down" id="statLosers">—</div></div>
+  <div class="stat"><div class="label">Größter Move</div><div class="value" id="statBest">—</div></div>
+  <div class="stat"><div class="label">Ø Funding</div><div class="value" id="statFunding">—</div></div>
+</div>
+
+<div id="pageDashboard">
+
+<div class="panel section" id="briefing">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>AI Daily Briefing</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Eine kurze, KI-geschriebene Markt-Zusammenfassung aus echten Live-Daten: Fear&amp;Greed, BTC-Dominanz, Funding-Extreme, Scam-Warnradar und die letzten Scanner-Ergebnisse (führe erst einen Scan durch für die besten Ergebnisse).
+  </div>
+  <div style="margin-bottom:12px;">
+    <input type="text" id="anthropicKey" placeholder="Anthropic API-Key (optional — nur nötig, wenn Datei lokal geöffnet)" style="width:100%; max-width:420px;">
+    <div class="legend" style="margin-top:4px;">Nur nötig, wenn du diese Datei lokal (außerhalb von Claude.ai) geöffnet hast. In der Claude.ai-Vorschau funktionieren Briefing/Memory/Journal-KI-Analyse auch ohne Key. Bleibt nur in diesem Browser-Tab.</div>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:10px; margin-bottom:12px;">
+    <div style="background:#00000020; border:1px solid var(--glass-border); border-radius:8px; padding:10px 12px;"><div style="color:var(--dim); font-size:9.5px; text-transform:uppercase;">Fear &amp; Greed</div><div class="value" id="briefFng" style="font-family:var(--mono); font-weight:700; font-size:16px;">—</div><svg id="fngSparkline" viewBox="0 0 120 30" style="width:100%; height:24px; margin-top:4px;"></svg></div>
+    <div style="background:#00000020; border:1px solid var(--glass-border); border-radius:8px; padding:10px 12px;"><div style="color:var(--dim); font-size:9.5px; text-transform:uppercase;">BTC-Dominanz</div><div class="value" id="briefBtcDom" style="font-family:var(--mono); font-weight:700; font-size:16px;">—</div></div>
+  </div>
+  <button id="briefGenBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v1a3 3 0 0 0 3 3 3 3 0 0 0 3-3V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg>Briefing generieren</button>
+  <div id="briefingBox" style="margin-top:14px; font-size:12.5px; line-height:1.7; color:var(--dim);"></div>
+</div>
+
+<div class="panel section" id="scanner">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>Market-Scanner — Top 20 Opportunities</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    <span class="pulse" style="display:inline-block;"></span> Läuft automatisch alle 30 Sekunden im Hintergrund — kein Klick nötig. Zwei-Stufen-Scan: schnelle Vorauswahl aus allen Futures-Paaren nach Momentum/Volumen/Funding, dann Analyse aus <b>4 Faktoren</b> (Trend, Struktur, Smart Money, Funding) für die besten Kandidaten. Klick auf einen Coin springt zum vollen AI Coach.
+  </div>
+  <div class="legend" style="margin-bottom:10px;">
+    <b>Hinweis:</b> Der Scanner nutzt bewusst weniger Faktoren als der AI Coach (der zusätzlich Open Interest und Orderbuch-Liquidität einbezieht, also 6 statt 4) — das hält den automatischen 30s-Scan über viele Coins hinweg schnell. Note/Score können sich vom Coach deshalb unterscheiden; der Coach-Wert für einen einzelnen Coin ist der vollständigere.
+  </div>
+  <button id="scannerRunBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>Jetzt sofort aktualisieren</button>
+  <span id="scannerStatus" style="color:var(--dim); font-size:11px; margin-left:10px;"></span>
+  <div style="overflow-x:auto; margin-top:14px;">
+    <table>
+      <thead><tr>
+        <th>#</th><th data-skey="symbol">Coin</th><th data-skey="bias">Bias</th><th data-skey="grade">Note</th><th data-skey="opportunityScore">Score</th><th data-skey="riskLevel">Risiko</th><th>Trend</th><th>Struktur</th><th data-skey="fundingLabel">Funding</th><th>Kurzgrund</th>
+      </tr></thead>
+      <tbody id="scannerBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel section" id="oidashboard">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="6" y="12" width="3" height="6"/><rect x="11" y="8" width="3" height="10"/><rect x="16" y="5" width="3" height="13"/></svg>Open Interest Dashboard</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Open Interest der aktuell größten/aktivsten Futures-Paare (nach 24h-Volumen), mit echter 24h-OI-Veränderung. Kombiniert mit Preisrichtung ergibt sich eine objektive Einordnung: neue Longs, Short-Covering, neue Shorts oder Kapitulation.
+  </div>
+  <button id="oiRunBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>OI-Dashboard laden</button>
+  <span id="oiStatus" style="color:var(--dim); font-size:11px; margin-left:10px;"></span>
+  <div id="oiBody" style="margin-top:14px;"></div>
+</div>
+
+<div class="layout section" id="radar">
+  <div class="panel">
+        <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-6"/></svg><span id="tableTitle">Top Mover (nach % Änderung)</span></h2>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th data-key="symbol">Symbol</th>
+          <th data-key="lastPrice">Preis</th>
+          <th data-key="priceChangePercent">24h %</th>
+          <th data-key="quoteVolume">Volumen (USDT)</th>
+          <th data-key="score">Signal</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M22 12h-3M5 12H2M19.07 4.93l-2.12 2.12M7.05 16.95l-2.12 2.12M19.07 19.07l-2.12-2.12M7.05 7.05L4.93 4.93"/></svg>Pump-Quadrant: % Änderung vs. Volumen</h2>
+    <div id="chart-wrap">
+      <svg id="chart" viewBox="0 0 480 380"></svg>
+      <div id="tooltip"></div>
+    </div>
+    <div class="legend">
+      <div>&#9679; <b style="color:var(--green)">oben rechts</b> = großer Move + hohes Volumen → echte, handelbare Bewegung</div>
+      <div>&#9679; <b style="color:var(--red)">oben links</b> = großer Move + dünnes Volumen → wackelig, leicht manipulierbar, oft schnell wieder weg</div>
+      <div>&#9679; unten = wenig Bewegung, aktuell uninteressant</div>
+    </div>
+
+    <div style="border-top:1px solid var(--glass-border); margin-top:16px; padding-top:14px;">
+      <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin-bottom:10px;">Quick-Opportunities (aus dem letzten Scanner-Lauf)</div>
+      <div id="quadrantExtra" style="font-size:12px; color:var(--dim);">Warte auf ersten Scan (läuft automatisch alle 30s)...</div>
+    </div>
+  </div>
+</div>
+
+<div class="panel section" id="coin-detail">
+  <h2 id="liqPanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>AI Trading Coach — Chart, Analyse &amp; Liquidations-Zonen</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Klick auf einen Coin-Namen in der Tabelle unten. Der Coach kombiniert Trend, Struktur, Smart Money, Open Interest, Liquidität, Funding und Volatilität zu einer transparenten Einschätzung — inklusive Rechner für deine eigene Positionsgröße.
+  </div>
+  <div id="tvChartBox" style="margin-bottom:14px;"></div>
+  <div id="coachBox" style="margin-bottom:14px;"></div>
+  <div id="mtfBox" style="margin-bottom:14px;"></div>
+  <div id="ictBox" style="margin-bottom:14px;"></div>
+  <div id="orderFlowBox" style="margin-bottom:14px;"></div>
+  <div id="liqContent" style="font-size:12px; color:var(--dim);">Noch kein Coin ausgewählt.</div>
+</div>
+
+<div class="panel section" id="scam">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>Scam-Pump-Warnradar (Heuristik, keine Kaufempfehlung)</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Coins mit dem höchsten "sieht-aus-wie-Pump-and-Dump"-Score gerade jetzt: großer %-Sprung + sehr dünnes Volumen + Meme/Hype-artiger Ticker-Name.
+    Das ist eine Warnliste, kein Trading-Tipp — je höher der Score, desto vorsichtiger solltest du sein.
+  </div>
+  <div id="scamBox"></div>
+</div>
+
+<div class="panel section" id="funding">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>Funding-Rate-Radar (Futures — Squeeze-Frühindikator)</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Extrem positive Funding = Markt ist long-überfüllt → Risiko eines plötzlichen Long-Squeeze/Dumps.
+    Extrem negative Funding = short-überfüllt → Risiko eines Short-Squeeze, der aussieht wie ein Pump. Aktualisiert sich mit "Aktualisieren" oben.
+  </div>
+  <div id="fundingBox" style="font-size:12px; color:var(--dim);">lädt...</div>
+</div>
+
+<div class="panel section" id="whale">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-4 6-6 10-6s7 3 10 6c-2 3-6 6-10 6-2 0-4-.5-5.5-1.5"/><path d="M6 10c0-1.5 1-2.5 2-2.5"/></svg>On-Chain Whale Tracker — Binance Hot Wallets (Ethereum)</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Beobachtet öffentlich bekannte Binance-Einzahlungs-/Auszahlungs-Adressen auf Ethereum. Große Einzahlung auf Binance = evtl. bald Verkaufsdruck.
+    Große Auszahlung von Binance = evtl. Akkumulation/Cold Storage. Braucht einen kostenlosen Etherscan-API-Key (bleibt nur lokal in deinem Browser).
+  </div>
+  <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap;">
+    <input type="text" id="etherscanKey" placeholder="Etherscan API-Key einfügen..." style="width:260px;">
+    <button id="whaleFetchBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Alle bekannten Binance-Wallets scannen</button>
+  </div>
+  <div id="whaleBox" style="font-size:12px; color:var(--dim);">Trag deinen Etherscan-Key ein und klick auf Scannen — checkt automatisch 5 bekannte Binance-Hot-Wallets gleichzeitig.</div>
+</div>
+
+<div class="panel section" id="alerts">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Alert-System — Telegram / Discord / ntfy</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Sendet nur eine Nachricht, wenn <b>sowohl</b> der schnelle Scanner <b>als auch</b> der volle 9-Faktoren-Coach dieselbe Richtung mit guter Note bestätigen — deutlich weniger Fehlalarme als nur der Scanner allein (solange dieser Tab offen ist und Auto-Scan läuft).
+    Tokens/URLs bleiben nur in diesem Browser-Tab — nichts wird gespeichert oder an mich geschickt.
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:8px; margin-bottom:10px;">
+    <input type="text" id="alTgToken" placeholder="Telegram Bot Token" value="8867206742:AAFRlaNPWngVLgLe3Kog7mK6luxRY2oUyJg">
+    <input type="text" id="alTgChat" placeholder="Telegram Chat-ID" value="801616656">
+    <input type="text" id="alDiscordUrl" placeholder="Discord Webhook-URL">
+    <input type="text" id="alNtfyTopic" placeholder="ntfy.sh Topic-Name (frei wählbar)">
+  </div>
+
+  <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center; margin-bottom:12px; font-size:12px; color:var(--dim);">
+    <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" id="alEnTg" checked> Telegram aktiv</label>
+    <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" id="alEnDiscord"> Discord aktiv</label>
+    <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" id="alEnNtfy"> ntfy aktiv</label>
+    <label style="display:flex; align-items:center; gap:6px;"><input type="checkbox" id="alEnBrowser"> Browser-Push aktiv</label>
+    <button id="alBrowserPermBtn" style="padding:5px 10px; font-size:11px;">Browser-Erlaubnis anfragen</button>
+    <span id="alBrowserPermStatus" style="font-size:11px;"></span>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:8px; margin-bottom:12px;">
+    <select id="alMinGrade" style="background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text); font-family:var(--sans); font-size:12px; padding:8px 12px; border-radius:10px;">
+      <option value="A+">Nur A+</option>
+      <option value="A" selected>A oder besser</option>
+      <option value="B">B oder besser</option>
+    </select>
+    <label style="display:flex; align-items:center; gap:6px; font-size:12px; color:var(--dim);"><input type="checkbox" id="alAutoScan"> Bei Auto-Scan (läuft immer alle 30s) auch Alerts senden</label>
+  </div>
+
+  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+    <button id="alTestBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>Test-Alert senden</button>
+  </div>
+
+  <div style="border-top:1px solid var(--glass-border); margin:18px 0 14px; padding-top:14px;">
+    <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin-bottom:8px;">Preis-Alarme (unabhängig vom Scanner)</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:8px; margin-bottom:10px;">
+      <input type="text" id="paCoin" placeholder="Coin (z.B. XRPUSDT)">
+      <select id="paDirection" style="background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text); font-family:var(--sans); font-size:12px; padding:8px 12px; border-radius:10px;">
+        <option value="ABOVE">Über</option>
+        <option value="BELOW">Unter</option>
+      </select>
+      <input type="text" id="paPrice" placeholder="Ziel-Preis">
+      <button id="paAddBtn">+ Alarm setzen</button>
+    </div>
+    <div id="priceAlertsBody" style="font-size:12px; color:var(--dim);"></div>
+  </div>
+
+  <div id="alertLog" style="margin-top:14px; font-size:11.5px; color:var(--dim); max-height:220px; overflow-y:auto;"></div>
+</div>
+
+<div class="panel section" id="compare">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18"/><path d="M4 8h4M16 8h4M4 16h4M16 16h4"/></svg>Coin-Vergleich — zwei Coins nebeneinander</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Vergleicht relative Performance (normiert auf Start = 0%) und echte Korrelation zwischen zwei Coins auf 1H-Basis der letzten ~4 Tage.
+  </div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+    <input type="text" id="cmpCoinA" placeholder="Coin A (z.B. BTC)" value="BTC">
+    <input type="text" id="cmpCoinB" placeholder="Coin B (z.B. deine Position)">
+    <button id="cmpRunBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18"/></svg>Vergleichen</button>
+  </div>
+  <div id="cmpStatus" style="color:var(--dim); font-size:11px; margin-bottom:10px;"></div>
+  <div id="cmpChartWrap" style="position:relative;">
+    <svg id="cmpChart" viewBox="0 0 600 260" style="width:100%; height:auto; display:none;"></svg>
+  </div>
+  <div id="cmpStats" style="margin-top:12px;"></div>
+</div>
+
+<div class="panel section" id="corrmatrix">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Correlation-Matrix</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Paarweise Korrelation zwischen mehreren Coins gleichzeitig, aus echten 1H-Kursdaten. Grün = bewegen sich im Gleichschritt, Rot = entgegengesetzt, Grau = kaum Zusammenhang.
+  </div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+    <input type="text" id="corrCoins" placeholder="Coins, kommagetrennt" value="BTC,ETH,SOL,BNB,XRP" style="width:280px;">
+    <button id="corrRunBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Matrix berechnen</button>
+  </div>
+  <div id="corrStatus" style="color:var(--dim); font-size:11px; margin-bottom:10px;"></div>
+  <div style="overflow-x:auto;">
+    <div id="corrMatrixBox"></div>
+  </div>
+</div>
+
+<div class="panel section" id="memory">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>AI Market Memory — Historische Muster-Erkennung</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Vergleicht die aktuell im AI Coach analysierten Kennzahlen (Trend, Struktur, Funding, OI, Volatilität) mit bekannten historischen Marktsituationen.
+    <b>Wichtig:</b> Das ist eine qualitative KI-Einschätzung auf Basis von echten aktuellen Daten + historischem Wissen — <b>keine rückgetestete Statistik</b> aus einer echten Datenbank ähnlicher Setups, da so etwas kostenlos nicht existiert. Behandle es als Denkanstoß, nicht als Beweis.
+  </div>
+  <button id="memoryBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>Aktuelle Marktlage vergleichen</button>
+  <span id="memoryStatus" style="color:var(--dim); font-size:11px; margin-left:10px;"></span>
+  <div id="memoryBox" style="margin-top:14px; font-size:12.5px; line-height:1.7; color:var(--dim);"></div>
+</div>
+
+
+</div>
+
+<div id="pageAccount" style="display:none;">
+
+<div class="panel section" id="replay">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>Replay Mode — echte historische Kerzen, Kerze für Kerze</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Übt Setups an echten, vergangenen Kerzendaten von Binance. Zukünftige Kerzen bleiben verborgen, bis du weiterklickst. Simuliere Long/Short und sieh, wie es sich entwickelt hätte — ohne echtes Geld.
+  </div>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+    <input type="text" id="replayCoin" placeholder="Coin (z.B. BTCUSDT)" value="BTCUSDT" style="width:140px;">
+    <input type="date" id="replayDate" style="width:150px;">
+    <input type="text" id="replayCandles" placeholder="Anzahl Kerzen" value="300" style="width:110px;">
+    <button id="replayLoadBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16h16"/><path d="M4 16l4-4 4 4 8-8"/></svg>Session laden</button>
+  </div>
+  <div id="replayStatus" style="color:var(--dim); font-size:11px; margin-bottom:10px;"></div>
+
+  <div id="replayControls" style="display:none;">
+    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px;">
+      <button id="replayPrevBtn">◀ Zurück</button>
+      <button id="replayPlayBtn">▶ Play</button>
+      <button id="replayNextBtn">Vor ▶</button>
+      <select id="replaySpeed" style="background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text); font-family:var(--sans); font-size:12px; padding:8px 10px; border-radius:10px;">
+        <option value="1200">1x</option>
+        <option value="600">2x</option>
+        <option value="250">4x</option>
+      </select>
+      <span id="replayPos" style="color:var(--dim); font-size:11px;"></span>
+    </div>
+    <svg id="replayChart" viewBox="0 0 700 280" style="width:100%; height:auto; display:block; background:#00000015; border-radius:8px;"></svg>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:12px 0;">
+      <span style="color:var(--dim); font-size:12px;">Simulierte Position:</span>
+      <button id="replayLongBtn">Long hier</button>
+      <button id="replayShortBtn">Short hier</button>
+      <button id="replayCloseBtn">Schließen</button>
+      <span id="replayPositionInfo" style="font-size:12px; font-weight:600;"></span>
+    </div>
+    <div id="replayStats"></div>
+  </div>
+</div>
+
+<div class="panel section" id="backtest">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 12l3 3 7-7"/></svg>Backtester — feste Regel gegen echte Historie</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Testet eine klar definierte, mechanische Regel gegen echte historische Binance-Kerzen. Kein Blackbox-Score — du siehst genau, welche Regel getestet wurde und jeden simulierten Trade.
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:8px; margin-bottom:10px;">
+    <input type="text" id="btCoin" placeholder="Coin (z.B. BTCUSDT)" value="BTCUSDT">
+    <select id="btStrategy" style="background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text); font-family:var(--sans); font-size:12px; padding:8px 12px; border-radius:10px;">
+      <option value="emacross">EMA 9/21 Cross</option>
+      <option value="rsi">RSI Reversion (30/70)</option>
+    </select>
+    <select id="btInterval" style="background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text); font-family:var(--sans); font-size:12px; padding:8px 12px; border-radius:10px;">
+      <option value="15m">15m</option>
+      <option value="1h" selected>1H</option>
+      <option value="4h">4H</option>
+    </select>
+    <input type="text" id="btCandles" placeholder="Anzahl Kerzen" value="500">
+  </div>
+  <button id="btRunBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 12l3 3 7-7"/></svg>Backtest starten</button>
+  <span id="btStatus" style="color:var(--dim); font-size:11px; margin-left:10px;"></span>
+  <div id="btResults" style="margin-top:14px;"></div>
+</div>
+
+<div class="panel section" id="risk">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Risk Manager — Institutionelles Risikomanagement</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Kelly Criterion, Expected Value und Verlustlimits — basierend auf DEINEN Zahlen (idealerweise aus deinem Journal unten). Warnt dich, bevor ein Trade gegen deine eigenen Regeln verstößt.
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:8px; margin-bottom:12px;">
+    <input type="text" id="rmBalance" placeholder="Kontostand USDT">
+    <input type="text" id="rmRiskPct" placeholder="Risiko % pro Trade">
+    <input type="text" id="rmWinRate" placeholder="Win-Rate % (z.B. 55)">
+    <input type="text" id="rmAvgWin" placeholder="Ø Gewinn (RR, z.B. 2)">
+    <input type="text" id="rmAvgLoss" placeholder="Ø Verlust (RR, z.B. 1)">
+    <input type="text" id="rmMaxDaily" placeholder="Max Tagesverlust %">
+    <input type="text" id="rmMaxWeekly" placeholder="Max Wochenverlust %">
+  </div>
+  <button id="rmCalcBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Berechnen</button>
+  <div id="rmResult" style="margin-top:14px;"></div>
+  <div id="rmWarning" style="margin-top:10px;"></div>
+</div>
+
+<div class="panel section" id="portfolio">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>Portfolio-Risiko-Tracker — Offene Positionen</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Trag deine gerade offenen Futures-Positionen ein. Zeigt live unrealisierte PnL (mit aktuellen Preisen), Gesamt-Exposure und warnt bei Klumpenrisiko oder Nähe zur Liquidation. Wird dauerhaft für dich gespeichert.
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:8px; margin-bottom:10px;">
+    <input type="text" id="ptCoin" placeholder="Coin (z.B. BTCUSDT)">
+    <select id="ptDirection" style="background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text); font-family:var(--sans); font-size:12px; padding:8px 12px; border-radius:10px;">
+      <option value="LONG">Long</option>
+      <option value="SHORT">Short</option>
+    </select>
+    <input type="text" id="ptEntry" placeholder="Entry-Preis">
+    <input type="text" id="ptNotional" placeholder="Notional USDT (Größe)">
+    <input type="text" id="ptLeverage" placeholder="Hebel (z.B. 10)">
+  </div>
+  <button id="ptAddBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Position hinzufügen</button>
+  <span id="ptStatus" style="color:var(--dim); font-size:11px; margin-left:10px;"></span>
+
+  <div class="stat-strip analytics-strip" id="portfolioStrip" style="margin-top:16px;">
+    <div class="stat"><div class="label">Positionen</div><div class="value" id="ptCount">0</div></div>
+    <div class="stat"><div class="label">Gesamt-Exposure</div><div class="value" id="ptExposure">—</div></div>
+    <div class="stat"><div class="label">Unrealisierte PnL</div><div class="value" id="ptTotalPnl">—</div></div>
+    <div class="stat"><div class="label">Long-Anteil</div><div class="value" id="ptLongPct">—</div></div>
+    <div class="stat"><div class="label">Short-Anteil</div><div class="value" id="ptShortPct">—</div></div>
+    <div class="stat"><div class="label">Konzentrations-Risiko</div><div class="value" id="ptConcentration">—</div></div>
+  </div>
+  <div id="ptWarning" style="margin-top:10px;"></div>
+
+  <div style="overflow-x:auto; margin-top:14px;">
+    <table>
+      <thead><tr>
+        <th>Coin</th><th>Richtung</th><th>Entry</th><th>Aktuell</th><th>Notional</th><th>Hebel</th><th>PnL</th><th>Abstand zur Liq.</th><th></th>
+      </tr></thead>
+      <tbody id="portfolioBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel section" id="journal">
+  <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Trading-Journal &amp; Performance-Analytics</h2>
+  <div class="sub" style="margin-bottom:10px;">
+    Jeder Trade wird dauerhaft gespeichert (nur lokal für dich, bleibt über Sessions erhalten). Daraus berechnen sich Win-Rate, Profit-Faktor und eine optionale KI-Analyse deiner Muster.
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:8px; margin-bottom:8px;">
+    <input type="text" id="jCoin" placeholder="Coin (z.B. BTCUSDT)">
+    <select id="jDirection" style="background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text); font-family:var(--sans); font-size:12px; padding:8px 12px; border-radius:10px;">
+      <option value="LONG">Long</option>
+      <option value="SHORT">Short</option>
+    </select>
+    <input type="text" id="jEntry" placeholder="Entry-Preis">
+    <input type="text" id="jExit" placeholder="Exit-Preis">
+    <input type="text" id="jLeverage" placeholder="Hebel (z.B. 10)">
+    <input type="text" id="jRR" placeholder="RR (optional)">
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:8px; margin-bottom:10px;">
+    <textarea id="jNotes" placeholder="Notizen..." style="background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text); font-family:var(--sans); font-size:12px; padding:8px 12px; border-radius:10px; min-height:50px; resize:vertical;"></textarea>
+    <textarea id="jMistakes" placeholder="Fehler..." style="background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text); font-family:var(--sans); font-size:12px; padding:8px 12px; border-radius:10px; min-height:50px; resize:vertical;"></textarea>
+    <textarea id="jLessons" placeholder="Lessons Learned..." style="background:var(--bg-elev-1); border:1px solid var(--glass-border); color:var(--text); font-family:var(--sans); font-size:12px; padding:8px 12px; border-radius:10px; min-height:50px; resize:vertical;"></textarea>
+  </div>
+  <button id="jSaveBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Trade speichern</button>
+  <button id="jExportBtn" style="margin-left:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg>CSV-Export</button>
+  <span id="jStatus" style="color:var(--dim); font-size:11px; margin-left:10px;"></span>
+
+  <div style="margin-top:18px;">
+    <div class="stat-strip analytics-strip" id="analyticsStrip">
+      <div class="stat"><div class="label">Trades</div><div class="value" id="anCount">0</div></div>
+      <div class="stat"><div class="label">Win-Rate</div><div class="value" id="anWinRate">—</div></div>
+      <div class="stat"><div class="label">Profit-Faktor</div><div class="value" id="anPF">—</div></div>
+      <div class="stat"><div class="label">Ø RR</div><div class="value" id="anAvgRR">—</div></div>
+      <div class="stat"><div class="label">Bester Coin</div><div class="value" id="anBest" style="font-size:13px;">—</div></div>
+      <div class="stat"><div class="label">Schwächster Coin</div><div class="value" id="anWorst" style="font-size:13px;">—</div></div>
+    </div>
+    <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin:14px 0 8px;">Mini Trade-DNA (ab 5+ Trades aussagekräftig)</div>
+    <div class="stat-strip" id="dnaStrip" style="grid-template-columns:repeat(2, 1fr);">
+      <div class="stat"><div class="label">Bester Wochentag</div><div class="value" id="dnaBestDay" style="font-size:13px;">—</div></div>
+      <div class="stat"><div class="label">Beste Handelsstunde</div><div class="value" id="dnaBestHour" style="font-size:13px;">—</div></div>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto; margin-top:14px;">
+    <table>
+      <thead><tr>
+        <th>Datum</th><th>Coin</th><th>Richtung</th><th>Entry</th><th>Exit</th><th>Hebel</th><th>RR</th><th>PnL %</th><th></th>
+      </tr></thead>
+      <tbody id="journalBody"></tbody>
+    </table>
+  </div>
+
+  <button id="aiSummaryBtn" style="margin-top:14px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v1a3 3 0 0 0 3 3 3 3 0 0 0 3-3V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg>KI-Analyse meiner Trades generieren</button>
+  <div id="aiSummaryBox" style="margin-top:12px; font-size:12.5px; line-height:1.7; color:var(--dim);"></div>
+</div>
+
+
+</div>
+
+<footer>Quelle: Binance Public API (Spot/Futures 24hr Ticker) · Keine Anlageberatung · Daten aktualisieren sich nur bei Klick/Auto-Refresh, nicht in Echtzeit-Millisekunden</footer>
+
+</div>
+
+<script>
+const tbody = document.getElementById('tbody');
+const statusEl = document.getElementById('status');
+const svg = document.getElementById('chart');
+const tooltip = document.getElementById('tooltip');
+let rawData = [];
+let sortKey = 'priceChangePercent';
+let sortDir = -1;
+let autoTimer = null;
+let market = 'futures'; // 'futures' | 'spot'
+let fundingMap = {};
+let lastScanResults = [];
+let previousScanSymbols = new Set();
+let lastCoachAnalysis = null;
+
+const ENDPOINTS = {
+  spot: 'https://api.binance.com/api/v3/ticker/24hr',
+  futures: 'https://fapi.binance.com/fapi/v1/ticker/24hr'
+};
+
+function fmtPrice(p){
+  const n = parseFloat(p);
+  if(n >= 1000) return n.toLocaleString('de-DE', {maximumFractionDigits:2});
+  if(n >= 1) return n.toFixed(3);
+  if(n >= 0.01) return n.toFixed(5);
+  return n.toExponential(3);
+}
+function fmtVol(v){
+  const n = parseFloat(v);
+  if(n >= 1e9) return (n/1e9).toFixed(2)+'B';
+  if(n >= 1e6) return (n/1e6).toFixed(2)+'M';
+  if(n >= 1e3) return (n/1e3).toFixed(1)+'K';
+  return n.toFixed(0);
+}
+
+async function fetchData(){
+  statusEl.textContent = 'lädt...';
+  statusEl.className = '';
+  try{
+    const res = await fetch(ENDPOINTS[market]);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const stableQuotes = ['USDT'];
+    const excludeBase = ['USDC','FDUSD','TUSD','DAI','USDP','EUR','TRY','BUSD','USD1'];
+    let filtered = data.filter(d => {
+      if(!d.symbol.endsWith('USDT')) return false;
+      const base = d.symbol.slice(0, -4);
+      if(excludeBase.includes(base)) return false;
+      const vol = parseFloat(d.quoteVolume);
+      if(vol < 100000) return false; // strip dead/illiquid noise
+      return true;
+    });
+    // volume-adjusted score: big move AND real volume both count
+    const maxVol = Math.max(...filtered.map(d => parseFloat(d.quoteVolume)));
+    filtered.forEach(d => {
+      const pct = parseFloat(d.priceChangePercent);
+      const vol = parseFloat(d.quoteVolume);
+      const volScore = Math.log10(vol + 1) / Math.log10(maxVol + 1); // 0..1
+      d.score = Math.abs(pct) * (0.4 + 0.6*volScore);
+      d.volScoreRaw = volScore;
+    });
+    rawData = filtered;
+    statusEl.textContent = new Date().toLocaleTimeString('de-DE') + ' · ' + market.toUpperCase() + ' · ' + filtered.length + ' Paare';
+    statusEl.className = 'ok';
+    render();
+    fetchFunding();
+    if(typeof renderPortfolio === 'function') renderPortfolio();
+    if(typeof checkPriceAlerts === 'function') checkPriceAlerts();
+  } catch(err){
+    statusEl.textContent = 'Fehler: ' + err.message + ' (evtl. blockiert der Sandbox-Browser den externen Fetch — dann bitte Datei lokal im Browser öffnen)';
+    statusEl.className = 'err';
+  }
+}
+
+async function fetchFunding(){
+  const box = document.getElementById('fundingBox');
+  try{
+    const res = await fetch('https://fapi.binance.com/fapi/v1/premiumIndex');
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    let rows = data
+      .filter(d => d.symbol.endsWith('USDT'))
+      .map(d => ({ symbol: d.symbol, rate: parseFloat(d.lastFundingRate) * 100 }))
+      .filter(d => !isNaN(d.rate));
+    const avg = rows.reduce((s,d) => s + d.rate, 0) / rows.length;
+    document.getElementById('statFunding').textContent = avg.toFixed(3) + '%';
+    document.getElementById('statFunding').className = 'value ' + (avg >= 0 ? 'up' : 'down');
+    fundingMap = {};
+    rows.forEach(r => { fundingMap[r.symbol] = r.rate; });
+    rows.sort((a,b) => Math.abs(b.rate) - Math.abs(a.rate));
+    rows = rows.slice(0, 10);
+    const maxAbs = Math.max(...rows.map(r => Math.abs(r.rate)), 0.01);
+    box.innerHTML = rows.map(r => {
+      const pctWidth = Math.min(100, Math.abs(r.rate) / maxAbs * 100);
+      const color = r.rate >= 0 ? 'var(--red)' : 'var(--green)';
+      const side = r.rate >= 0 ? (r.rate > 0.05 ? 'long-überfüllt' : 'longs') : (r.rate < -0.05 ? 'short-überfüllt' : 'shorts');
+      return `<div class="fund-row">
+        <span class="sym" style="width:90px;">${r.symbol.replace('USDT','')}</span>
+        <div class="bar-track"><div class="bar-fill" style="width:${pctWidth}%; left:0; background:${color};"></div></div>
+        <span style="color:${color}; width:110px; text-align:right;">${r.rate.toFixed(3)}% (${side})</span>
+      </div>`;
+    }).join('');
+  } catch(err){
+    box.innerHTML = `<span class="down">Konnte Funding-Daten nicht laden: ${err.message}</span>`;
+  }
+}
+
+const MEME_KEYWORDS = ['INU','MOON','ELON','DOGE','SHIB','PEPE','FLOKI','BABY','SAFEMOON','WOJAK','CHAD','1000','MINI'];
+
+function memeScore(symbol){
+  const base = symbol.replace('USDT','');
+  let hits = 0;
+  MEME_KEYWORDS.forEach(k => { if(base.includes(k)) hits++; });
+  return Math.min(hits, 3); // cap so it doesn't dominate
+}
+
+function renderScamRadar(){
+  const box = document.getElementById('scamBox');
+  const arr = [...rawData].map(d => {
+    const pct = Math.abs(parseFloat(d.priceChangePercent));
+    const thin = 1 - d.volScoreRaw; // higher = thinner volume
+    const meme = memeScore(d.symbol);
+    const scamScore = pct * 0.5 + thin * 40 + meme * 8;
+    return {...d, scamScore, thin, meme};
+  }).sort((a,b) => b.scamScore - a.scamScore).slice(0, 8);
+
+  box.innerHTML = arr.map(d => {
+    const pct = parseFloat(d.priceChangePercent);
+    return `<div style="display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid rgba(34,48,40,0.5);">
+      <span class="sym">${d.symbol.replace('USDT','')}</span>
+      <span style="color:var(--dim)">${pct>=0?'+':''}${pct.toFixed(1)}% · Vol ${fmtVol(d.quoteVolume)}</span>
+      <span class="down" style="font-weight:600;">Risiko-Score ${d.scamScore.toFixed(0)}</span>
+    </div>`;
+  }).join('');
+}
+
+const KNOWN_BINANCE_WALLETS = [
+  { name: 'Binance 14', address: '0x28C6c06298d514Db089934071355E5743bf21d60' },
+  { name: 'Binance 15', address: '0x21a31Ee1afC51d94C2eFcCAa2092aD1028285549' },
+  { name: 'Binance 16', address: '0xDFd5293D8e347dFe59E90eFd55b2956a1343963d' },
+  { name: 'Binance 7',  address: '0x5a52E96BAcdaBb82fd05763E25335261B270Efcb' },
+  { name: 'Binance 8',  address: '0x56Eddb7aa87536c09CCc2793473599fD21A8b17F' }
+];
+
+async function fetchWalletTxs(key, wallet){
+  const url = `https://api.etherscan.io/api?module=account&action=tokentx&address=${wallet.address}&page=1&offset=100&sort=desc&apikey=${key}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  if(data.status !== '1' || !Array.isArray(data.result)) return [];
+  return data.result.map(tx => {
+    const decimals = parseInt(tx.tokenDecimal || '18');
+    const amount = parseFloat(tx.value) / Math.pow(10, decimals);
+    const direction = tx.to.toLowerCase() === wallet.address.toLowerCase() ? 'IN (Einzahlung)' : 'OUT (Auszahlung)';
+    return { wallet: wallet.name, symbol: tx.tokenSymbol, amount, direction, time: new Date(parseInt(tx.timeStamp)*1000) };
+  });
+}
+
+async function fetchWhaleMoves(){
+  const box = document.getElementById('whaleBox');
+  const key = document.getElementById('etherscanKey').value.trim();
+  if(!key){
+    box.innerHTML = '<span class="down">Bitte zuerst deinen kostenlosen Etherscan-API-Key eintragen (etherscan.io/apis).</span>';
+    return;
+  }
+  box.textContent = `scanne ${KNOWN_BINANCE_WALLETS.length} Wallets gleichzeitig...`;
+  try{
+    const results = await Promise.all(KNOWN_BINANCE_WALLETS.map(w => fetchWalletTxs(key, w).catch(() => [])));
+    let all = results.flat().filter(r => r.amount >= 1);
+    all.sort((a,b) => b.amount - a.amount);
+    all = all.slice(0, 20);
+    if(all.length === 0){
+      box.innerHTML = 'Keine nennenswerten Transfers gefunden — evtl. API-Key ungültig oder Limit erreicht.';
+      return;
+    }
+    box.innerHTML = all.map(r => `
+      <div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid rgba(34,48,40,0.5);">
+        <span style="color:var(--dim); font-size:10px;">${r.wallet}</span>
+        <span class="sym">${r.symbol || '?'}</span>
+        <span>${r.amount.toLocaleString('de-DE', {maximumFractionDigits:2})}</span>
+        <span class="${r.direction.startsWith('IN') ? 'down' : 'up'}">${r.direction}</span>
+        <span style="color:var(--dim)">${r.time.toLocaleString('de-DE')}</span>
+      </div>`).join('') +
+      `<div class="legend" style="margin-top:8px;">Automatisch über alle ${KNOWN_BINANCE_WALLETS.length} bekannten Binance-Wallets kombiniert, größte Rohmengen zuerst. Echte USD-Werte bräuchten zusätzlich Live-Preise pro Token (kann ich nachrüsten, wenn gewünscht).</div>`;
+  } catch(err){
+    box.innerHTML = `<span class="down">Fehler: ${err.message}</span> — prüf ob der API-Key korrekt ist und noch Anfragen frei hat (Free-Tier: 5/Sek, 100k/Tag).`;
+  }
+}
+document.getElementById('whaleFetchBtn').addEventListener('click', fetchWhaleMoves);
+
+const watchlist = new Set();
+
+const LEVERAGE_TIERS = [10, 25, 50, 100];
+
+function estimateLiqPrice(price, leverage, side){
+  const mmr = 0.005; // rough maintenance margin rate approximation for mid/large caps
+  if(side === 'long') return price * (1 - 1/leverage + mmr);
+  return price * (1 + 1/leverage - mmr);
+}
+
+function renderTradingViewChart(symbol){
+  const container = document.getElementById('tvChartBox');
+  const tvSymbol = 'BINANCE:' + symbol; // works for both spot/futures tickers on TradingView
+  container.innerHTML = `<div id="tv_widget_container" style="height:400px; border:1px solid var(--line-solid); border-radius:6px; overflow:hidden;"></div>`;
+  // remove any previous widget script to avoid duplicate global conflicts
+  const old = document.getElementById('tv_script');
+  if(old) old.remove();
+  const script = document.createElement('script');
+  script.id = 'tv_script';
+  script.src = 'https://s3.tradingview.com/tv.js';
+  script.onload = () => {
+    if(window.TradingView){
+      new window.TradingView.widget({
+        autosize: true,
+        symbol: tvSymbol,
+        interval: '15',
+        timezone: 'Etc/UTC',
+        theme: 'dark',
+        style: '1',
+        locale: 'de_DE',
+        toolbar_bg: '#12181450',
+        enable_publishing: false,
+        hide_top_toolbar: false,
+        hide_legend: false,
+        save_image: false,
+        container_id: 'tv_widget_container'
+      });
+    }
+  };
+  document.body.appendChild(script);
+}
+
+// ================= AI TRADING COACH =================
+
+async function fetchKlines(symbol, interval, limit){
+  const res = await fetch(`https://fapi.binance.com/fapi/v1/klines?symbol=${symbol}&interval=${interval}&limit=${limit}`);
+  if(!res.ok) throw new Error('Klines HTTP '+res.status);
+  return res.json();
+}
+
+// Dedupes identical concurrent/near-simultaneous klines requests (e.g. Coach + Multi-Timeframe
+// + ICT all wanting the same symbol/1h/200 data when a coin is clicked) so we don't hit
+// Binance 2-3x for the exact same candles within a short window.
+const klinesCache = {};
+function fetchKlinesCached(symbol, interval, limit){
+  const key = `${symbol}_${interval}_${limit}`;
+  const cached = klinesCache[key];
+  if(cached && (Date.now() - cached.time) < 20000){
+    return cached.promise;
+  }
+  const promise = fetchKlines(symbol, interval, limit);
+  klinesCache[key] = { promise, time: Date.now() };
+  return promise;
+}
+
+function sma(values, period){
+  if(values.length < period) return null;
+  const slice = values.slice(-period);
+  return slice.reduce((a,b)=>a+b,0)/period;
+}
+
+function analyzeTrend(closes){
+  const sma20 = sma(closes, 20), sma50 = sma(closes, 50);
+  const last = closes[closes.length-1];
+  if(sma20 === null || sma50 === null) return { label:'Nicht genug Daten', cls:'', points:0 };
+  if(last > sma20 && sma20 > sma50) return { label:'Aufwärtstrend (Preis > SMA20 > SMA50)', cls:'up', points:1 };
+  if(last < sma20 && sma20 < sma50) return { label:'Abwärtstrend (Preis < SMA20 < SMA50)', cls:'down', points:-1 };
+  return { label:'Seitwärts / uneindeutig (SMAs verschränkt)', cls:'', points:0 };
+}
+
+function findPivots(highs, lows){
+  // simple pivot detection: local extrema with a 3-candle window
+  const swingHighs = [], swingLows = [];
+  for(let i=3; i<highs.length-3; i++){
+    if(highs[i] === Math.max(...highs.slice(i-3,i+4))) swingHighs.push({i, price:highs[i]});
+    if(lows[i] === Math.min(...lows.slice(i-3,i+4))) swingLows.push({i, price:lows[i]});
+  }
+  return { swingHighs, swingLows };
+}
+
+function analyzeStructure(highs, lows){
+  const { swingHighs, swingLows } = findPivots(highs, lows);
+  if(swingHighs.length < 2 || swingLows.length < 2){
+    return { label:'Zu wenig Struktur erkennbar', cls:'', points:0, lastSwingHigh:Math.max(...highs.slice(-30)), lastSwingLow:Math.min(...lows.slice(-30)) };
+  }
+  const hh = swingHighs[swingHighs.length-1].price > swingHighs[swingHighs.length-2].price;
+  const hl = swingLows[swingLows.length-1].price > swingLows[swingLows.length-2].price;
+  const lh = swingHighs[swingHighs.length-1].price < swingHighs[swingHighs.length-2].price;
+  const ll = swingLows[swingLows.length-1].price < swingLows[swingLows.length-2].price;
+  let label, cls, points;
+  if(hh && hl){ label='Bullische Struktur: Higher Highs + Higher Lows'; cls='up'; points=1; }
+  else if(lh && ll){ label='Bearische Struktur: Lower Highs + Lower Lows'; cls='down'; points=-1; }
+  else { label='Gemischte/Range-Struktur, kein klarer Trend in der Preisstruktur'; cls=''; points=0; }
+  return { label, cls, points, lastSwingHigh:swingHighs[swingHighs.length-1].price, lastSwingLow:swingLows[swingLows.length-1].price };
+}
+
+function analyzeSmartMoney(klines){
+  let totalVol = 0, buyVol = 0;
+  klines.slice(-48).forEach(k => {
+    totalVol += parseFloat(k[5]);
+    buyVol += parseFloat(k[9]); // taker buy base asset volume
+  });
+  const buyRatio = totalVol > 0 ? buyVol/totalVol : 0.5;
+  let label, cls, points;
+  if(buyRatio > 0.56){ label = `Aggressive Käufer dominieren (${(buyRatio*100).toFixed(1)}% Taker-Buy-Volumen)`; cls='up'; points=1; }
+  else if(buyRatio < 0.44){ label = `Aggressive Verkäufer dominieren (${(buyRatio*100).toFixed(1)}% Taker-Buy-Volumen)`; cls='down'; points=-1; }
+  else { label = `Ausgeglichen (${(buyRatio*100).toFixed(1)}% Taker-Buy-Volumen)`; cls=''; points=0; }
+  return { label, cls, points, buyRatio };
+}
+
+function analyzeVolatility(highs, lows, closes){
+  const trs = [];
+  for(let i=1;i<closes.length;i++){
+    const tr = Math.max(highs[i]-lows[i], Math.abs(highs[i]-closes[i-1]), Math.abs(lows[i]-closes[i-1]));
+    trs.push(tr);
+  }
+  const atr = sma(trs, 14);
+  const atrPct = (atr / closes[closes.length-1]) * 100;
+  let label;
+  if(atrPct < 1) label = 'Niedrig';
+  else if(atrPct < 3) label = 'Mittel';
+  else label = 'Hoch';
+  return { atr, atrPct, label };
+}
+
+async function analyzeOpenInterest(symbol){
+  try{
+    const [curRes, histRes] = await Promise.all([
+      fetch(`https://fapi.binance.com/fapi/v1/openInterest?symbol=${symbol}`),
+      fetch(`https://fapi.binance.com/futures/data/openInterestHist?symbol=${symbol}&period=1h&limit=24`)
+    ]);
+    const cur = await curRes.json();
+    const hist = await histRes.json();
+    if(!Array.isArray(hist) || hist.length < 2) return { label:'Keine OI-Historie verfügbar', cls:'', points:0 };
+    const oldOI = parseFloat(hist[0].sumOpenInterest);
+    const newOI = parseFloat(hist[hist.length-1].sumOpenInterest);
+    const change = ((newOI - oldOI)/oldOI)*100;
+    return { label: `OI ${change>=0?'+':''}${change.toFixed(1)}% (24h)`, cls: change>=0?'up':'down', points: change>0?0.5:(change<0?-0.5:0), change, current: parseFloat(cur.openInterest || 0) };
+  } catch(err){
+    return { label:'OI-Daten nicht verfügbar', cls:'', points:0 };
+  }
+}
+
+async function analyzeLiquidity(symbol, price){
+  try{
+    const res = await fetch(`https://fapi.binance.com/fapi/v1/depth?symbol=${symbol}&limit=100`);
+    const data = await res.json();
+    const range = price * 0.01;
+    const bidVol = data.bids.filter(b => parseFloat(b[0]) >= price-range).reduce((s,b)=>s+parseFloat(b[1]),0);
+    const askVol = data.asks.filter(a => parseFloat(a[0]) <= price+range).reduce((s,a)=>s+parseFloat(a[1]),0);
+    const imbalance = bidVol - askVol;
+    const total = bidVol + askVol;
+    const ratio = total > 0 ? bidVol/total : 0.5;
+    let label, cls, points;
+    if(ratio > 0.58){ label = `Mehr Kauf-Liquidität im Orderbuch nahe Preis (${(ratio*100).toFixed(0)}% Bid-Seite)`; cls='up'; points=0.5; }
+    else if(ratio < 0.42){ label = `Mehr Verkaufs-Liquidität im Orderbuch nahe Preis (${(100-ratio*100).toFixed(0)}% Ask-Seite)`; cls='down'; points=-0.5; }
+    else { label = 'Ausgeglichenes Orderbuch nahe aktuellem Preis'; cls=''; points=0; }
+    return { label, cls, points };
+  } catch(err){
+    return { label:'Orderbuch-Daten nicht verfügbar', cls:'', points:0 };
+  }
+}
+
+function analyzeRSIDivergence(highs, lows, closes){
+  const rsi = computeRSISeries(closes, 14);
+  const currentRSI = rsi[rsi.length-1];
+  const { swingHighs, swingLows } = findPivots(highs, lows);
+
+  let divergenceLabel = null, divergenceCls = '', divergencePoints = 0;
+  if(swingHighs.length >= 2){
+    const h1 = swingHighs[swingHighs.length-2], h2 = swingHighs[swingHighs.length-1];
+    if(h2.price > h1.price && rsi[h2.i] < rsi[h1.i]){
+      divergenceLabel = 'Bärische RSI-Divergenz — Preis macht höheres Hoch, RSI macht niedrigeres Hoch';
+      divergenceCls = 'down'; divergencePoints = -1;
+    }
+  }
+  if(!divergenceLabel && swingLows.length >= 2){
+    const l1 = swingLows[swingLows.length-2], l2 = swingLows[swingLows.length-1];
+    if(l2.price < l1.price && rsi[l2.i] > rsi[l1.i]){
+      divergenceLabel = 'Bullische RSI-Divergenz — Preis macht tieferes Tief, RSI macht höheres Tief';
+      divergenceCls = 'up'; divergencePoints = 1;
+    }
+  }
+
+  let stateLabel;
+  if(currentRSI > 70) stateLabel = `Überkauft (RSI ${currentRSI.toFixed(0)})`;
+  else if(currentRSI < 30) stateLabel = `Überverkauft (RSI ${currentRSI.toFixed(0)})`;
+  else stateLabel = `Neutral (RSI ${currentRSI.toFixed(0)})`;
+
+  const label = divergenceLabel ? `${divergenceLabel} · ${stateLabel}` : stateLabel;
+  const cls = divergenceLabel ? divergenceCls : (currentRSI>70?'down':currentRSI<30?'up':'');
+  const points = divergencePoints !== 0 ? divergencePoints : (currentRSI<30?0.5:currentRSI>70?-0.5:0);
+  return { label, cls, points, rsi: currentRSI };
+}
+
+async function analyzeFundingTrend(symbol, currentFunding){
+  try{
+    const res = await fetch(`https://fapi.binance.com/fapi/v1/fundingRate?symbol=${symbol}&limit=8`);
+    const data = await res.json();
+    if(!Array.isArray(data) || data.length < 4) return null;
+    const rates = data.map(d => parseFloat(d.fundingRate)*100);
+    const older = rates.slice(0, Math.floor(rates.length/2));
+    const newer = rates.slice(Math.floor(rates.length/2));
+    const olderAvg = older.reduce((s,v)=>s+v,0)/older.length;
+    const newerAvg = newer.reduce((s,v)=>s+v,0)/newer.length;
+    const trendingUp = newerAvg > olderAvg + 0.005;
+    const trendingDown = newerAvg < olderAvg - 0.005;
+    let label;
+    if(trendingUp) label = `Funding steigt seit einigen Perioden (Ø ${olderAvg.toFixed(3)}% → ${newerAvg.toFixed(3)}%) — Longs werden zunehmend überfüllt`;
+    else if(trendingDown) label = `Funding fällt seit einigen Perioden (Ø ${olderAvg.toFixed(3)}% → ${newerAvg.toFixed(3)}%) — Crowding nimmt ab`;
+    else label = `Funding stabil über die letzten Perioden (Ø ${newerAvg.toFixed(3)}%)`;
+    return { label, trendingUp, trendingDown };
+  } catch(err){
+    return null;
+  }
+}
+
+async function analyzeLongShortRatio(symbol){
+  try{
+    const [retailRes, topRes] = await Promise.all([
+      fetch(`https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=${symbol}&period=1h&limit=1`),
+      fetch(`https://fapi.binance.com/futures/data/topLongShortPositionRatio?symbol=${symbol}&period=1h&limit=1`)
+    ]);
+    const retailData = await retailRes.json();
+    const topData = await topRes.json();
+    if(!Array.isArray(retailData) || retailData.length === 0 || !Array.isArray(topData) || topData.length === 0){
+      return { label:'Keine Daten verfügbar', cls:'', points:0 };
+    }
+    const retailLong = parseFloat(retailData[0].longAccount) * 100;
+    const topLong = parseFloat(topData[0].longAccount ?? topData[0].longPosition) * 100;
+    const divergence = topLong - retailLong; // positive = smart money more long than retail
+
+    let label, cls, points;
+    if(retailLong > 65 && topLong < 50){
+      label = `Retail stark long (${retailLong.toFixed(0)}%), Top-Trader eher neutral/short (${topLong.toFixed(0)}%) — klassisches Retail-Trap-Muster, spricht für Vorsicht bei Longs`;
+      cls = 'down'; points = -1;
+    } else if(retailLong < 35 && topLong > 50){
+      label = `Retail stark short (${retailLong.toFixed(0)}%), Top-Trader eher long (${topLong.toFixed(0)}%) — Retail könnte falsch liegen, spricht eher für Long-Bias`;
+      cls = 'up'; points = 1;
+    } else if(Math.abs(divergence) > 15){
+      label = `Deutliche Divergenz: Retail ${retailLong.toFixed(0)}% long vs. Top-Trader ${topLong.toFixed(0)}% long`;
+      cls = divergence > 0 ? 'up' : 'down'; points = divergence > 0 ? 0.5 : -0.5;
+    } else {
+      label = `Retail (${retailLong.toFixed(0)}%) und Top-Trader (${topLong.toFixed(0)}%) weitgehend einig — kein Kontra-Signal`;
+      cls = ''; points = 0;
+    }
+    return { label, cls, points, retailLong, topLong };
+  } catch(err){
+    return { label:'Long/Short-Ratio nicht verfügbar', cls:'', points:0 };
+  }
+}
+
+function gradeFromScore(score, maxScore){
+  // Grade reflects STRENGTH of factor alignment, not direction — a strong short
+  // setup deserves the same grade as an equally strong long setup. Direction
+  // (LONG/SHORT) is shown separately as the bias.
+  const pct = Math.abs(score) / maxScore;
+  if(pct >= 0.85) return 'A+';
+  if(pct >= 0.72) return 'A';
+  if(pct >= 0.6) return 'B';
+  if(pct >= 0.48) return 'C';
+  if(pct >= 0.38) return 'D';
+  return 'F';
+}
+
+async function computeCoachScore(symbol, price){
+  const d = rawData.find(x => x.symbol === symbol);
+  const funding = fundingMap[symbol];
+  const volConfidence = d ? d.volScoreRaw : 0.5;
+  const meme = d ? memeScore(symbol) : 0;
+  const pct24h = d ? parseFloat(d.priceChangePercent) : 0;
+
+  const klines = await fetchKlinesCached(symbol, '1h', 200);
+  const highs = klines.map(k => parseFloat(k[2]));
+  const lows = klines.map(k => parseFloat(k[3]));
+  const closes = klines.map(k => parseFloat(k[4]));
+
+  const trend = analyzeTrend(closes);
+  const structure = analyzeStructure(highs, lows);
+  const smartMoney = analyzeSmartMoney(klines);
+  const volatility = analyzeVolatility(highs, lows, closes);
+  const rsiDivergence = analyzeRSIDivergence(highs, lows, closes);
+  const [oi, liquidity, lsRatio, fundingTrend] = await Promise.all([
+    analyzeOpenInterest(symbol), analyzeLiquidity(symbol, price), analyzeLongShortRatio(symbol), analyzeFundingTrend(symbol, funding)
+  ]);
+
+  let fundingLabel, fundingCls, fundingPoints = 0;
+  if(funding !== undefined){
+    if(funding > 0.05){ fundingPoints = -1; fundingLabel = `Stark positiv (${funding.toFixed(3)}%) — Longs überfüllt`; fundingCls='down'; }
+    else if(funding > 0.02){ fundingPoints = -0.5; fundingLabel = `Positiv (${funding.toFixed(3)}%) — Longs leicht überfüllt`; fundingCls='down'; }
+    else if(funding < -0.05){ fundingPoints = 1; fundingLabel = `Stark negativ (${funding.toFixed(3)}%) — Shorts überfüllt`; fundingCls='up'; }
+    else if(funding < -0.02){ fundingPoints = 0.5; fundingLabel = `Negativ (${funding.toFixed(3)}%) — Shorts leicht überfüllt`; fundingCls='up'; }
+    else { fundingLabel = `Neutral (${funding.toFixed(3)}%)`; fundingCls=''; }
+  } else { fundingLabel = 'Keine Daten'; fundingCls=''; }
+
+  let fundingTrendPoints = 0;
+  if(fundingTrend){
+    if(fundingTrend.trendingUp) fundingTrendPoints = -0.3;
+    else if(fundingTrend.trendingDown) fundingTrendPoints = 0.3;
+    fundingLabel += ` · ${fundingTrend.label}`;
+  }
+
+  const totalScore = trend.points + structure.points + smartMoney.points + oi.points + liquidity.points + fundingPoints + lsRatio.points + rsiDivergence.points + fundingTrendPoints;
+  const maxScore = 1+1+1+0.5+0.5+1+1+1+0.3; // 7.3
+  let bias, biasCls;
+  if(totalScore >= 1.5){ bias = 'LONG-BIAS'; biasCls = 'up'; }
+  else if(totalScore <= -1.5){ bias = 'SHORT-BIAS'; biasCls = 'down'; }
+  else { bias = 'NEUTRAL / KEIN KLARES SETUP'; biasCls = ''; }
+  const grade = gradeFromScore(totalScore, maxScore);
+  const gradeCls = ['A+','A','B'].includes(grade) ? 'up' : (['D','F'].includes(grade) ? 'down' : '');
+
+  let riskPoints = 0;
+  if(volatility.label === 'Hoch') riskPoints++;
+  if(volConfidence < 0.3) riskPoints++;
+  if(meme > 0) riskPoints++;
+  if(Math.abs(funding||0) > 0.05) riskPoints++;
+  const riskLevel = riskPoints >= 3 ? 'Extrem' : riskPoints === 2 ? 'Hoch' : riskPoints === 1 ? 'Mittel' : 'Niedrig';
+  const riskCls = riskLevel === 'Extrem' || riskLevel === 'Hoch' ? 'down' : (riskLevel === 'Niedrig' ? 'up' : '');
+
+  // ---- reference levels (ATR + structure based, NOT personalized advice) ----
+  const dir = bias === 'LONG-BIAS' ? 1 : (bias === 'SHORT-BIAS' ? -1 : 0);
+  const atr = volatility.atr;
+  const entry = price;
+  const stopRef = dir >= 0 ? Math.min(entry - 1*atr, structure.lastSwingLow) : Math.max(entry + 1*atr, structure.lastSwingHigh);
+  const tp1 = dir >= 0 ? entry + 1.5*atr : entry - 1.5*atr;
+  const tp2 = dir >= 0 ? entry + 3*atr : entry - 3*atr;
+  const tp3 = dir >= 0 ? entry + 5*atr : entry - 5*atr;
+  const stopDist = Math.abs(entry - stopRef);
+  const rr1 = (Math.abs(tp1-entry)/stopDist).toFixed(2);
+  const rr2 = (Math.abs(tp2-entry)/stopDist).toFixed(2);
+  const rr3 = (Math.abs(tp3-entry)/stopDist).toFixed(2);
+
+  return { symbol, price, klines, highs, lows, closes, trend, structure, smartMoney, volatility, rsiDivergence,
+    oi, liquidity, lsRatio, fundingTrend, funding, fundingLabel, fundingCls, pct24h, volConfidence, meme,
+    totalScore, maxScore, bias, biasCls, grade, gradeCls, riskLevel, riskCls,
+    dir, entry, stopRef, tp1, tp2, tp3, stopDist, rr1, rr2, rr3 };
+}
+
+async function renderAICoach(symbol, price){
+  const box = document.getElementById('coachBox');
+  box.innerHTML = `<div class="skeleton" style="width:40%;"></div><div class="skeleton" style="width:90%;"></div><div class="skeleton" style="width:70%;"></div>`;
+
+  let s;
+  try{
+    s = await computeCoachScore(symbol, price);
+  } catch(err){
+    box.innerHTML = `<span class="down">Konnte Klines für Coach-Analyse nicht laden: ${err.message}</span>`;
+    return;
+  }
+  const { klines, highs, lows, closes, trend, structure, smartMoney, volatility, rsiDivergence, oi, liquidity, lsRatio,
+    fundingTrend, funding, fundingLabel, fundingCls, pct24h, volConfidence, meme,
+    totalScore, maxScore, bias, biasCls, grade, gradeCls, riskLevel, riskCls,
+    dir, entry, stopRef, tp1, tp2, tp3, stopDist, rr1, rr2, rr3 } = s;
+
+  lastCoachAnalysis = { symbol, price, trend, structure, smartMoney, volatility, oi, liquidity, lsRatio, rsiDivergence, fundingTrend, funding, pct24h, volConfidence, meme };
+
+  const rows = [
+    { title:'Trend-Analyse', desc:trend.label, cls:trend.cls },
+    { title:'Markt-Struktur', desc:structure.label, cls:structure.cls },
+    { title:'Smart-Money (Taker-Flow)', desc:smartMoney.label, cls:smartMoney.cls },
+    { title:'Open Interest', desc:oi.label, cls:oi.cls },
+    { title:'Liquidität (Orderbuch)', desc:liquidity.label, cls:liquidity.cls },
+    { title:'Long/Short-Ratio (Retail vs. Top-Trader)', desc:lsRatio.label, cls:lsRatio.cls },
+    { title:'RSI & Divergenz', desc:rsiDivergence.label, cls:rsiDivergence.cls },
+    { title:'Funding Rate', desc:fundingLabel, cls:fundingCls },
+    { title:'Volatilität (ATR)', desc:`${volatility.label} (${volatility.atrPct.toFixed(2)}% ATR)`, cls:'' },
+    { title:'24h Volumen-Konfidenz', desc: volConfidence>0.6?'Hoch (echtes Volumen hinter der Bewegung)':volConfidence>0.3?'Mittel':'Niedrig (dünn, leicht manipulierbar)', cls: volConfidence>0.6?'up':volConfidence>0.3?'':'down' },
+  ];
+
+  box.innerHTML = `
+    <div style="border:1px solid var(--glass-border-strong); border-radius:var(--radius-sm); padding:16px; background:${dir>0?'var(--green-soft)':dir<0?'var(--red-soft)':'transparent'};">
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+        <div>
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin-bottom:4px;">AI Trading Coach · ${symbol.replace('USDT','')}</div>
+          <div class="${biasCls}" style="font-weight:800; font-size:20px;">${bias}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin-bottom:4px;">Setup-Note</div>
+          <div class="${gradeCls}" style="font-weight:800; font-size:28px; line-height:1;">${grade}</div>
+        </div>
+      </div>
+
+      <div class="legend" style="margin-bottom:14px;">
+        <b>Wichtig:</b> Note & Bias sind ein transparenter Alignment-Score aus ${maxScore*2} möglichen Faktor-Punkten (Score aktuell: ${totalScore.toFixed(1)}) —
+        <b>keine validierte Erfolgswahrscheinlichkeit</b> und keine Kauf-/Verkaufsempfehlung. Je mehr Faktoren in dieselbe Richtung zeigen, desto höher die Note.
+        Ein "F" heißt: die Faktoren widersprechen sich oder zeigen klar in die Gegenrichtung — genau dann sagt dir ein guter Mentor "lass es lieber".
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:10px; margin-bottom:16px;">
+        ${rows.map(r => `
+          <div style="background:#00000020; border:1px solid var(--glass-border); border-radius:8px; padding:10px 12px;">
+            <div style="font-size:9.5px; text-transform:uppercase; letter-spacing:0.8px; color:var(--dim); margin-bottom:4px;">${r.title}</div>
+            <div class="${r.cls}" style="font-size:12px; font-weight:600;">${r.desc}</div>
+          </div>`).join('')}
+      </div>
+
+      ${riskLevel === 'Extrem' || grade === 'F' ? `
+      <div style="border:1px solid #ff5d6866; background:#ff5d6812; border-radius:8px; padding:12px; margin-bottom:14px;">
+        <b class="down">⚠ Warum dieses Setup eher vermieden werden sollte:</b>
+        <div style="color:var(--dim); font-size:11.5px; margin-top:6px; line-height:1.7;">
+          Risiko-Level ist <b class="down">${riskLevel}</b> und/oder die Faktoren widersprechen sich (Note ${grade}).
+          ${volatility.label==='Hoch' ? 'Die Volatilität ist hoch, Stop-Outs sind wahrscheinlicher. ' : ''}
+          ${volConfidence<0.3 ? 'Das Volumen ist dünn — die Bewegung kann leicht durch einzelne große Orders manipuliert werden. ' : ''}
+          ${meme>0 ? 'Der Ticker hat Meme/Hype-Charakteristik — höheres Pump-and-Dump-Risiko. ' : ''}
+          Ein erfahrener Trader würde hier eher abwarten, bis mehr Faktoren übereinstimmen, statt gegen den Widerstand zu handeln.
+        </div>
+      </div>` : ''}
+
+      ${(() => {
+        try{
+          const histSignals = generateSignals('emacross', closes);
+          const { trades: histTrades } = simulateBacktest(closes, histSignals);
+          if(histTrades.length < 3) return '';
+          const histWins = histTrades.filter(t=>t.pct>0).length;
+          const histWinRate = (histWins/histTrades.length*100).toFixed(0);
+          const histReturn = histTrades.reduce((s,t)=>s+t.pct,0).toFixed(1);
+          return `<div style="border:1px solid var(--glass-border-strong); border-radius:8px; padding:12px; margin-bottom:14px; background:#00000015;">
+            <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin-bottom:6px;">Historische Validierung (EMA9/21-Cross auf denselben ${closes.length} Kerzen)</div>
+            <div style="font-size:12px;">Diese einfache Trend-Regel hätte hier <b>${histTrades.length} Trades</b> ausgelöst, Win-Rate <b class="${histWinRate>=50?'up':'down'}">${histWinRate}%</b>, Summen-Return <b class="${histReturn>=0?'up':'down'}">${histReturn>=0?'+':''}${histReturn}%</b> (ungehebelt).</div>
+            <div class="legend" style="margin-top:6px;">Echte Rückrechnung auf den bereits geladenen Daten dieses Coins — keine erfundene Erfolgsquote. Zeigt, ob mechanisches Trendfolgen hier zuletzt überhaupt funktioniert hätte. Andere Regeln/Zeiträume im Backtester (Konto-Seite) testbar.</div>
+          </div>`;
+        } catch(e){ return ''; }
+      })()}
+
+      <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin:16px 0 8px;">Technische Referenz-Level (ATR/Struktur-basiert — keine persönliche Empfehlung)</div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:8px; font-family:var(--mono); margin-bottom:8px;">
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">ENTRY (aktuell)</div><div style="font-weight:700;">${fmtPrice(entry)}</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">STOP-REFERENZ</div><div class="down" style="font-weight:700;">${fmtPrice(stopRef)}</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">TP1 (RR ${rr1})</div><div class="up" style="font-weight:700;">${fmtPrice(tp1)}</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">TP2 (RR ${rr2})</div><div class="up" style="font-weight:700;">${fmtPrice(tp2)}</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">TP3 (RR ${rr3})</div><div class="up" style="font-weight:700;">${fmtPrice(tp3)}</div></div>
+      </div>
+      <div class="legend" style="margin-bottom:16px;">Stop = 1×ATR bzw. letztes Struktur-Swing (was weiter weg liegt). TPs = 1.5×/3×/5× ATR in Richtung des Bias. Bei "NEUTRAL" sind das nur Referenzpunkte, keine Setup-Empfehlung.</div>
+
+      <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin:16px 0 8px;">Positionsgrößen-Rechner (mit DEINEN Zahlen — kein Vorschlag von mir)</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px;">
+        <input type="text" id="pcBalance" placeholder="Kontostand USDT" style="width:150px;">
+        <input type="text" id="pcRisk" placeholder="Risiko % (z.B. 1)" style="width:130px;">
+        <button id="pcCalcBtn">Berechnen</button>
+      </div>
+      <div id="pcResult" style="font-family:var(--mono); font-size:12px; color:var(--dim);"></div>
+
+    </div>
+  `;
+
+  document.getElementById('pcCalcBtn').addEventListener('click', () => {
+    const balance = parseFloat(document.getElementById('pcBalance').value);
+    const riskPct = parseFloat(document.getElementById('pcRisk').value);
+    const resBox = document.getElementById('pcResult');
+    if(!balance || !riskPct){ resBox.innerHTML = '<span class="down">Bitte Kontostand und Risiko% eintragen.</span>'; return; }
+    const riskAmount = balance * (riskPct/100);
+    const positionCoins = riskAmount / stopDist;
+    const positionUSD = positionCoins * entry;
+    resBox.innerHTML = `
+      <div>Risiko in USDT bei ${riskPct}%: <b class="${dir>=0?'up':'down'}">${riskAmount.toFixed(2)} USDT</b></div>
+      <div>Stop-Distanz: ${stopDist.toFixed(6)} (${((stopDist/entry)*100).toFixed(2)}%)</div>
+      <div>→ Positionsgröße bei diesem Stop: <b>${positionCoins.toFixed(4)} ${symbol.replace('USDT','')}</b> ≈ <b>${positionUSD.toFixed(2)} USDT</b> Notional</div>
+      <div class="legend" style="margin-top:6px;">Wie viel Hebel/Margin du dafür einsetzt (positionUSD ÷ Margin), hängt davon ab wie viel Kapital du bewusst binden willst — das entscheidest du, nicht das Tool.</div>
+    `;
+  });
+}
+
+async function loadLiquidationZones(symbol, price){
+  const box = document.getElementById('liqContent');
+  document.getElementById('liqPanel').scrollIntoView({behavior:'smooth', block:'nearest'});
+  box.innerHTML = `<div style="color:var(--amber); font-weight:600; margin-bottom:8px;">${symbol.replace('USDT','')} · aktueller Preis ${fmtPrice(price)}</div>lädt Liquidations-Daten...`;
+
+  // Coach/ICT/Multi-Timeframe/Order-Flow analysieren immer Futures-Daten (Funding/OI/Liquidationen
+  // gibt's nur dort). Falls wir gerade im Spot-Modus sind, kurz prüfen ob's den Coin auch auf
+  // Futures gibt — sonst gäbe es in jeder Box nur eine kryptische HTTP-Fehlermeldung.
+  renderTradingViewChart(symbol);
+
+  if(market === 'spot'){
+    try{
+      const check = await fetch(`https://fapi.binance.com/fapi/v1/ticker/price?symbol=${symbol}`);
+      if(!check.ok) throw new Error();
+      renderAICoach(symbol, price);
+      renderMultiTimeframe(symbol);
+      renderICT(symbol);
+      renderOrderFlow(symbol, price);
+    } catch(err){
+      const msg = `<span class="down">${symbol.replace('USDT','')} gibt es nur auf Spot, nicht auf Binance Futures — Coach, ICT-Konzepte, Multi-Timeframe und Order-Flow brauchen Futures-Daten (Funding/OI/Liquidationen existieren nur dort) und können für diesen Coin nicht laufen. Die Liquidations-Zonen unten sind reine Mathematik und funktionieren trotzdem.</span>`;
+      document.getElementById('coachBox').innerHTML = msg;
+      document.getElementById('mtfBox').innerHTML = '';
+      document.getElementById('ictBox').innerHTML = '';
+      document.getElementById('orderFlowBox').innerHTML = '';
+    }
+  } else {
+    renderAICoach(symbol, price);
+    renderMultiTimeframe(symbol);
+    renderICT(symbol);
+    renderOrderFlow(symbol, price);
+  }
+
+  // --- estimated zones (always available, pure math, no API needed) ---
+  let estHtml = `<div style="margin-bottom:14px;">
+    <div style="color:var(--dim); font-size:10px; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Geschätzte Liquidations-Zonen (Standard-Hebel)</div>`;
+  LEVERAGE_TIERS.forEach(lev => {
+    const longLiq = estimateLiqPrice(price, lev, 'long');
+    const shortLiq = estimateLiqPrice(price, lev, 'short');
+    estHtml += `<div class="fund-row">
+      <span style="width:50px; color:var(--dim);">${lev}x</span>
+      <span class="down" style="width:150px;">Longs liq. ~${fmtPrice(longLiq)}</span>
+      <span class="up" style="width:150px; text-align:right;">Shorts liq. ~${fmtPrice(shortLiq)}</span>
+    </div>`;
+  });
+  estHtml += `<div class="legend" style="margin-top:6px;">Annahme: Einstieg nahe aktuellem Preis, ca. 0.5% Maintenance-Margin. Reine Schätzung, keine echten Positionsdaten — niemand hat Zugriff auf einzelne Nutzerpositionen.</div></div>`;
+
+  box.innerHTML = `<div style="color:var(--amber); font-weight:600; margin-bottom:8px;">${symbol.replace('USDT','')} · aktueller Preis ${fmtPrice(price)}</div>` + estHtml + `<div id="realLiqBox">lädt echte Liquidationshistorie...</div>`;
+
+  // --- real liquidation history (public Binance endpoint) ---
+  try{
+    const res = await fetch(`https://fapi.binance.com/fapi/v1/allForceOrders?symbol=${symbol}&limit=100`);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    if(!Array.isArray(data) || data.length === 0){
+      document.getElementById('realLiqBox').innerHTML = '<span style="color:var(--dim)">Keine kürzlichen echten Liquidationen auf Binance Futures für diesen Coin gefunden.</span>';
+      return;
+    }
+    // bucket by price range to show where liquidations clustered
+    const buckets = {};
+    data.forEach(o => {
+      const p = parseFloat(o.price);
+      const bucketSize = price * 0.005; // 0.5% wide buckets
+      const bucketKey = Math.round(p / bucketSize) * bucketSize;
+      const side = o.side === 'SELL' ? 'Long liquidiert' : 'Short liquidiert';
+      const key = bucketKey.toFixed(6) + '|' + side;
+      buckets[key] = (buckets[key] || 0) + parseFloat(o.origQty || o.executedQty || 0);
+    });
+    const rows = Object.entries(buckets)
+      .map(([key, qty]) => {
+        const [p, side] = key.split('|');
+        return { price: parseFloat(p), side, qty };
+      })
+      .sort((a,b) => b.qty - a.qty)
+      .slice(0, 8);
+    const maxQty = Math.max(...rows.map(r => r.qty));
+    document.getElementById('realLiqBox').innerHTML = `
+      <div style="color:var(--dim); font-size:10px; text-transform:uppercase; letter-spacing:1px; margin:10px 0 6px;">Echte Liquidationen — letzte ${data.length} Events, gruppiert</div>
+      ${rows.map(r => `
+        <div class="fund-row">
+          <span style="width:90px;">${fmtPrice(r.price)}</span>
+          <div class="bar-track"><div class="bar-fill" style="width:${(r.qty/maxQty*100).toFixed(0)}%; left:0; background:${r.side.startsWith('Long')?'var(--red)':'var(--green)'};"></div></div>
+          <span style="width:130px; text-align:right; color:${r.side.startsWith('Long')?'var(--red)':'var(--green)'}">${r.side}</span>
+        </div>`).join('')}
+      <div class="legend" style="margin-top:6px;">Echte Daten von Binance (allForceOrders) — zeigt wo tatsächlich schon liquidiert wurde, keine Vorhersage.</div>
+    `;
+  } catch(err){
+    document.getElementById('realLiqBox').innerHTML = `<span class="down">Konnte echte Liquidationshistorie nicht laden: ${err.message}</span>`;
+  }
+}
+
+function sortedData(){
+  let arr = [...rawData];
+  arr.sort((a,b) => {
+    let av = parseFloat(a[sortKey]), bv = parseFloat(b[sortKey]);
+    return (av - bv) * sortDir;
+  });
+  // pinned/watchlisted symbols always float to top
+  arr.sort((a,b) => (watchlist.has(b.symbol) ? 1 : 0) - (watchlist.has(a.symbol) ? 1 : 0));
+  return arr.slice(0, 40);
+}
+
+function updateStatStrip(){
+  const gainers = rawData.filter(d => parseFloat(d.priceChangePercent) > 0).length;
+  const losers = rawData.filter(d => parseFloat(d.priceChangePercent) < 0).length;
+  const best = rawData.reduce((m, d) => Math.abs(parseFloat(d.priceChangePercent)) > Math.abs(parseFloat(m.priceChangePercent || 0)) ? d : m, {});
+  document.getElementById('statCount').textContent = rawData.length;
+  document.getElementById('statGainers').textContent = gainers;
+  document.getElementById('statLosers').textContent = losers;
+  if(best.symbol){
+    const pct = parseFloat(best.priceChangePercent);
+    const el = document.getElementById('statBest');
+    el.textContent = best.symbol.replace('USDT','') + ' ' + (pct>=0?'+':'') + pct.toFixed(1) + '%';
+    el.className = 'value ' + (pct >= 0 ? 'up' : 'down');
+  }
+}
+
+function render(){
+  const arr = sortedData();
+  tbody.innerHTML = '';
+  arr.forEach(d => {
+    const pct = parseFloat(d.priceChangePercent);
+    const cls = pct >= 0 ? 'up' : 'down';
+    const flag = d.volScoreRaw > 0.6
+      ? '<span class="flag real">VOL OK</span>'
+      : (Math.abs(pct) > 8 ? '<span class="flag thin">DÜNN</span>' : '');
+    const starred = watchlist.has(d.symbol);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="star ${starred?'on':''}" data-sym="${d.symbol}">&#9733;</span></td>
+      <td class="sym" style="cursor:pointer;" data-sym="${d.symbol}" data-price="${d.lastPrice}" title="Klick für Liquidations-Zonen">${d.symbol.replace('USDT','')}</td>
+      <td>${fmtPrice(d.lastPrice)}</td>
+      <td class="${cls}">${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%</td>
+      <td>${fmtVol(d.quoteVolume)}</td>
+      <td>${d.score.toFixed(1)} ${flag}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  tbody.querySelectorAll('.star').forEach(s => {
+    s.addEventListener('click', () => {
+      const sym = s.dataset.sym;
+      if(watchlist.has(sym)) watchlist.delete(sym); else watchlist.add(sym);
+      render();
+    });
+  });
+  tbody.querySelectorAll('td.sym').forEach(td => {
+    td.addEventListener('click', () => {
+      loadLiquidationZones(td.dataset.sym, parseFloat(td.dataset.price));
+    });
+  });
+  drawChart(arr);
+  renderScamRadar();
+  updateStatStrip();
+}
+
+function drawChart(arr){
+  const W = 480, H = 380, PAD = 40;
+  const pcts = arr.map(d => parseFloat(d.priceChangePercent));
+  const vols = arr.map(d => Math.log10(parseFloat(d.quoteVolume)+1));
+  const yMin = Math.min(-15, Math.min(...pcts)-2);
+  const yMax = Math.max(15, Math.max(...pcts)+2);
+  const xMin = Math.min(...vols) - 0.2;
+  const xMax = Math.max(...vols) + 0.2;
+
+  const xScale = v => PAD + (v - xMin) / (xMax - xMin) * (W - 2*PAD);
+  const yScale = v => H - PAD - (v - yMin) / (yMax - yMin) * (H - 2*PAD);
+
+  let parts = [];
+  // gridlines
+  parts.push(`<line class="gridline" x1="${PAD}" y1="${yScale(0)}" x2="${W-PAD}" y2="${yScale(0)}"/>`);
+  parts.push(`<line class="gridline" x1="${PAD}" y1="${PAD}" x2="${PAD}" y2="${H-PAD}"/>`);
+  parts.push(`<text class="axis-label" x="${W-PAD}" y="${yScale(0)-4}" text-anchor="end">0%</text>`);
+  parts.push(`<text class="axis-label" x="${PAD}" y="${H-PAD+14}">wenig Volumen</text>`);
+  parts.push(`<text class="axis-label" x="${W-PAD}" y="${H-PAD+14}" text-anchor="end">viel Volumen</text>`);
+  parts.push(`<text class="quad-label" x="${W-PAD-4}" y="${PAD+12}" text-anchor="end">ECHTER PUMP</text>`);
+  parts.push(`<text class="quad-label" x="${PAD+4}" y="${PAD+12}">DÜNNER PUMP</text>`);
+
+  arr.forEach(d => {
+    const pct = parseFloat(d.priceChangePercent);
+    const vol = Math.log10(parseFloat(d.quoteVolume)+1);
+    const cx = xScale(vol), cy = yScale(pct);
+    const cls = pct >= 0 ? 'up' : 'down';
+    const r = Math.min(8, 2.5 + d.score/8);
+    parts.push(`<circle class="dot ${cls}" cx="${cx}" cy="${cy}" r="${r}" data-sym="${d.symbol.replace('USDT','')}" data-pct="${pct.toFixed(2)}" data-vol="${fmtVol(d.quoteVolume)}"/>`);
+  });
+
+  svg.innerHTML = parts.join('');
+
+  svg.querySelectorAll('.dot').forEach(dot => {
+    dot.addEventListener('mousemove', e => {
+      tooltip.style.display = 'block';
+      tooltip.style.left = (e.offsetX + 16) + 'px';
+      tooltip.style.top = (e.offsetY - 10) + 'px';
+      tooltip.innerHTML = `<b>${dot.dataset.sym}</b><br>${dot.dataset.pct}% · Vol ${dot.dataset.vol}`;
+    });
+    dot.addEventListener('mouseleave', () => tooltip.style.display = 'none');
+  });
+}
+
+document.getElementById('marketBtn').addEventListener('click', function(){
+  market = 'futures';
+  this.classList.add('active');
+  document.getElementById('marketBtn2').classList.remove('active');
+  fetchData();
+});
+document.getElementById('marketBtn2').addEventListener('click', function(){
+  market = 'spot';
+  this.classList.add('active');
+  document.getElementById('marketBtn').classList.remove('active');
+  fetchData();
+});
+
+document.querySelectorAll('th[data-key]').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.key;
+    if(sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = -1; }
+    document.getElementById('tableTitle').textContent = 'Top Mover (sortiert: ' + key + ')';
+    render();
+  });
+});
+document.getElementById('refreshBtn').addEventListener('click', fetchData);
+document.getElementById('autoBtn').addEventListener('click', function(){
+  if(autoTimer){
+    clearInterval(autoTimer); autoTimer = null;
+    this.textContent = 'Auto 30s: aus'; this.classList.remove('active');
+  } else {
+    autoTimer = setInterval(fetchData, 30000);
+    this.textContent = 'Auto 30s: an'; this.classList.add('active');
+  }
+});
+
+// ================= RISK MANAGER =================
+
+function getAnthropicHeaders(){
+  const headers = { 'Content-Type': 'application/json' };
+  const key = document.getElementById('anthropicKey') ? document.getElementById('anthropicKey').value.trim() : '';
+  if(key){
+    headers['x-api-key'] = key;
+    headers['anthropic-version'] = '2023-06-01';
+    headers['anthropic-dangerous-direct-browser-access'] = 'true';
+  }
+  return headers;
+}
+
+function calcRiskManager(){
+  const balance = parseFloat(document.getElementById('rmBalance').value);
+  const riskPct = parseFloat(document.getElementById('rmRiskPct').value);
+  const winRate = parseFloat(document.getElementById('rmWinRate').value) / 100;
+  const avgWinRR = parseFloat(document.getElementById('rmAvgWin').value);
+  const avgLossRR = parseFloat(document.getElementById('rmAvgLoss').value);
+  const maxDailyPct = parseFloat(document.getElementById('rmMaxDaily').value);
+  const maxWeeklyPct = parseFloat(document.getElementById('rmMaxWeekly').value);
+  const resBox = document.getElementById('rmResult');
+  const warnBox = document.getElementById('rmWarning');
+
+  if(!balance || !riskPct){
+    resBox.innerHTML = '<span class="down">Bitte mindestens Kontostand und Risiko% eintragen.</span>';
+    return;
+  }
+
+  const maxDollarRisk = balance * (riskPct/100);
+  let html = `<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:10px; font-family:var(--mono);">
+    <div style="background:#00000020; border-radius:8px; padding:10px 12px;"><div style="color:var(--dim); font-size:9.5px;">MAX. DOLLAR-RISIKO / TRADE</div><div style="font-weight:700;">${maxDollarRisk.toFixed(2)} USDT</div></div>`;
+
+  if(!isNaN(winRate) && !isNaN(avgWinRR) && !isNaN(avgLossRR) && avgLossRR > 0){
+    const R = avgWinRR / avgLossRR;
+    const kelly = winRate - (1-winRate)/R;
+    const ev = winRate*avgWinRR - (1-winRate)*avgLossRR;
+    html += `
+      <div style="background:#00000020; border-radius:8px; padding:10px 12px;"><div style="color:var(--dim); font-size:9.5px;">KELLY CRITERION</div><div class="${kelly>0?'up':'down'}" style="font-weight:700;">${(kelly*100).toFixed(1)}% vom Kapital</div></div>
+      <div style="background:#00000020; border-radius:8px; padding:10px 12px;"><div style="color:var(--dim); font-size:9.5px;">EXPECTED VALUE / TRADE</div><div class="${ev>0?'up':'down'}" style="font-weight:700;">${ev.toFixed(2)}R</div></div>`;
+    warnBox.innerHTML = kelly <= 0
+      ? `<div style="border:1px solid #ff5d6866; background:#ff5d6812; border-radius:8px; padding:10px 12px; color:var(--red); font-size:12px;">⚠ Kelly ist negativ oder null — bei dieser Win-Rate/RR-Kombination hast du statistisch keinen positiven Edge. Mehr Kapital riskieren würde den erwarteten Verlust nur vergrößern.</div>`
+      : `<div class="legend">Kelly ist meist zu aggressiv für echtes Trading — die meisten Profis nutzen "Half-Kelly" oder weniger (${(kelly*50).toFixed(1)}%) als Obergrenze.</div>`;
+  } else {
+    warnBox.innerHTML = '';
+  }
+
+  if(!isNaN(maxDailyPct)){
+    const todayPnL = journalEntries
+      .filter(e => new Date(e.date).toDateString() === new Date().toDateString())
+      .reduce((s,e) => s + (e.pnlPct || 0), 0);
+    const maxDailyLossUSD = balance * (maxDailyPct/100);
+    html += `<div style="background:#00000020; border-radius:8px; padding:10px 12px;"><div style="color:var(--dim); font-size:9.5px;">MAX TAGESVERLUST</div><div style="font-weight:700;">${maxDailyLossUSD.toFixed(2)} USDT</div></div>`;
+    if(todayPnL < -maxDailyPct){
+      warnBox.innerHTML += `<div style="border:1px solid #ff5d6866; background:#ff5d6812; border-radius:8px; padding:10px 12px; color:var(--red); font-size:12px; margin-top:8px;">⚠ Dein heutiges Journal zeigt bereits ${todayPnL.toFixed(1)}% Verlust — über deinem Tageslimit. Ein guter Risk-Manager würde jetzt sagen: Schluss für heute.</div>`;
+    }
+  }
+  if(!isNaN(maxWeeklyPct)){
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7*24*60*60*1000);
+    const weekPnL = journalEntries.filter(e => new Date(e.date) >= weekAgo).reduce((s,e) => s + (e.pnlPct || 0), 0);
+    const maxWeeklyLossUSD = balance * (maxWeeklyPct/100);
+    html += `<div style="background:#00000020; border-radius:8px; padding:10px 12px;"><div style="color:var(--dim); font-size:9.5px;">MAX WOCHENVERLUST</div><div style="font-weight:700;">${maxWeeklyLossUSD.toFixed(2)} USDT</div></div>`;
+    if(weekPnL < -maxWeeklyPct){
+      warnBox.innerHTML += `<div style="border:1px solid #ff5d6866; background:#ff5d6812; border-radius:8px; padding:10px 12px; color:var(--red); font-size:12px; margin-top:8px;">⚠ Diese Woche bereits ${weekPnL.toFixed(1)}% Verlust laut Journal — über deinem Wochenlimit.</div>`;
+    }
+  }
+
+  html += `</div>`;
+  resBox.innerHTML = html;
+}
+document.getElementById('rmCalcBtn').addEventListener('click', calcRiskManager);
+
+// ================= TRADING JOURNAL =================
+
+let journalEntries = [];
+
+async function loadJournal(){
+  try{
+    const res = await window.storage.get('journal:entries', false);
+    journalEntries = res && res.value ? JSON.parse(res.value) : [];
+  } catch(err){
+    journalEntries = [];
+  }
+  renderJournal();
+}
+
+async function saveJournal(){
+  try{
+    await window.storage.set('journal:entries', JSON.stringify(journalEntries), false);
+  } catch(err){
+    document.getElementById('jStatus').textContent = 'Speichern fehlgeschlagen: ' + err.message;
+  }
+}
+
+async function addJournalEntry(){
+  const coin = document.getElementById('jCoin').value.trim().toUpperCase();
+  const direction = document.getElementById('jDirection').value;
+  const entry = parseFloat(document.getElementById('jEntry').value);
+  const exit = parseFloat(document.getElementById('jExit').value);
+  const leverage = parseFloat(document.getElementById('jLeverage').value) || 1;
+  const rr = parseFloat(document.getElementById('jRR').value) || null;
+  const notes = document.getElementById('jNotes').value.trim();
+  const mistakes = document.getElementById('jMistakes').value.trim();
+  const lessons = document.getElementById('jLessons').value.trim();
+  const statusEl2 = document.getElementById('jStatus');
+
+  if(!coin || !entry || !exit){
+    statusEl2.textContent = 'Bitte mindestens Coin, Entry und Exit ausfüllen.';
+    statusEl2.className = 'down';
+    return;
+  }
+
+  const rawPct = ((exit - entry) / entry) * 100 * (direction === 'LONG' ? 1 : -1);
+  const pnlPct = rawPct * leverage;
+
+  journalEntries.unshift({
+    date: new Date().toISOString(),
+    coin, direction, entry, exit, leverage, rr, pnlPct, notes, mistakes, lessons
+  });
+  await saveJournal();
+  statusEl2.textContent = 'Gespeichert ✓';
+  statusEl2.className = 'up';
+  ['jCoin','jEntry','jExit','jLeverage','jRR','jNotes','jMistakes','jLessons'].forEach(id => document.getElementById(id).value = '');
+  renderJournal();
+}
+document.getElementById('jSaveBtn').addEventListener('click', addJournalEntry);
+
+function exportJournalCSV(){
+  if(journalEntries.length === 0){
+    document.getElementById('jStatus').textContent = 'Keine Trades zum Exportieren.';
+    document.getElementById('jStatus').className = 'down';
+    return;
+  }
+  const headers = ['Datum','Coin','Richtung','Entry','Exit','Hebel','RR','PnL%','Notizen','Fehler','Lessons'];
+  const escapeCsv = v => `"${String(v ?? '').replace(/"/g,'""')}"`;
+  const rows = journalEntries.map(e => [
+    new Date(e.date).toLocaleString('de-DE'), e.coin, e.direction, e.entry, e.exit, e.leverage, e.rr ?? '', e.pnlPct.toFixed(2), e.notes, e.mistakes, e.lessons
+  ].map(escapeCsv).join(','));
+  const csv = [headers.map(escapeCsv).join(','), ...rows].join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ace_futures_hunt_journal_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+document.getElementById('jExportBtn').addEventListener('click', exportJournalCSV);
+
+async function deleteJournalEntry(idx){
+  journalEntries.splice(idx, 1);
+  await saveJournal();
+  renderJournal();
+}
+
+function renderJournal(){
+  const tbody2 = document.getElementById('journalBody');
+  tbody2.innerHTML = journalEntries.map((e, idx) => `
+    <tr>
+      <td style="text-align:left;">${new Date(e.date).toLocaleDateString('de-DE')}</td>
+      <td class="sym" style="text-align:left;">${e.coin}</td>
+      <td class="${e.direction==='LONG'?'up':'down'}">${e.direction}</td>
+      <td>${e.entry}</td>
+      <td>${e.exit}</td>
+      <td>${e.leverage}x</td>
+      <td>${e.rr ?? '—'}</td>
+      <td class="${e.pnlPct>=0?'up':'down'}">${e.pnlPct>=0?'+':''}${e.pnlPct.toFixed(2)}%</td>
+      <td><span class="star" data-idx="${idx}" title="Löschen" style="color:var(--red);">&#10005;</span></td>
+    </tr>`).join('');
+  tbody2.querySelectorAll('.star').forEach(s => {
+    s.addEventListener('click', () => deleteJournalEntry(parseInt(s.dataset.idx)));
+  });
+  updateAnalytics();
+}
+
+function updateAnalytics(){
+  const n = journalEntries.length;
+  document.getElementById('anCount').textContent = n;
+  if(n === 0){
+    document.getElementById('anWinRate').textContent = '—';
+    document.getElementById('anPF').textContent = '—';
+    document.getElementById('anAvgRR').textContent = '—';
+    document.getElementById('anBest').textContent = '—';
+    document.getElementById('anWorst').textContent = '—';
+    document.getElementById('dnaBestDay').textContent = '—';
+    document.getElementById('dnaBestHour').textContent = '—';
+    return;
+  }
+  const wins = journalEntries.filter(e => e.pnlPct > 0);
+  const losses = journalEntries.filter(e => e.pnlPct <= 0);
+  const winRate = (wins.length/n)*100;
+  const grossWin = wins.reduce((s,e)=>s+e.pnlPct,0);
+  const grossLoss = Math.abs(losses.reduce((s,e)=>s+e.pnlPct,0));
+  const pf = grossLoss > 0 ? (grossWin/grossLoss) : (grossWin>0?Infinity:0);
+  const rrEntries = journalEntries.filter(e => e.rr);
+  const avgRR = rrEntries.length ? (rrEntries.reduce((s,e)=>s+e.rr,0)/rrEntries.length) : null;
+
+  const byCoin = {};
+  journalEntries.forEach(e => { byCoin[e.coin] = (byCoin[e.coin]||0) + e.pnlPct; });
+  const coinEntries = Object.entries(byCoin);
+  const best = coinEntries.reduce((m,c)=> c[1]>m[1]?c:m, coinEntries[0]);
+  const worst = coinEntries.reduce((m,c)=> c[1]<m[1]?c:m, coinEntries[0]);
+
+  const WEEKDAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const byDay = {}, byHour = {};
+  journalEntries.forEach(e => {
+    const d = new Date(e.date);
+    const day = d.getDay(), hour = d.getHours();
+    if(!byDay[day]) byDay[day] = {sum:0, count:0};
+    byDay[day].sum += e.pnlPct; byDay[day].count++;
+    if(!byHour[hour]) byHour[hour] = {sum:0, count:0};
+    byHour[hour].sum += e.pnlPct; byHour[hour].count++;
+  });
+  const dayEntries = Object.entries(byDay).map(([d,v]) => [d, v.sum/v.count, v.count]);
+  const hourEntries = Object.entries(byHour).map(([h,v]) => [h, v.sum/v.count, v.count]);
+  const bestDay = dayEntries.length ? dayEntries.reduce((m,c)=> c[1]>m[1]?c:m) : null;
+  const bestHour = hourEntries.length ? hourEntries.reduce((m,c)=> c[1]>m[1]?c:m) : null;
+
+  document.getElementById('dnaBestDay').textContent = bestDay ? `${WEEKDAYS[bestDay[0]]} (Ø ${bestDay[1]>=0?'+':''}${bestDay[1].toFixed(1)}%, ${bestDay[2]}x)` : '—';
+  document.getElementById('dnaBestDay').className = 'value ' + (bestDay && bestDay[1]>=0 ? 'up' : 'down');
+  document.getElementById('dnaBestHour').textContent = bestHour ? `${bestHour[0]}:00 Uhr (Ø ${bestHour[1]>=0?'+':''}${bestHour[1].toFixed(1)}%, ${bestHour[2]}x)` : '—';
+  document.getElementById('dnaBestHour').className = 'value ' + (bestHour && bestHour[1]>=0 ? 'up' : 'down');
+
+  document.getElementById('anWinRate').textContent = winRate.toFixed(0) + '%';
+  document.getElementById('anWinRate').className = 'value ' + (winRate>=50?'up':'down');
+  document.getElementById('anPF').textContent = pf === Infinity ? '∞' : pf.toFixed(2);
+  document.getElementById('anPF').className = 'value ' + (pf>=1?'up':'down');
+  document.getElementById('anAvgRR').textContent = avgRR ? avgRR.toFixed(2) : '—';
+  document.getElementById('anBest').textContent = best ? `${best[0]} (${best[1]>=0?'+':''}${best[1].toFixed(1)}%)` : '—';
+  document.getElementById('anBest').className = 'value up';
+  document.getElementById('anWorst').textContent = worst ? `${worst[0]} (${worst[1]>=0?'+':''}${worst[1].toFixed(1)}%)` : '—';
+  document.getElementById('anWorst').className = 'value down';
+}
+
+async function generateAISummary(){
+  const box = document.getElementById('aiSummaryBox');
+  if(journalEntries.length === 0){
+    box.innerHTML = '<span class="down">Noch keine Trades im Journal — speichere zuerst ein paar Trades.</span>';
+    return;
+  }
+  box.innerHTML = `<div class="skeleton" style="width:60%;"></div><div class="skeleton" style="width:90%;"></div><div class="skeleton" style="width:75%;"></div>`;
+  try{
+    const summaryData = journalEntries.slice(0, 30).map(e => ({
+      coin:e.coin, direction:e.direction, pnlPct:e.pnlPct.toFixed(2), rr:e.rr, mistakes:e.mistakes, lessons:e.lessons
+    }));
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: getAnthropicHeaders(),
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: `Du bist ein erfahrener Trading-Mentor. Hier sind die letzten Trades eines Futures-Traders als JSON: ${JSON.stringify(summaryData)}. 
+          Analysiere wiederkehrende Muster (z.B. bestimmte Coins, Richtungen, wiederholte Fehler aus dem "mistakes"-Feld). 
+          Schreibe eine kurze, ehrliche Zusammenfassung auf Deutsch (max 200 Wörter) im Stil eines Mentors: was läuft gut, was wiederholt sich an Fehlern, eine konkrete Verbesserung für den nächsten Trade. 
+          Keine Finanzberatung, nur Muster-Feedback zum Trading-Verhalten. Antworte nur mit dem Fließtext, keine Überschriften, keine Einleitung.`
+        }]
+      })
+    });
+    const data = await response.json();
+    const text = (data.content || []).map(c => c.text || '').join('\n').trim();
+    box.innerHTML = text ? `<div style="border:1px solid var(--glass-border-strong); border-radius:8px; padding:14px; background:var(--amber-soft);">${text}</div>` : '<span class="down">Keine Antwort erhalten.</span>';
+  } catch(err){
+    box.innerHTML = `<span class="down">KI-Analyse fehlgeschlagen: ${err.message}</span>`;
+  }
+}
+document.getElementById('aiSummaryBtn').addEventListener('click', generateAISummary);
+
+// ================= MARKET SCANNER =================
+
+async function runMarketScanner(){
+  const statusEl3 = document.getElementById('scannerStatus');
+  const tbody3 = document.getElementById('scannerBody');
+  if(rawData.length === 0){
+    statusEl3.textContent = 'Warte auf Ticker-Daten... versuch es gleich nochmal.';
+    return;
+  }
+  statusEl3.textContent = `Stufe 1: wähle Kandidaten aus ${rawData.length} Paaren...`;
+  tbody3.innerHTML = '';
+
+  // Stage 1: cheap pre-filter using already-fetched ticker + funding data
+  const candidates = rawData
+    .map(d => {
+      const pct = Math.abs(parseFloat(d.priceChangePercent));
+      const funding = fundingMap[d.symbol];
+      const fundingSignal = funding !== undefined ? Math.abs(funding) : 0;
+      const quickScore = pct * 0.6 + d.volScoreRaw * 30 + fundingSignal * 200;
+      return { symbol: d.symbol, price: parseFloat(d.lastPrice), quickScore };
+    })
+    .filter(d => d.price > 0)
+    .sort((a,b) => b.quickScore - a.quickScore)
+    .slice(0, 25);
+
+  statusEl3.textContent = `Stufe 2: tiefe Analyse für ${candidates.length} Kandidaten...`;
+
+  const results = await Promise.all(candidates.map(async c => {
+    try{
+      const klines = await fetchKlinesCached(c.symbol, '1h', 200);
+      const highs = klines.map(k => parseFloat(k[2]));
+      const lows = klines.map(k => parseFloat(k[3]));
+      const closes = klines.map(k => parseFloat(k[4]));
+      const trend = analyzeTrend(closes);
+      const structure = analyzeStructure(highs, lows);
+      const smartMoney = analyzeSmartMoney(klines);
+      const volatility = analyzeVolatility(highs, lows, closes);
+      const funding = fundingMap[c.symbol];
+      let fundingPoints = 0, fundingLabel = 'k.A.';
+      if(funding !== undefined){
+        fundingLabel = funding.toFixed(3)+'%';
+        if(funding > 0.05) fundingPoints = -1;
+        else if(funding > 0.02) fundingPoints = -0.5;
+        else if(funding < -0.05) fundingPoints = 1;
+        else if(funding < -0.02) fundingPoints = 0.5;
+      }
+      const totalScore = trend.points + structure.points + smartMoney.points + fundingPoints;
+      const maxScore = 1+1+1+1;
+      const grade = gradeFromScore(totalScore, maxScore);
+      const bias = totalScore >= 1.2 ? 'LONG' : totalScore <= -1.2 ? 'SHORT' : 'NEUTRAL';
+      const d = rawData.find(x => x.symbol === c.symbol);
+      const meme = memeScore(c.symbol);
+      let riskPoints = 0;
+      if(volatility.label === 'Hoch') riskPoints++;
+      if(d && d.volScoreRaw < 0.3) riskPoints++;
+      if(meme > 0) riskPoints++;
+      const riskLevel = riskPoints >= 2 ? 'Hoch' : riskPoints === 1 ? 'Mittel' : 'Niedrig';
+      const opportunityScore = Math.round(((totalScore/maxScore)+1)/2 * 100);
+      let reason = [];
+      if(trend.points !== 0) reason.push(trend.label.split('(')[0].trim());
+      if(structure.points !== 0) reason.push(structure.label.split(':')[0].trim());
+      if(Math.abs(fundingPoints) > 0) reason.push('Funding '+fundingLabel);
+      return { symbol:c.symbol, price:c.price, bias, grade, opportunityScore, riskLevel, trend, structure, fundingLabel, reason: reason.slice(0,2).join(' + ') || 'Gemischte Signale' };
+    } catch(err){
+      return null;
+    }
+  }));
+
+  const valid = results.filter(r => r !== null).sort((a,b) => Math.abs(b.opportunityScore-50) - Math.abs(a.opportunityScore-50)).slice(0,20);
+  valid.forEach(r => { r.isNew = previousScanSymbols.size > 0 && !previousScanSymbols.has(r.symbol); });
+  previousScanSymbols = new Set(valid.map(r => r.symbol));
+  lastScanResults = valid;
+
+  statusEl3.textContent = `Fertig · ${valid.length} Top-Opportunities · ${new Date().toLocaleTimeString('de-DE')}`;
+  renderScannerResults();
+
+  if(document.getElementById('alAutoScan').checked){
+    checkScannerAlerts(valid);
+  }
+}
+document.getElementById('scannerRunBtn').addEventListener('click', runMarketScanner);
+
+let scannerSortKey = 'opportunityScore';
+let scannerSortDir = -1;
+const SCANNER_GRADE_RANK = {'A+':6,'A':5,'B':4,'C':3,'D':2,'F':1};
+const SCANNER_RISK_RANK = {'Hoch':3,'Mittel':2,'Niedrig':1};
+
+function renderScannerResults(){
+  const tbody3 = document.getElementById('scannerBody');
+  let arr = [...lastScanResults];
+
+  arr.sort((a,b) => {
+    let av, bv;
+    if(scannerSortKey === 'grade'){ av = SCANNER_GRADE_RANK[a.grade]||0; bv = SCANNER_GRADE_RANK[b.grade]||0; }
+    else if(scannerSortKey === 'riskLevel'){ av = SCANNER_RISK_RANK[a.riskLevel]||0; bv = SCANNER_RISK_RANK[b.riskLevel]||0; }
+    else if(scannerSortKey === 'fundingLabel'){ av = parseFloat(a.fundingLabel)||0; bv = parseFloat(b.fundingLabel)||0; }
+    else if(scannerSortKey === 'opportunityScore'){ av = a.opportunityScore; bv = b.opportunityScore; }
+    else { av = String(a[scannerSortKey]||'').toUpperCase(); bv = String(b[scannerSortKey]||'').toUpperCase(); }
+    return (av > bv ? 1 : av < bv ? -1 : 0) * scannerSortDir;
+  });
+
+  tbody3.innerHTML = arr.map((r, idx) => {
+    const biasCls = r.bias === 'LONG' ? 'up' : r.bias === 'SHORT' ? 'down' : '';
+    const gradeCls = ['A+','A','B'].includes(r.grade) ? 'up' : ['D','F'].includes(r.grade) ? 'down' : '';
+    const riskCls = r.riskLevel === 'Hoch' ? 'down' : r.riskLevel === 'Niedrig' ? 'up' : '';
+    return `<tr style="cursor:pointer;" data-sym="${r.symbol}" data-price="${r.price}" class="scanner-row">
+      <td>${idx+1}</td>
+      <td class="sym" style="text-align:left;">${r.symbol.replace('USDT','')}${r.isNew ? ' <span class="flag real" style="background:var(--amber-soft); color:var(--amber); border-color:var(--amber-glow);">NEU</span>' : ''}</td>
+      <td class="${biasCls}" style="font-weight:700;">${r.bias}</td>
+      <td class="${gradeCls}" style="font-weight:700;">${r.grade}</td>
+      <td>${r.opportunityScore}</td>
+      <td class="${riskCls}">${r.riskLevel}</td>
+      <td class="${r.trend.cls}" style="font-size:10.5px;">${r.trend.label.split('(')[0].trim()}</td>
+      <td class="${r.structure.cls}" style="font-size:10.5px;">${r.structure.label.split(':')[0].trim()}</td>
+      <td>${r.fundingLabel}</td>
+      <td style="text-align:left; color:var(--dim); font-size:10.5px;">${r.reason}</td>
+    </tr>`;
+  }).join('');
+
+  tbody3.querySelectorAll('.scanner-row').forEach(row => {
+    row.addEventListener('click', () => {
+      loadLiquidationZones(row.dataset.sym, parseFloat(row.dataset.price));
+    });
+  });
+
+  updateQuadrantExtra();
+}
+
+function updateQuadrantExtra(){
+  const el = document.getElementById('quadrantExtra');
+  if(!el) return;
+  if(lastScanResults.length === 0){
+    el.textContent = 'Warte auf ersten Scan (läuft automatisch alle 30s)...';
+    return;
+  }
+  const top5 = [...lastScanResults].sort((a,b) => Math.abs(b.opportunityScore-50) - Math.abs(a.opportunityScore-50)).slice(0,5);
+  el.innerHTML = top5.map(r => {
+    const biasCls = r.bias === 'LONG' ? 'up' : r.bias === 'SHORT' ? 'down' : '';
+    const gradeCls = ['A+','A','B'].includes(r.grade) ? 'up' : ['D','F'].includes(r.grade) ? 'down' : '';
+    return `<div class="fund-row" style="cursor:pointer; padding:5px 0;" data-sym="${r.symbol}" data-price="${r.price}">
+      <span class="sym" style="width:80px;">${r.symbol.replace('USDT','')}</span>
+      <span class="${biasCls}" style="width:60px; font-weight:600;">${r.bias}</span>
+      <span class="${gradeCls}" style="width:40px; font-weight:700;">${r.grade}</span>
+      <span style="color:var(--dim); font-size:10.5px; text-align:right; flex:1;">${r.reason}</span>
+    </div>`;
+  }).join('');
+  el.querySelectorAll('[data-sym]').forEach(row => {
+    row.addEventListener('click', () => loadLiquidationZones(row.dataset.sym, parseFloat(row.dataset.price)));
+  });
+}
+
+document.querySelectorAll('th[data-skey]').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.skey;
+    if(scannerSortKey === key) scannerSortDir *= -1; else { scannerSortKey = key; scannerSortDir = -1; }
+    renderScannerResults();
+  });
+});
+
+// ================= ALERT SYSTEM =================
+
+const alertedSetups = new Set(); // dedupe per session: "SYMBOL|GRADE"
+
+function logAlert(text, ok){
+  const log = document.getElementById('alertLog');
+  const line = document.createElement('div');
+  line.style.padding = '4px 0';
+  line.style.borderBottom = '1px solid #ffffff08';
+  line.innerHTML = `<span style="color:var(--dim); font-family:var(--mono);">${new Date().toLocaleTimeString('de-DE')}</span> — <span class="${ok?'up':'down'}">${text}</span>`;
+  log.prepend(line);
+}
+
+async function sendTelegram(text){
+  const token = document.getElementById('alTgToken').value.trim();
+  const chat = document.getElementById('alTgChat').value.trim();
+  if(!token || !chat) throw new Error('Telegram Token/Chat-ID fehlt');
+  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ chat_id: chat, text })
+  });
+  const data = await res.json();
+  if(!data.ok) throw new Error(data.description || 'Telegram-Fehler');
+}
+
+async function sendDiscord(text){
+  const url = document.getElementById('alDiscordUrl').value.trim();
+  if(!url) throw new Error('Discord Webhook-URL fehlt');
+  const res = await fetch(url, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ content: text })
+  });
+  if(!res.ok) throw new Error('Discord HTTP '+res.status);
+}
+
+async function sendNtfy(text, title){
+  const topic = document.getElementById('alNtfyTopic').value.trim();
+  if(!topic) throw new Error('ntfy Topic fehlt');
+  const res = await fetch(`https://ntfy.sh/${topic}`, {
+    method:'POST',
+    headers: { 'Title': title || 'ACE FUTURES HUNT' },
+    body: text
+  });
+  if(!res.ok) throw new Error('ntfy HTTP '+res.status);
+}
+
+function sendBrowserNotification(text, title){
+  if(!('Notification' in window)) throw new Error('Browser unterstützt keine Notifications');
+  if(Notification.permission !== 'granted') throw new Error('Keine Erlaubnis erteilt — erst auf "Browser-Erlaubnis anfragen" klicken');
+  new Notification(title || 'ACE FUTURES HUNT', { body: text });
+}
+
+async function dispatchAlert(text, title){
+  const enTg = document.getElementById('alEnTg').checked;
+  const enDiscord = document.getElementById('alEnDiscord').checked;
+  const enNtfy = document.getElementById('alEnNtfy').checked;
+  const enBrowser = document.getElementById('alEnBrowser').checked;
+  if(!enTg && !enDiscord && !enNtfy && !enBrowser){
+    logAlert('Kein Kanal aktiviert — Häkchen setzen bei Telegram/Discord/ntfy/Browser.', false);
+    return;
+  }
+  if(enTg){ try{ await sendTelegram(text); logAlert('Telegram gesendet ✓', true); } catch(err){ logAlert('Telegram fehlgeschlagen: '+err.message, false); } }
+  if(enDiscord){ try{ await sendDiscord(text); logAlert('Discord gesendet ✓', true); } catch(err){ logAlert('Discord fehlgeschlagen: '+err.message, false); } }
+  if(enNtfy){ try{ await sendNtfy(text, title); logAlert('ntfy gesendet ✓', true); } catch(err){ logAlert('ntfy fehlgeschlagen: '+err.message, false); } }
+  if(enBrowser){ try{ sendBrowserNotification(text, title); logAlert('Browser-Push gesendet ✓', true); } catch(err){ logAlert('Browser-Push fehlgeschlagen: '+err.message, false); } }
+}
+
+document.getElementById('alBrowserPermBtn').addEventListener('click', async () => {
+  const statusEl6 = document.getElementById('alBrowserPermStatus');
+  if(!('Notification' in window)){
+    statusEl6.textContent = 'Nicht unterstützt in diesem Browser'; statusEl6.className = 'down';
+    return;
+  }
+  const perm = await Notification.requestPermission();
+  if(perm === 'granted'){ statusEl6.textContent = 'Erlaubt ✓'; statusEl6.className = 'up'; }
+  else { statusEl6.textContent = 'Abgelehnt — in Browser-Einstellungen manuell erlauben'; statusEl6.className = 'down'; }
+});
+
+document.getElementById('alTestBtn').addEventListener('click', () => {
+  dispatchAlert('🔔 Test-Alert von ACE FUTURES HUNT — wenn du das liest, funktioniert die Verbindung.', 'Test-Alert');
+});
+
+const GRADE_RANK = {'A+':6,'A':5,'B':4,'C':3,'D':2,'F':1};
+
+async function checkScannerAlerts(results){
+  const minGrade = document.getElementById('alMinGrade').value;
+  const minRank = GRADE_RANK[minGrade];
+  for(const r of results){
+    if(GRADE_RANK[r.grade] < minRank || r.bias === 'NEUTRAL') continue;
+    const key = r.symbol + '|' + r.grade + '|' + r.bias;
+    if(alertedSetups.has(key)) continue; // already alerted this session
+
+    // Zusätzlicher Check: der VOLLE Coach (9 Faktoren) muss die Einschätzung des schnellen
+    // Scanners (4 Faktoren) bestätigen, bevor überhaupt eine Nachricht rausgeht.
+    let coachResult;
+    try{
+      coachResult = await computeCoachScore(r.symbol, r.price);
+    } catch(err){
+      continue; // Coach-Daten nicht verfügbar -> lieber keinen Alert schicken als einen ungeprüften
+    }
+    const coachBiasMatches = (r.bias === 'LONG' && coachResult.bias === 'LONG-BIAS') || (r.bias === 'SHORT' && coachResult.bias === 'SHORT-BIAS');
+    if(!coachBiasMatches || GRADE_RANK[coachResult.grade] < minRank){
+      continue; // Coach bestätigt das Scanner-Setup nicht -> kein Alert
+    }
+
+    alertedSetups.add(key);
+    const emoji = r.bias === 'LONG' ? '🚀' : '🔻';
+    const text = `${emoji} ${r.symbol.replace('USDT','')} ${r.bias}\n\nScanner-Note: ${r.grade} · Coach-Note: ${coachResult.grade} (bestätigt) · Score: ${r.opportunityScore}/100 · Risiko: ${r.riskLevel}\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: ${fmtPrice(coachResult.entry)}\nStop: ${fmtPrice(coachResult.stopRef)}\nTP1: ${fmtPrice(coachResult.tp1)} (RR ${coachResult.rr1})\nTP2: ${fmtPrice(coachResult.tp2)} (RR ${coachResult.rr2})\nTP3: ${fmtPrice(coachResult.tp3)} (RR ${coachResult.rr3})\n\nGrund:\n• ${r.reason}\n\nKein Finanzrat — eigene Prüfung + eigenes Risikomanagement nötig. ACE FUTURES HUNT`;
+    dispatchAlert(text, `${r.symbol.replace('USDT','')} ${r.bias} — Scanner ${r.grade} + Coach ${coachResult.grade}`);
+  }
+}
+
+document.getElementById('alAutoScan').addEventListener('change', function(){
+  logAlert(this.checked ? 'Alerts bei Auto-Scan aktiviert.' : 'Alerts bei Auto-Scan deaktiviert (Scanner läuft trotzdem weiter alle 30s).', this.checked);
+});
+
+// ================= AI DAILY BRIEFING =================
+
+async function fetchFearGreed(){
+  try{
+    const res = await fetch('https://api.alternative.me/fng/?limit=1');
+    const data = await res.json();
+    const item = data.data[0];
+    const el = document.getElementById('briefFng');
+    el.textContent = `${item.value} — ${item.value_classification}`;
+    el.className = 'value ' + (parseInt(item.value) >= 55 ? 'up' : parseInt(item.value) <= 45 ? 'down' : '');
+    fetchFearGreedHistory();
+    return item;
+  } catch(err){
+    document.getElementById('briefFng').textContent = 'n/a';
+    return null;
+  }
+}
+
+async function fetchFearGreedHistory(){
+  const svg = document.getElementById('fngSparkline');
+  try{
+    const res = await fetch('https://api.alternative.me/fng/?limit=30');
+    const data = await res.json();
+    const values = data.data.map(d => parseInt(d.value)).reverse(); // oldest -> newest
+    const W = 120, H = 30, PAD = 2;
+    const min = Math.min(...values), max = Math.max(...values);
+    const range = (max - min) || 1;
+    const points = values.map((v, i) => {
+      const x = PAD + (i / (values.length-1)) * (W - 2*PAD);
+      const y = H - PAD - ((v - min) / range) * (H - 2*PAD);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+    const last = values[values.length-1];
+    const lineColor = last >= 55 ? 'var(--green)' : last <= 45 ? 'var(--red)' : 'var(--amber)';
+    svg.innerHTML = `<polyline points="${points}" fill="none" stroke="${lineColor}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+  } catch(err){
+    svg.innerHTML = '';
+  }
+}
+
+async function fetchBTCDominance(){
+  try{
+    const res = await fetch('https://api.coingecko.com/api/v3/global');
+    const data = await res.json();
+    const dom = data.data.market_cap_percentage.btc;
+    const el = document.getElementById('briefBtcDom');
+    el.textContent = dom.toFixed(1) + '%';
+    return dom;
+  } catch(err){
+    document.getElementById('briefBtcDom').textContent = 'n/a';
+    return null;
+  }
+}
+
+async function generateDailyBriefing(){
+  const box = document.getElementById('briefingBox');
+  box.innerHTML = `<div class="skeleton" style="width:50%;"></div><div class="skeleton" style="width:95%;"></div><div class="skeleton" style="width:80%;"></div><div class="skeleton" style="width:70%;"></div>`;
+
+  const [fng, btcDom] = await Promise.all([fetchFearGreed(), fetchBTCDominance()]);
+
+  const gainers = rawData.filter(d => parseFloat(d.priceChangePercent) > 0).length;
+  const losers = rawData.filter(d => parseFloat(d.priceChangePercent) < 0).length;
+  const fundingEntries = Object.entries(fundingMap);
+  const topFunding = fundingEntries.sort((a,b) => Math.abs(b[1])-Math.abs(a[1])).slice(0,5)
+    .map(([sym, rate]) => `${sym.replace('USDT','')}: ${rate.toFixed(3)}%`);
+  const topOpportunities = lastScanResults.slice(0,8).map(r => `${r.symbol.replace('USDT','')} ${r.bias} (Note ${r.grade}, Score ${r.opportunityScore}, Grund: ${r.reason})`);
+
+  const marketData = {
+    fearGreed: fng ? `${fng.value} (${fng.value_classification})` : 'n/a',
+    btcDominance: btcDom ? btcDom.toFixed(1)+'%' : 'n/a',
+    gainersCount: gainers,
+    losersCount: losers,
+    totalPairs: rawData.length,
+    topFundingExtremes: topFunding,
+    topScannerOpportunities: topOpportunities.length ? topOpportunities : ['Noch kein Scan durchgeführt — führe zuerst den Market-Scanner aus für konkrete Opportunities.']
+  };
+
+  try{
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: getAnthropicHeaders(),
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 900,
+        messages: [{
+          role: 'user',
+          content: `Du bist ein professioneller Krypto-Futures-Marktanalyst und schreibst ein kurzes Morgen-Briefing im Stil einer Bloomberg-Zusammenfassung, auf Deutsch, für einen aktiven Futures-Trader auf Binance.
+
+Hier sind die aktuellen Markt-Daten als JSON: ${JSON.stringify(marketData)}
+
+Schreibe ein Briefing (max 220 Wörter) mit dieser Struktur:
+1. Kurzer Markt-Regime-Satz (basierend auf Fear&Greed, BTC-Dominanz, Gainer/Loser-Verhältnis)
+2. Die interessantesten Opportunities aus der Scanner-Liste (wenn vorhanden), kurz begründet
+3. Funding-Extreme, die auf Squeeze-Risiko hindeuten
+4. Ein Satz "worauf du heute achten solltest"
+
+Ton: nüchtern, professionell, wie ein erfahrener Trading-Kollege, keine Übertreibungen, keine Kaufempfehlung, nur Einordnung der Daten. Kein Vorspann, keine Überschriften, direkt der Fließtext.`
+        }]
+      })
+    });
+    const data = await response.json();
+    const text = (data.content || []).map(c => c.text || '').join('\n').trim();
+    box.innerHTML = text
+      ? `<div style="border:1px solid var(--glass-border-strong); border-radius:8px; padding:16px; background:var(--amber-soft);">${text}</div><div class="legend" style="margin-top:8px;">KI-generierte Einordnung öffentlicher Daten, keine Anlageberatung.</div>`
+      : '<span class="down">Keine Antwort erhalten.</span>';
+  } catch(err){
+    box.innerHTML = `<span class="down">Briefing fehlgeschlagen: ${err.message}</span>`;
+  }
+}
+document.getElementById('briefGenBtn').addEventListener('click', generateDailyBriefing);
+fetchFearGreed();
+fetchBTCDominance();
+
+// ================= PORTFOLIO RISK TRACKER =================
+
+let portfolioPositions = [];
+
+async function loadPortfolio(){
+  try{
+    const res = await window.storage.get('portfolio:positions', false);
+    portfolioPositions = res && res.value ? JSON.parse(res.value) : [];
+  } catch(err){ portfolioPositions = []; }
+  renderPortfolio();
+}
+
+async function savePortfolio(){
+  try{ await window.storage.set('portfolio:positions', JSON.stringify(portfolioPositions), false); }
+  catch(err){ document.getElementById('ptStatus').textContent = 'Speichern fehlgeschlagen: '+err.message; }
+}
+
+async function addPosition(){
+  const coin = document.getElementById('ptCoin').value.trim().toUpperCase();
+  const direction = document.getElementById('ptDirection').value;
+  const entry = parseFloat(document.getElementById('ptEntry').value);
+  const notional = parseFloat(document.getElementById('ptNotional').value);
+  const leverage = parseFloat(document.getElementById('ptLeverage').value) || 1;
+  const statusEl4 = document.getElementById('ptStatus');
+  if(!coin || !entry || !notional){
+    statusEl4.textContent = 'Bitte Coin, Entry und Notional ausfüllen.';
+    statusEl4.className = 'down';
+    return;
+  }
+  portfolioPositions.push({ coin, direction, entry, notional, leverage });
+  await savePortfolio();
+  statusEl4.textContent = 'Hinzugefügt ✓';
+  statusEl4.className = 'up';
+  ['ptCoin','ptEntry','ptNotional','ptLeverage'].forEach(id => document.getElementById(id).value = '');
+  renderPortfolio();
+}
+document.getElementById('ptAddBtn').addEventListener('click', addPosition);
+
+async function deletePosition(idx){
+  portfolioPositions.splice(idx,1);
+  await savePortfolio();
+  renderPortfolio();
+}
+
+function renderPortfolio(){
+  const tbody4 = document.getElementById('portfolioBody');
+  let totalExposure = 0, totalPnl = 0, longExposure = 0, shortExposure = 0;
+
+  const rows = portfolioPositions.map((p, idx) => {
+    const d = rawData.find(x => x.symbol === p.coin);
+    const currentPrice = d ? parseFloat(d.lastPrice) : null;
+    let pnlPct = 0, pnlUsd = 0, liqDistancePct = null;
+    if(currentPrice){
+      const rawPct = ((currentPrice - p.entry) / p.entry) * 100 * (p.direction === 'LONG' ? 1 : -1);
+      pnlPct = rawPct * p.leverage;
+      pnlUsd = p.notional * (pnlPct/100);
+      const liqPrice = estimateLiqPrice(p.entry, p.leverage, p.direction === 'LONG' ? 'long' : 'short');
+      liqDistancePct = Math.abs((currentPrice - liqPrice) / currentPrice) * 100;
+    }
+    totalExposure += p.notional;
+    totalPnl += pnlUsd;
+    if(p.direction === 'LONG') longExposure += p.notional; else shortExposure += p.notional;
+
+    return { idx, p, currentPrice, pnlPct, pnlUsd, liqDistancePct };
+  });
+
+  tbody4.innerHTML = rows.map(r => `
+    <tr>
+      <td class="sym" style="text-align:left;">${r.p.coin.replace('USDT','')}</td>
+      <td class="${r.p.direction==='LONG'?'up':'down'}">${r.p.direction}</td>
+      <td>${r.p.entry}</td>
+      <td>${r.currentPrice ? fmtPrice(r.currentPrice) : 'n/a'}</td>
+      <td>${r.p.notional.toFixed(0)} USDT</td>
+      <td>${r.p.leverage}x</td>
+      <td class="${r.pnlUsd>=0?'up':'down'}">${r.pnlUsd>=0?'+':''}${r.pnlUsd.toFixed(2)} USDT (${r.pnlPct.toFixed(1)}%)</td>
+      <td class="${r.liqDistancePct!==null && r.liqDistancePct<10?'down':''}">${r.liqDistancePct!==null ? r.liqDistancePct.toFixed(1)+'%' : 'n/a'}</td>
+      <td><span class="star" data-idx="${r.idx}" title="Löschen" style="color:var(--red);">&#10005;</span></td>
+    </tr>`).join('');
+
+  tbody4.querySelectorAll('.star').forEach(s => {
+    s.addEventListener('click', () => deletePosition(parseInt(s.dataset.idx)));
+  });
+
+  document.getElementById('ptCount').textContent = portfolioPositions.length;
+  document.getElementById('ptExposure').textContent = totalExposure > 0 ? totalExposure.toFixed(0)+' USDT' : '—';
+  document.getElementById('ptTotalPnl').textContent = portfolioPositions.length ? (totalPnl>=0?'+':'')+totalPnl.toFixed(2)+' USDT' : '—';
+  document.getElementById('ptTotalPnl').className = 'value ' + (totalPnl>=0?'up':'down');
+  const longPct = totalExposure > 0 ? (longExposure/totalExposure*100) : 0;
+  const shortPct = totalExposure > 0 ? (shortExposure/totalExposure*100) : 0;
+  document.getElementById('ptLongPct').textContent = portfolioPositions.length ? longPct.toFixed(0)+'%' : '—';
+  document.getElementById('ptShortPct').textContent = portfolioPositions.length ? shortPct.toFixed(0)+'%' : '—';
+
+  const concentration = Math.max(longPct, shortPct);
+  const concEl = document.getElementById('ptConcentration');
+  const warnBox2 = document.getElementById('ptWarning');
+  if(portfolioPositions.length === 0){
+    concEl.textContent = '—'; warnBox2.innerHTML = '';
+  } else if(concentration >= 80){
+    concEl.textContent = 'Hoch ('+concentration.toFixed(0)+'%)'; concEl.className = 'value down';
+    warnBox2.innerHTML = `<div style="border:1px solid #ff5d6866; background:#ff5d6812; border-radius:8px; padding:10px 12px; color:var(--red); font-size:12px;">⚠ ${concentration.toFixed(0)}% deiner Exposure liegt einseitig in ${longPct>shortPct?'Long':'Short'}-Richtung — wenn der Markt sich dreht, verlierst du auf allen Positionen gleichzeitig. Das ist kein diversifiziertes Portfolio, sondern eine gehebelte Einzelwette.</div>`;
+  } else {
+    concEl.textContent = 'Niedrig ('+concentration.toFixed(0)+'%)'; concEl.className = 'value up';
+    warnBox2.innerHTML = '';
+  }
+
+  const closeToLiq = rows.filter(r => r.liqDistancePct !== null && r.liqDistancePct < 10);
+  if(closeToLiq.length > 0){
+    warnBox2.innerHTML += `<div style="border:1px solid #ff5d6866; background:#ff5d6812; border-radius:8px; padding:10px 12px; color:var(--red); font-size:12px; margin-top:8px;">⚠ ${closeToLiq.map(r=>r.p.coin.replace('USDT','')).join(', ')} ${closeToLiq.length>1?'sind':'ist'} weniger als 10% (geschätzt) von der Liquidation entfernt.</div>`;
+  }
+}
+
+// ================= PRICE ALERTS =================
+
+let priceAlerts = [];
+
+async function loadPriceAlerts(){
+  try{
+    const res = await window.storage.get('alerts:price', false);
+    priceAlerts = res && res.value ? JSON.parse(res.value) : [];
+  } catch(err){ priceAlerts = []; }
+  renderPriceAlerts();
+}
+
+async function savePriceAlerts(){
+  try{ await window.storage.set('alerts:price', JSON.stringify(priceAlerts), false); } catch(err){}
+}
+
+document.getElementById('paAddBtn').addEventListener('click', async () => {
+  const coin = document.getElementById('paCoin').value.trim().toUpperCase();
+  const direction = document.getElementById('paDirection').value;
+  const price = parseFloat(document.getElementById('paPrice').value);
+  if(!coin || !price) return;
+  priceAlerts.push({ coin, direction, price, fired:false });
+  await savePriceAlerts();
+  document.getElementById('paCoin').value = '';
+  document.getElementById('paPrice').value = '';
+  renderPriceAlerts();
+});
+
+function renderPriceAlerts(){
+  const box2 = document.getElementById('priceAlertsBody');
+  if(priceAlerts.length === 0){ box2.innerHTML = 'Keine Preis-Alarme gesetzt.'; return; }
+  box2.innerHTML = priceAlerts.map((a, idx) => `
+    <div class="fund-row">
+      <span class="sym">${a.coin.replace('USDT','')}</span>
+      <span>${a.direction === 'ABOVE' ? 'über' : 'unter'} ${a.price}</span>
+      <span class="${a.fired?'down':'up'}">${a.fired?'ausgelöst':'aktiv'}</span>
+      <span class="star" data-idx="${idx}" style="color:var(--red); cursor:pointer;">&#10005;</span>
+    </div>`).join('');
+  box2.querySelectorAll('.star').forEach(s => {
+    s.addEventListener('click', async () => {
+      priceAlerts.splice(parseInt(s.dataset.idx),1);
+      await savePriceAlerts();
+      renderPriceAlerts();
+    });
+  });
+}
+
+function checkPriceAlerts(){
+  let changed = false;
+  priceAlerts.forEach(a => {
+    if(a.fired) return;
+    const d = rawData.find(x => x.symbol === a.coin);
+    if(!d) return;
+    const price = parseFloat(d.lastPrice);
+    const hit = a.direction === 'ABOVE' ? price >= a.price : price <= a.price;
+    if(hit){
+      a.fired = true; changed = true;
+      dispatchAlert(`🔔 Preis-Alarm: ${a.coin.replace('USDT','')} ist ${a.direction==='ABOVE'?'über':'unter'} ${a.price} (aktuell ${fmtPrice(price)}).`, `Preis-Alarm ${a.coin.replace('USDT','')}`);
+    }
+  });
+  if(changed){ savePriceAlerts(); renderPriceAlerts(); }
+}
+
+// ================= AI MARKET MEMORY =================
+
+async function generateMarketMemory(){
+  const box = document.getElementById('memoryBox');
+  const status = document.getElementById('memoryStatus');
+  if(!lastCoachAnalysis){
+    status.textContent = 'Öffne zuerst einen Coin im AI Coach (Coin in der Tabelle anklicken), damit echte Kennzahlen vorliegen.';
+    status.className = 'down';
+    return;
+  }
+  status.textContent = 'Analysiere...';
+  status.className = '';
+  box.innerHTML = `<div class="skeleton" style="width:55%;"></div><div class="skeleton" style="width:92%;"></div><div class="skeleton" style="width:78%;"></div><div class="skeleton" style="width:65%;"></div>`;
+
+  const a = lastCoachAnalysis;
+  const [fng, btcDom] = await Promise.all([fetchFearGreed(), fetchBTCDominance()]);
+
+  const snapshot = {
+    coin: a.symbol.replace('USDT',''),
+    trend: a.trend.label,
+    marktStruktur: a.structure.label,
+    smartMoney: a.smartMoney.label,
+    openInterest: a.oi.label,
+    liquiditaet: a.liquidity.label,
+    volatilitaet: `${a.volatility.label} (${a.volatility.atrPct.toFixed(2)}% ATR)`,
+    funding: a.funding !== undefined ? a.funding.toFixed(3)+'%' : 'k.A.',
+    momentum24h: a.pct24h.toFixed(1)+'%',
+    fearGreed: fng ? `${fng.value} (${fng.value_classification})` : 'n/a',
+    btcDominanz: btcDom ? btcDom.toFixed(1)+'%' : 'n/a'
+  };
+
+  try{
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: getAnthropicHeaders(),
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{
+          role: 'user',
+          content: `Du bist ein Krypto-Marktanalyst mit tiefem historischem Wissen über Bitcoin/Krypto-Marktzyklen (z.B. COVID-Crash März 2020, FTX-Kollaps Nov 2022, ETH Merge Sept 2022, Bullrun 2021, Bärenmarkt 2022, SOL-Erholung/Breakouts 2023, BTC-Rallye vor dem Halving Ende 2023).
+
+Aktuelle echte Marktkennzahlen für ${snapshot.coin} als JSON: ${JSON.stringify(snapshot)}
+
+Aufgabe:
+1. Nenne 1-2 historische Marktsituationen, die den beschriebenen Bedingungen (Funding/OI/Struktur/Volatilität/Sentiment-Kombination) am ehesten ähneln. Wenn nichts wirklich passt, sag das ehrlich ("keine starke historische Parallele erkennbar").
+2. Gib eine grobe, klar als SUBJEKTIV gekennzeichnete Ähnlichkeits-Einschätzung in Prozent an (keine echte Statistik, nur Bauchgefühl basierend auf den Mustern).
+3. Beschreibe kurz und faktentreu, was nach der genannten historischen Situation tatsächlich passierte (nur bekannte, echte historische Fakten, keine erfundenen Zahlen).
+4. Nenne 2-3 wichtige UNTERSCHIEDE zwischen damals und heute, damit niemand blind Parallelen zieht.
+5. Schließe mit einem Satz: das ist Mustererkennung, keine Vorhersage, keine Anlageberatung.
+
+Antworte auf Deutsch, max 250 Wörter, keine Überschriften, direkter Fließtext, kein Vorspann.`
+        }]
+      })
+    });
+    const data = await response.json();
+    const text = (data.content || []).map(c => c.text || '').join('\n').trim();
+    status.textContent = 'Fertig · ' + new Date().toLocaleTimeString('de-DE');
+    status.className = 'ok';
+    box.innerHTML = text
+      ? `<div style="border:1px solid var(--glass-border-strong); border-radius:8px; padding:16px; background:var(--amber-soft);">${text}</div><div class="legend" style="margin-top:8px;">Subjektive KI-Muster-Einschätzung auf Basis echter aktueller Daten + historischem Wissen — keine rückgetestete Statistik, keine Anlageberatung.</div>`
+      : '<span class="down">Keine Antwort erhalten.</span>';
+  } catch(err){
+    status.textContent = '';
+    box.innerHTML = `<span class="down">Analyse fehlgeschlagen: ${err.message}</span>`;
+  }
+}
+document.getElementById('memoryBtn').addEventListener('click', generateMarketMemory);
+
+// ================= MULTI-TIMEFRAME ANALYSIS =================
+
+const MTF_TIMEFRAMES = [
+  { key:'15m', label:'15m', limit:100 },
+  { key:'1h',  label:'1H',  limit:200 },
+  { key:'4h',  label:'4H',  limit:100 },
+  { key:'1d',  label:'1D',  limit:100 }
+];
+
+async function analyzeOneTimeframe(symbol, tf){
+  try{
+    const klines = await fetchKlinesCached(symbol, tf.key, tf.limit);
+    const highs = klines.map(k => parseFloat(k[2]));
+    const lows = klines.map(k => parseFloat(k[3]));
+    const closes = klines.map(k => parseFloat(k[4]));
+    const trend = analyzeTrend(closes);
+    const structure = analyzeStructure(highs, lows);
+    return { tf: tf.label, trend, structure };
+  } catch(err){
+    return { tf: tf.label, trend:{label:'Fehler', cls:'', points:0}, structure:{label:'Fehler', cls:'', points:0} };
+  }
+}
+
+async function renderMultiTimeframe(symbol){
+  const box = document.getElementById('mtfBox');
+  box.innerHTML = `<div class="skeleton" style="width:45%;"></div><div class="skeleton" style="width:85%;"></div>`;
+
+  const results = await Promise.all(MTF_TIMEFRAMES.map(tf => analyzeOneTimeframe(symbol, tf)));
+
+  const bullCount = results.filter(r => r.trend.points > 0).length;
+  const bearCount = results.filter(r => r.trend.points < 0).length;
+  let agreement, agreementCls;
+  if(bullCount >= 3){ agreement = `${bullCount}/4 Timeframes bullisch — starkes Alignment`; agreementCls = 'up'; }
+  else if(bearCount >= 3){ agreement = `${bearCount}/4 Timeframes bearisch — starkes Alignment`; agreementCls = 'down'; }
+  else if(bullCount === bearCount){ agreement = 'Timeframes widersprechen sich klar — Vorsicht, kein klares Bild'; agreementCls = 'down'; }
+  else { agreement = `Gemischt (${bullCount} bullisch / ${bearCount} bearisch) — kein starkes Alignment`; agreementCls = ''; }
+
+  box.innerHTML = `
+    <div style="border:1px solid var(--glass-border-strong); border-radius:var(--radius-sm); padding:14px;">
+      <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin-bottom:10px;">Multi-Timeframe-Analyse</div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:8px; margin-bottom:10px;">
+        ${results.map(r => `
+          <div style="background:#00000020; border:1px solid var(--glass-border); border-radius:8px; padding:8px 10px;">
+            <div style="font-size:9.5px; color:var(--dim); text-transform:uppercase;">${r.tf}</div>
+            <div class="${r.trend.cls}" style="font-size:11px; font-weight:600; margin-top:2px;">${r.trend.label.split('(')[0].trim()}</div>
+            <div class="${r.structure.cls}" style="font-size:10px; margin-top:1px;">${r.structure.label.split(':')[0].trim()}</div>
+          </div>`).join('')}
+      </div>
+      <div class="${agreementCls}" style="font-weight:600; font-size:12.5px;">${agreement}</div>
+      <div class="legend" style="margin-top:6px;">Wenn Timeframes sich widersprechen, ist das historisch oft ein Zeichen für erhöhte Unsicherheit — viele erfahrene Trader warten dann eher ab, statt gegen den Widerstand zu handeln.</div>
+    </div>`;
+}
+
+// ================= COIN COMPARISON TOOL =================
+
+function pearsonCorrelation(a, b){
+  const n = Math.min(a.length, b.length);
+  const meanA = a.slice(0,n).reduce((s,v)=>s+v,0)/n;
+  const meanB = b.slice(0,n).reduce((s,v)=>s+v,0)/n;
+  let cov = 0, varA = 0, varB = 0;
+  for(let i=0;i<n;i++){
+    const da = a[i]-meanA, db = b[i]-meanB;
+    cov += da*db; varA += da*da; varB += db*db;
+  }
+  if(varA === 0 || varB === 0) return 0;
+  return cov / Math.sqrt(varA*varB);
+}
+
+async function runComparison(){
+  const status = document.getElementById('cmpStatus');
+  const chart = document.getElementById('cmpChart');
+  const statsBox = document.getElementById('cmpStats');
+  let symA = document.getElementById('cmpCoinA').value.trim().toUpperCase();
+  let symB = document.getElementById('cmpCoinB').value.trim().toUpperCase();
+  if(!symA || !symB){ status.textContent = 'Bitte beide Coins eintragen.'; status.className='down'; return; }
+  if(!symA.endsWith('USDT')) symA += 'USDT';
+  if(!symB.endsWith('USDT')) symB += 'USDT';
+
+  status.textContent = `Lade ${symA} und ${symB}...`;
+  status.className = '';
+  chart.style.display = 'none';
+
+  try{
+    const [klinesA, klinesB] = await Promise.all([
+      fetchKlines(symA, '1h', 100),
+      fetchKlines(symB, '1h', 100)
+    ]);
+    const closesA = klinesA.map(k => parseFloat(k[4]));
+    const closesB = klinesB.map(k => parseFloat(k[4]));
+    const n = Math.min(closesA.length, closesB.length);
+    const baseA = closesA[0], baseB = closesB[0];
+    const retA = closesA.slice(0,n).map(c => ((c-baseA)/baseA)*100);
+    const retB = closesB.slice(0,n).map(c => ((c-baseB)/baseB)*100);
+    const corr = pearsonCorrelation(retA, retB);
+
+    // draw chart
+    const W = 600, H = 260, PAD = 40;
+    const allVals = [...retA, ...retB];
+    const yMin = Math.min(...allVals) - 1, yMax = Math.max(...allVals) + 1;
+    const xScale = i => PAD + (i/(n-1)) * (W - 2*PAD);
+    const yScale = v => H - PAD - ((v - yMin)/(yMax - yMin)) * (H - 2*PAD);
+    const lineA = retA.map((v,i) => `${xScale(i).toFixed(1)},${yScale(v).toFixed(1)}`).join(' ');
+    const lineB = retB.map((v,i) => `${xScale(i).toFixed(1)},${yScale(v).toFixed(1)}`).join(' ');
+    const zeroY = yScale(0);
+    chart.innerHTML = `
+      <line x1="${PAD}" y1="${zeroY}" x2="${W-PAD}" y2="${zeroY}" stroke="var(--line-solid)" stroke-width="1"/>
+      <text x="${W-PAD}" y="${zeroY-4}" text-anchor="end" class="axis-label">0%</text>
+      <polyline points="${lineA}" fill="none" stroke="var(--amber)" stroke-width="2"/>
+      <polyline points="${lineB}" fill="none" stroke="var(--blue)" stroke-width="2"/>
+      <circle cx="${W-PAD-70}" cy="16" r="4" fill="var(--amber)"/><text x="${W-PAD-60}" y="20" class="axis-label" fill="var(--text)">${symA.replace('USDT','')}</text>
+      <circle cx="${W-PAD-70}" cy="32" r="4" fill="var(--blue)"/><text x="${W-PAD-60}" y="36" class="axis-label" fill="var(--text)">${symB.replace('USDT','')}</text>
+    `;
+    chart.style.display = 'block';
+
+    const corrLabel = Math.abs(corr) > 0.7 ? (corr > 0 ? 'Stark positiv korreliert — bewegen sich fast im Gleichschritt' : 'Stark negativ korreliert — bewegen sich fast gegenläufig')
+      : Math.abs(corr) > 0.3 ? (corr > 0 ? 'Moderat positiv korreliert' : 'Moderat negativ korreliert')
+      : 'Kaum Korrelation — bewegen sich weitgehend unabhängig voneinander';
+
+    statsBox.innerHTML = `
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:10px;">
+        <div style="background:#00000020; border-radius:8px; padding:10px 12px;"><div style="color:var(--dim); font-size:9.5px;">${symA.replace('USDT','')} Performance (Zeitraum)</div><div class="${retA[n-1]>=0?'up':'down'}" style="font-weight:700;">${retA[n-1]>=0?'+':''}${retA[n-1].toFixed(2)}%</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:10px 12px;"><div style="color:var(--dim); font-size:9.5px;">${symB.replace('USDT','')} Performance (Zeitraum)</div><div class="${retB[n-1]>=0?'up':'down'}" style="font-weight:700;">${retB[n-1]>=0?'+':''}${retB[n-1].toFixed(2)}%</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:10px 12px;"><div style="color:var(--dim); font-size:9.5px;">Korrelation (Pearson)</div><div style="font-weight:700;">${corr.toFixed(2)}</div></div>
+      </div>
+      <div class="legend" style="margin-top:8px;">${corrLabel}. Basis: 1H-Kerzen, letzte ${n} Stunden (~${Math.round(n/24)} Tage). Echte historische Preisdaten von Binance, keine Schätzung.</div>
+    `;
+    status.textContent = `Fertig · ${new Date().toLocaleTimeString('de-DE')}`;
+    status.className = 'ok';
+  } catch(err){
+    status.textContent = `Fehler: ${err.message} — prüf ob beide Symbole existieren.`;
+    status.className = 'down';
+  }
+}
+document.getElementById('cmpRunBtn').addEventListener('click', runComparison);
+
+// ================= ICT CONCEPTS =================
+
+function detectFVGs(klines){
+  const fvgs = [];
+  for(let i=2; i<klines.length; i++){
+    const c1High = parseFloat(klines[i-2][2]), c1Low = parseFloat(klines[i-2][3]);
+    const c3High = parseFloat(klines[i][2]), c3Low = parseFloat(klines[i][3]);
+    if(c1High < c3Low){
+      fvgs.push({ type:'bullish', top:c3Low, bottom:c1High, index:i });
+    } else if(c1Low > c3High){
+      fvgs.push({ type:'bearish', top:c1Low, bottom:c3High, index:i });
+    }
+  }
+  return fvgs.slice(-6); // most recent 6
+}
+
+function detectOrderBlocks(klines, atr){
+  const blocks = [];
+  const threshold = atr * 1.3;
+  for(let i=1; i<klines.length-1; i++){
+    const open = parseFloat(klines[i][1]), close = parseFloat(klines[i][4]);
+    const nextOpen = parseFloat(klines[i+1][1]), nextClose = parseFloat(klines[i+1][4]);
+    const isDown = close < open;
+    const isUp = close > open;
+    const nextMove = nextClose - nextOpen;
+    if(isDown && nextMove > threshold){
+      blocks.push({ type:'bullish', top:Math.max(open,close), bottom:Math.min(open,close), index:i });
+    } else if(isUp && -nextMove > threshold){
+      blocks.push({ type:'bearish', top:Math.max(open,close), bottom:Math.min(open,close), index:i });
+    }
+  }
+  return blocks.slice(-4); // most recent 4
+}
+
+function detectBOSCHOCH(highs, lows, closes){
+  const { swingHighs, swingLows } = findPivots(highs, lows);
+  if(swingHighs.length < 2 || swingLows.length < 2) return null;
+  const lastClose = closes[closes.length-1];
+  const lastSwingHigh = swingHighs[swingHighs.length-1];
+  const lastSwingLow = swingLows[swingLows.length-1];
+  const priorUptrend = swingHighs[swingHighs.length-1].price > swingHighs[swingHighs.length-2].price
+                     && swingLows[swingLows.length-1].price > swingLows[swingLows.length-2].price;
+  const priorDowntrend = swingHighs[swingHighs.length-1].price < swingHighs[swingHighs.length-2].price
+                      && swingLows[swingLows.length-1].price < swingLows[swingLows.length-2].price;
+
+  if(lastClose > lastSwingHigh.price){
+    return priorUptrend
+      ? { type:'BOS', dir:'bullish', level:lastSwingHigh.price, label:'BOS bullisch — Aufwärtstrend bestätigt sich' }
+      : { type:'CHOCH', dir:'bullish', level:lastSwingHigh.price, label:'CHOCH bullisch — möglicher Trendwechsel nach oben' };
+  }
+  if(lastClose < lastSwingLow.price){
+    return priorDowntrend
+      ? { type:'BOS', dir:'bearish', level:lastSwingLow.price, label:'BOS bearisch — Abwärtstrend bestätigt sich' }
+      : { type:'CHOCH', dir:'bearish', level:lastSwingLow.price, label:'CHOCH bearisch — möglicher Trendwechsel nach unten' };
+  }
+  return { type:'none', dir:'', level:null, label:'Kein Structure-Break — Preis innerhalb der letzten Swing-Range' };
+}
+
+async function renderICT(symbol){
+  const box = document.getElementById('ictBox');
+  box.innerHTML = `<div class="skeleton" style="width:40%;"></div><div class="skeleton" style="width:80%;"></div>`;
+  try{
+    const klines = await fetchKlinesCached(symbol, '1h', 200);
+    const highs = klines.map(k => parseFloat(k[2]));
+    const lows = klines.map(k => parseFloat(k[3]));
+    const closes = klines.map(k => parseFloat(k[4]));
+    const volatility = analyzeVolatility(highs, lows, closes);
+    const fvgs = detectFVGs(klines);
+    const blocks = detectOrderBlocks(klines, volatility.atr);
+    const bosChoch = detectBOSCHOCH(highs, lows, closes);
+
+    box.innerHTML = `
+      <div style="border:1px solid var(--glass-border-strong); border-radius:var(--radius-sm); padding:14px;">
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin-bottom:10px;">ICT-Konzepte (aus echten 1H-Kerzen)</div>
+
+        ${bosChoch ? `<div class="${bosChoch.dir==='bullish'?'up':bosChoch.dir==='bearish'?'down':''}" style="font-weight:700; font-size:13px; margin-bottom:10px;">${bosChoch.label}${bosChoch.level ? ' bei ' + fmtPrice(bosChoch.level) : ''}</div>` : ''}
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div>
+            <div style="font-size:9.5px; color:var(--dim); text-transform:uppercase; margin-bottom:6px;">Fair Value Gaps (letzte ${fvgs.length})</div>
+            ${fvgs.length === 0 ? '<div style="color:var(--dim); font-size:11px;">Keine offenen FVGs erkannt.</div>' :
+              fvgs.map(f => `<div class="${f.type==='bullish'?'up':'down'}" style="font-size:11px; margin-bottom:4px;">${f.type==='bullish'?'▲':'▼'} ${fmtPrice(f.bottom)} – ${fmtPrice(f.top)}</div>`).join('')}
+          </div>
+          <div>
+            <div style="font-size:9.5px; color:var(--dim); text-transform:uppercase; margin-bottom:6px;">Order Blocks (letzte ${blocks.length})</div>
+            ${blocks.length === 0 ? '<div style="color:var(--dim); font-size:11px;">Keine klaren Order Blocks erkannt.</div>' :
+              blocks.map(b => `<div class="${b.type==='bullish'?'up':'down'}" style="font-size:11px; margin-bottom:4px;">${b.type==='bullish'?'▲':'▼'} ${fmtPrice(b.bottom)} – ${fmtPrice(b.top)}</div>`).join('')}
+          </div>
+        </div>
+        <div class="legend" style="margin-top:10px;">FVG = Preislücke zwischen 3 Kerzen, oft ein Magnet für spätere Preisbewegung. Order Block = letzte Gegenkerze vor einem starken Move, oft eine Zone, an der institutionelle Orders lagen. BOS = Trendbestätigung, CHOCH = möglicher Trendwechsel. Alles heuristisch aus echten Kerzendaten, keine Garantie.</div>
+      </div>`;
+  } catch(err){
+    box.innerHTML = `<span class="down">ICT-Analyse fehlgeschlagen: ${err.message}</span>`;
+  }
+}
+
+// ================= CORRELATION MATRIX =================
+
+async function runCorrelationMatrix(){
+  const status = document.getElementById('corrStatus');
+  const box = document.getElementById('corrMatrixBox');
+  let coins = document.getElementById('corrCoins').value.split(',').map(c => c.trim().toUpperCase()).filter(c => c);
+  coins = coins.map(c => c.endsWith('USDT') ? c : c+'USDT');
+  if(coins.length < 2){ status.textContent = 'Mindestens 2 Coins eintragen.'; status.className='down'; return; }
+  if(coins.length > 8){ status.textContent = 'Maximal 8 Coins auf einmal (Performance).'; status.className='down'; return; }
+
+  status.textContent = `Lade Kursdaten für ${coins.length} Coins...`;
+  status.className = '';
+  box.innerHTML = '';
+
+  try{
+    const allKlines = await Promise.all(coins.map(c => fetchKlines(c, '1h', 100)));
+    const returns = allKlines.map(klines => {
+      const closes = klines.map(k => parseFloat(k[4]));
+      const base = closes[0];
+      return closes.map(c => ((c-base)/base)*100);
+    });
+
+    const n = coins.length;
+    const matrix = [];
+    for(let i=0;i<n;i++){
+      matrix.push([]);
+      for(let j=0;j<n;j++){
+        matrix[i][j] = i === j ? 1 : pearsonCorrelation(returns[i], returns[j]);
+      }
+    }
+
+    function corrColor(v){
+      if(v >= 0.7) return 'rgba(52,224,161,0.55)';
+      if(v >= 0.3) return 'rgba(52,224,161,0.25)';
+      if(v > -0.3) return 'rgba(255,255,255,0.06)';
+      if(v > -0.7) return 'rgba(255,93,104,0.25)';
+      return 'rgba(255,93,104,0.55)';
+    }
+
+    let html = '<table style="border-collapse:collapse;"><thead><tr><th></th>';
+    coins.forEach(c => html += `<th style="text-align:center; padding:8px;">${c.replace('USDT','')}</th>`);
+    html += '</tr></thead><tbody>';
+    coins.forEach((c, i) => {
+      html += `<tr><td class="sym" style="text-align:left; padding:8px;">${c.replace('USDT','')}</td>`;
+      matrix[i].forEach(v => {
+        html += `<td style="text-align:center; padding:8px; background:${corrColor(v)}; font-family:var(--mono); font-weight:600;">${v.toFixed(2)}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    box.innerHTML = html;
+    status.textContent = `Fertig · ${new Date().toLocaleTimeString('de-DE')}`;
+    status.className = 'ok';
+  } catch(err){
+    status.textContent = `Fehler: ${err.message}`;
+    status.className = 'down';
+  }
+}
+document.getElementById('corrRunBtn').addEventListener('click', runCorrelationMatrix);
+
+// ================= OPEN INTEREST DASHBOARD =================
+
+function classifyOIQuadrant(priceChangePct, oiChangePct){
+  if(priceChangePct > 0 && oiChangePct > 0) return { label:'Neue Longs — Trend wird von frischem Kapital getragen', cls:'up' };
+  if(priceChangePct > 0 && oiChangePct <= 0) return { label:'Short-Covering — Anstieg eher durch Eindeckung als neue Käufer, schwächer', cls:'' };
+  if(priceChangePct <= 0 && oiChangePct > 0) return { label:'Neue Shorts — Abwärtsbewegung wird aktiv verkauft', cls:'down' };
+  return { label:'Kapitulation/Long-Abbau — Rückgang durch schließende Longs, kein neuer Verkaufsdruck', cls:'' };
+}
+
+async function runOIDashboard(){
+  const status = document.getElementById('oiStatus');
+  const box = document.getElementById('oiBody');
+  if(rawData.length === 0){ status.textContent = 'Warte auf Ticker-Daten...'; return; }
+
+  const candidates = [...rawData].sort((a,b) => parseFloat(b.quoteVolume) - parseFloat(a.quoteVolume)).slice(0, 15);
+  status.textContent = `Lade Open Interest für ${candidates.length} Coins...`;
+  status.className = '';
+  box.innerHTML = `<div class="skeleton" style="width:60%;"></div><div class="skeleton" style="width:85%;"></div>`;
+
+  const results = await Promise.all(candidates.map(async d => {
+    const oi = await analyzeOpenInterest(d.symbol);
+    const pct = parseFloat(d.priceChangePercent);
+    const quadrant = classifyOIQuadrant(pct, oi.change || 0);
+    return { symbol:d.symbol, price:parseFloat(d.lastPrice), pct, oiChange: oi.change, oiCurrent: oi.current, quadrant };
+  }));
+
+  const valid = results.filter(r => r.oiChange !== undefined && !isNaN(r.oiChange));
+  valid.sort((a,b) => Math.abs(b.oiChange) - Math.abs(a.oiChange));
+  const maxAbs = Math.max(...valid.map(r => Math.abs(r.oiChange)), 1);
+
+  box.innerHTML = valid.map(r => {
+    const barPct = Math.min(100, Math.abs(r.oiChange)/maxAbs*100);
+    const barColor = r.oiChange >= 0 ? 'var(--green)' : 'var(--red)';
+    return `<div class="fund-row" style="cursor:pointer;" data-sym="${r.symbol}" data-price="${r.price}">
+      <span class="sym" style="width:90px;">${r.symbol.replace('USDT','')}</span>
+      <span class="${r.oiChange>=0?'up':'down'}" style="width:80px;">${r.oiChange>=0?'+':''}${r.oiChange.toFixed(1)}% OI</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${barPct}%; left:0; background:${barColor};"></div></div>
+      <span class="${r.quadrant.cls}" style="width:340px; text-align:right; font-size:11px;">${r.quadrant.label}</span>
+    </div>`;
+  }).join('');
+
+  box.querySelectorAll('[data-sym]').forEach(row => {
+    row.addEventListener('click', () => loadLiquidationZones(row.dataset.sym, parseFloat(row.dataset.price)));
+  });
+
+  status.textContent = `Fertig · ${valid.length} Coins · ${new Date().toLocaleTimeString('de-DE')}`;
+  status.className = 'ok';
+}
+document.getElementById('oiRunBtn').addEventListener('click', runOIDashboard);
+
+// ================= ORDER FLOW CENTER =================
+
+function computeCVD(klines){
+  let cumulative = 0;
+  const series = [];
+  klines.forEach(k => {
+    const vol = parseFloat(k[5]);
+    const buyVol = parseFloat(k[9]);
+    const delta = (2*buyVol) - vol; // buyVol - sellVol
+    cumulative += delta;
+    series.push(cumulative);
+  });
+  const recentSlice = series.slice(-20);
+  const trendUp = recentSlice[recentSlice.length-1] > recentSlice[0];
+  const lastDelta = series.length>1 ? series[series.length-1]-series[series.length-2] : 0;
+  return { series, trendUp, lastDelta, last: series[series.length-1] };
+}
+
+function computeVolumeProfile(klines, bins){
+  const highs = klines.map(k=>parseFloat(k[2]));
+  const lows = klines.map(k=>parseFloat(k[3]));
+  const vols = klines.map(k=>parseFloat(k[5]));
+  const priceMin = Math.min(...lows), priceMax = Math.max(...highs);
+  const binSize = (priceMax - priceMin) / bins || 1;
+  const buckets = new Array(bins).fill(0);
+  klines.forEach((k,i) => {
+    const mid = (highs[i]+lows[i])/2;
+    let idx = Math.floor((mid - priceMin) / binSize);
+    idx = Math.max(0, Math.min(bins-1, idx));
+    buckets[idx] += vols[i];
+  });
+  let pocIdx = 0;
+  buckets.forEach((v,i) => { if(v > buckets[pocIdx]) pocIdx = i; });
+  const pocPrice = priceMin + (pocIdx+0.5)*binSize;
+  return { buckets, priceMin, binSize, pocPrice, pocIdx };
+}
+
+function computeAnchoredVWAP(klines){
+  let sumPV = 0, sumV = 0;
+  klines.forEach(k => {
+    const high = parseFloat(k[2]), low = parseFloat(k[3]), close = parseFloat(k[4]), vol = parseFloat(k[5]);
+    const typical = (high+low+close)/3;
+    sumPV += typical*vol; sumV += vol;
+  });
+  return sumV > 0 ? sumPV/sumV : null;
+}
+
+function detectLiquiditySweep(highs, lows, closes){
+  const { swingHighs, swingLows } = findPivots(highs, lows);
+  if(swingHighs.length < 1 || swingLows.length < 1) return null;
+  const lastHigh = swingHighs[swingHighs.length-1];
+  const lastLow = swingLows[swingLows.length-1];
+  // check last 5 candles for a wick beyond the prior swing that closed back inside
+  for(let i = highs.length-5; i < highs.length; i++){
+    if(i <= lastHigh.i && i <= lastLow.i) continue;
+    if(highs[i] > lastHigh.price && closes[i] < lastHigh.price){
+      return { type:'bearish', label:`Liquidity Sweep über ${fmtPrice(lastHigh.price)} — Hoch abgefischt, dann abgelehnt`, level:lastHigh.price };
+    }
+    if(lows[i] < lastLow.price && closes[i] > lastLow.price){
+      return { type:'bullish', label:`Liquidity Sweep unter ${fmtPrice(lastLow.price)} — Tief abgefischt, dann abgelehnt`, level:lastLow.price };
+    }
+  }
+  return null;
+}
+
+async function renderOrderFlow(symbol, price){
+  const box = document.getElementById('orderFlowBox');
+  box.innerHTML = `<div class="skeleton" style="width:45%;"></div><div class="skeleton" style="width:85%;"></div>`;
+  try{
+    const klines = await fetchKlinesCached(symbol, '1h', 200);
+    const highs = klines.map(k=>parseFloat(k[2]));
+    const lows = klines.map(k=>parseFloat(k[3]));
+    const closes = klines.map(k=>parseFloat(k[4]));
+
+    const cvd = computeCVD(klines);
+    const volProfile = computeVolumeProfile(klines, 12);
+    const vwap = computeAnchoredVWAP(klines);
+    const sweep = detectLiquiditySweep(highs, lows, closes);
+    const premiumDiscount = vwap ? (price > vwap ? 'Premium (über VWAP)' : 'Discount (unter VWAP)') : 'n/a';
+    const premiumCls = vwap ? (price > vwap ? 'down' : 'up') : '';
+
+    const maxBucket = Math.max(...volProfile.buckets);
+    const topBuckets = volProfile.buckets
+      .map((v,i) => ({ v, i, price: volProfile.priceMin + (i+0.5)*volProfile.binSize }))
+      .sort((a,b) => b.v - a.v)
+      .slice(0, 5)
+      .sort((a,b) => b.price - a.price);
+
+    box.innerHTML = `
+      <div style="border:1px solid var(--glass-border-strong); border-radius:var(--radius-sm); padding:14px;">
+        <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin-bottom:10px;">Order Flow Center</div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:10px; margin-bottom:12px;">
+          <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">CVD-TREND</div><div class="${cvd.trendUp?'up':'down'}" style="font-weight:700;">${cvd.trendUp?'Steigend':'Fallend'}</div></div>
+          <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">LETZTES DELTA</div><div class="${cvd.lastDelta>=0?'up':'down'}" style="font-weight:700;">${cvd.lastDelta>=0?'+':''}${cvd.lastDelta.toFixed(0)}</div></div>
+          <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">ANCHORED VWAP</div><div style="font-weight:700;">${vwap?fmtPrice(vwap):'n/a'}</div></div>
+          <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">PREIS VS. VWAP</div><div class="${premiumCls}" style="font-weight:700;">${premiumDiscount}</div></div>
+        </div>
+
+        ${sweep ? `<div class="${sweep.type==='bullish'?'up':'down'}" style="font-weight:600; font-size:12px; margin-bottom:10px;">⚡ ${sweep.label}</div>` : ''}
+
+        <div style="font-size:9.5px; color:var(--dim); text-transform:uppercase; margin-bottom:6px;">Volume Profile — Point of Control: ${fmtPrice(volProfile.pocPrice)}</div>
+        ${topBuckets.map(b => `
+          <div class="fund-row" style="padding:3px 0;">
+            <span style="width:90px; font-family:var(--mono); font-size:10.5px;">${fmtPrice(b.price)}</span>
+            <div class="bar-track"><div class="bar-fill" style="width:${(b.v/maxBucket*100).toFixed(0)}%; left:0; background:${b.i===volProfile.pocIdx?'var(--amber)':'var(--dim-2)'};"></div></div>
+          </div>`).join('')}
+
+        <div class="legend" style="margin-top:8px;">CVD = kumulative Taker-Kauf- minus Verkaufsvolumen (steigend = Käufer aggressiver). VWAP = volumengewichteter Durchschnittspreis über den Ladezeitraum. Volume Profile zeigt, wo am meisten gehandelt wurde — der Point of Control ist oft eine spätere Magnet-Zone. Liquidity Sweep = Preis holt kurz Stop-Loss-Cluster ab und dreht dann.</div>
+      </div>`;
+  } catch(err){
+    box.innerHTML = `<span class="down">Order-Flow-Analyse fehlgeschlagen: ${err.message}</span>`;
+  }
+}
+
+// ================= REPLAY MODE =================
+
+async function fetchKlinesRange(symbol, interval, startTime, limit){
+  const res = await fetch(`https://fapi.binance.com/fapi/v1/klines?symbol=${symbol}&interval=${interval}&startTime=${startTime}&limit=${limit}`);
+  if(!res.ok) throw new Error('Klines HTTP '+res.status);
+  return res.json();
+}
+
+let replayData = [];
+let replayIndex = 20;
+let replayTimer = null;
+let replayPosition = null; // { side, entry, index }
+let replayTrades = [];
+
+async function loadReplaySession(){
+  const status = document.getElementById('replayStatus');
+  const symbol = document.getElementById('replayCoin').value.trim().toUpperCase();
+  const dateVal = document.getElementById('replayDate').value;
+  const count = parseInt(document.getElementById('replayCandles').value) || 300;
+
+  if(!symbol){ status.textContent = 'Bitte Coin eintragen.'; status.className='down'; return; }
+  status.textContent = 'Lade historische Kerzen...';
+  status.className = '';
+
+  try{
+    let klines;
+    if(dateVal){
+      const startTime = new Date(dateVal).getTime();
+      klines = await fetchKlinesRange(symbol, '1h', startTime, Math.min(count, 1000));
+    } else {
+      klines = await fetchKlines(symbol, '1h', Math.min(count, 1000));
+    }
+    if(!klines || klines.length < 30) throw new Error('Zu wenig Daten für diesen Zeitraum');
+
+    replayData = klines;
+    replayIndex = Math.min(20, replayData.length - 2);
+    replayPosition = null;
+    replayTrades = [];
+    document.getElementById('replayControls').style.display = 'block';
+    document.getElementById('replayStats').innerHTML = '';
+    document.getElementById('replayPositionInfo').textContent = '';
+    status.textContent = `${replayData.length} Kerzen geladen (${symbol}, 1H) — echte Binance-Historie.`;
+    status.className = 'ok';
+    renderReplayStep();
+  } catch(err){
+    status.textContent = `Fehler: ${err.message}`;
+    status.className = 'down';
+  }
+}
+document.getElementById('replayLoadBtn').addEventListener('click', loadReplaySession);
+
+function renderReplayCandles(slice){
+  const svg = document.getElementById('replayChart');
+  const W = 700, H = 280, PAD = 30;
+  const highs = slice.map(k=>parseFloat(k[2])), lows = slice.map(k=>parseFloat(k[3]));
+  const yMin = Math.min(...lows), yMax = Math.max(...highs);
+  const range = (yMax - yMin) || 1;
+  const yScale = v => H - PAD - ((v-yMin)/range) * (H - 2*PAD);
+  const candleW = (W - 2*PAD) / slice.length;
+
+  let parts = [];
+  slice.forEach((k, i) => {
+    const open = parseFloat(k[1]), high = parseFloat(k[2]), low = parseFloat(k[3]), close = parseFloat(k[4]);
+    const x = PAD + i*candleW + candleW/2;
+    const up = close >= open;
+    const color = up ? 'var(--green)' : 'var(--red)';
+    parts.push(`<line x1="${x}" y1="${yScale(high)}" x2="${x}" y2="${yScale(low)}" stroke="${color}" stroke-width="1"/>`);
+    const bodyTop = yScale(Math.max(open,close)), bodyBot = yScale(Math.min(open,close));
+    parts.push(`<rect x="${x-candleW*0.35}" y="${bodyTop}" width="${candleW*0.7}" height="${Math.max(1,bodyBot-bodyTop)}" fill="${color}"/>`);
+  });
+
+  // simulated position marker
+  if(replayPosition){
+    const entryY = yScale(replayPosition.entry);
+    parts.push(`<line x1="${PAD}" y1="${entryY}" x2="${W-PAD}" y2="${entryY}" stroke="var(--amber)" stroke-width="1" stroke-dasharray="4,3"/>`);
+    parts.push(`<text x="${W-PAD}" y="${entryY-4}" text-anchor="end" class="axis-label" fill="var(--amber)">Entry ${replayPosition.side} ${fmtPrice(replayPosition.entry)}</text>`);
+  }
+
+  svg.innerHTML = parts.join('');
+}
+
+function renderReplayStep(){
+  const slice = replayData.slice(0, replayIndex+1);
+  const last = slice[slice.length-1];
+  const closePrice = parseFloat(last[4]);
+
+  renderReplayCandles(slice);
+  document.getElementById('replayPos').textContent = `Kerze ${replayIndex+1} / ${replayData.length} · Preis: ${fmtPrice(closePrice)} · ${new Date(last[0]).toLocaleString('de-DE')}`;
+
+  if(replayPosition){
+    const rawPct = ((closePrice - replayPosition.entry)/replayPosition.entry)*100 * (replayPosition.side==='LONG'?1:-1);
+    const infoEl = document.getElementById('replayPositionInfo');
+    infoEl.textContent = `Offene ${replayPosition.side}-Position: ${rawPct>=0?'+':''}${rawPct.toFixed(2)}%`;
+    infoEl.className = rawPct>=0 ? 'up' : 'down';
+  } else {
+    document.getElementById('replayPositionInfo').textContent = '';
+  }
+}
+
+document.getElementById('replayNextBtn').addEventListener('click', () => {
+  if(replayIndex < replayData.length-1){ replayIndex++; renderReplayStep(); }
+});
+document.getElementById('replayPrevBtn').addEventListener('click', () => {
+  if(replayIndex > 20){ replayIndex--; renderReplayStep(); }
+});
+document.getElementById('replayPlayBtn').addEventListener('click', function(){
+  if(replayTimer){
+    clearInterval(replayTimer); replayTimer = null;
+    this.textContent = '▶ Play';
+  } else {
+    const speed = parseInt(document.getElementById('replaySpeed').value);
+    replayTimer = setInterval(() => {
+      if(replayIndex >= replayData.length-1){ clearInterval(replayTimer); replayTimer=null; document.getElementById('replayPlayBtn').textContent='▶ Play'; return; }
+      replayIndex++; renderReplayStep();
+    }, speed);
+    this.textContent = '⏸ Pause';
+  }
+});
+
+function openReplayPosition(side){
+  if(replayPosition){ return; }
+  const closePrice = parseFloat(replayData[replayIndex][4]);
+  replayPosition = { side, entry: closePrice, index: replayIndex };
+  renderReplayStep();
+}
+document.getElementById('replayLongBtn').addEventListener('click', () => openReplayPosition('LONG'));
+document.getElementById('replayShortBtn').addEventListener('click', () => openReplayPosition('SHORT'));
+
+document.getElementById('replayCloseBtn').addEventListener('click', () => {
+  if(!replayPosition) return;
+  const closePrice = parseFloat(replayData[replayIndex][4]);
+  const pct = ((closePrice - replayPosition.entry)/replayPosition.entry)*100 * (replayPosition.side==='LONG'?1:-1);
+  replayTrades.push({ side: replayPosition.side, entry: replayPosition.entry, exit: closePrice, pct, candles: replayIndex - replayPosition.index });
+  replayPosition = null;
+  renderReplayStep();
+  renderReplayStats();
+});
+
+function renderReplayStats(){
+  const box = document.getElementById('replayStats');
+  if(replayTrades.length === 0){ box.innerHTML = ''; return; }
+  const wins = replayTrades.filter(t => t.pct > 0).length;
+  const winRate = (wins/replayTrades.length*100).toFixed(0);
+  const totalPct = replayTrades.reduce((s,t)=>s+t.pct,0);
+  box.innerHTML = `
+    <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin:14px 0 8px;">Replay-Session-Statistik</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(120px,1fr)); gap:8px; margin-bottom:8px;">
+      <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">TRADES</div><div style="font-weight:700;">${replayTrades.length}</div></div>
+      <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">WIN-RATE</div><div class="${winRate>=50?'up':'down'}" style="font-weight:700;">${winRate}%</div></div>
+      <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">SUMME PNL</div><div class="${totalPct>=0?'up':'down'}" style="font-weight:700;">${totalPct>=0?'+':''}${totalPct.toFixed(2)}%</div></div>
+    </div>
+    ${replayTrades.map(t => `<div class="fund-row"><span class="${t.side==='LONG'?'up':'down'}">${t.side}</span><span>${fmtPrice(t.entry)} → ${fmtPrice(t.exit)}</span><span class="${t.pct>=0?'up':'down'}">${t.pct>=0?'+':''}${t.pct.toFixed(2)}%</span></div>`).join('')}
+    <div class="legend" style="margin-top:8px;">Simulation an echten historischen Kerzen — keine Garantie, dass zukünftige Situationen ähnlich verlaufen.</div>
+  `;
+}
+
+// ================= BACKTESTER =================
+
+function computeEMASeries(closes, period){
+  const k = 2/(period+1);
+  const ema = [closes[0]];
+  for(let i=1;i<closes.length;i++){
+    ema.push(closes[i]*k + ema[i-1]*(1-k));
+  }
+  return ema;
+}
+
+function computeRSISeries(closes, period){
+  const rsi = new Array(closes.length).fill(50);
+  let gains = 0, losses = 0;
+  for(let i=1;i<=period && i<closes.length;i++){
+    const diff = closes[i]-closes[i-1];
+    if(diff>=0) gains += diff; else losses -= diff;
+  }
+  let avgGain = gains/period, avgLoss = losses/period;
+  rsi[period] = avgLoss === 0 ? 100 : 100 - (100/(1+avgGain/avgLoss));
+  for(let i=period+1;i<closes.length;i++){
+    const diff = closes[i]-closes[i-1];
+    const gain = diff>0?diff:0, loss = diff<0?-diff:0;
+    avgGain = (avgGain*(period-1)+gain)/period;
+    avgLoss = (avgLoss*(period-1)+loss)/period;
+    rsi[i] = avgLoss === 0 ? 100 : 100 - (100/(1+avgGain/avgLoss));
+  }
+  return rsi;
+}
+
+function generateSignals(strategy, closes){
+  const signals = new Array(closes.length).fill(null); // 'LONG' | 'SHORT' | null (no change)
+  if(strategy === 'emacross'){
+    const fast = computeEMASeries(closes, 9);
+    const slow = computeEMASeries(closes, 21);
+    for(let i=1;i<closes.length;i++){
+      if(fast[i] > slow[i] && fast[i-1] <= slow[i-1]) signals[i] = 'LONG';
+      else if(fast[i] < slow[i] && fast[i-1] >= slow[i-1]) signals[i] = 'SHORT';
+    }
+  } else if(strategy === 'rsi'){
+    const rsi = computeRSISeries(closes, 14);
+    for(let i=1;i<closes.length;i++){
+      if(rsi[i] < 30 && rsi[i-1] >= 30) signals[i] = 'LONG';
+      else if(rsi[i] > 70 && rsi[i-1] <= 70) signals[i] = 'SHORT';
+      else if(rsi[i] > 50 && rsi[i-1] <= 50 && signals.slice(0,i).reverse().find(s=>s) === 'LONG') { /* exit handled via flat below */ }
+    }
+  }
+  return signals;
+}
+
+function simulateBacktest(closes, signals){
+  let position = null; // {side, entryPrice, entryIndex}
+  const trades = [];
+  const equity = [0];
+  let running = 0;
+
+  for(let i=0;i<closes.length;i++){
+    const sig = signals[i];
+    if(sig && (!position || position.side !== sig)){
+      if(position){
+        const pct = ((closes[i]-position.entryPrice)/position.entryPrice)*100 * (position.side==='LONG'?1:-1);
+        running += pct;
+        trades.push({ side:position.side, entry:position.entryPrice, exit:closes[i], pct, bars:i-position.entryIndex });
+      }
+      position = { side: sig, entryPrice: closes[i], entryIndex: i };
+    }
+    equity.push(running + (position ? ((closes[i]-position.entryPrice)/position.entryPrice)*100*(position.side==='LONG'?1:-1) : 0));
+  }
+  if(position){
+    const lastClose = closes[closes.length-1];
+    const pct = ((lastClose-position.entryPrice)/position.entryPrice)*100 * (position.side==='LONG'?1:-1);
+    trades.push({ side:position.side, entry:position.entryPrice, exit:lastClose, pct, bars:closes.length-1-position.entryIndex });
+  }
+  return { trades, equity };
+}
+
+function computeMaxDrawdown(equity){
+  let peak = -Infinity, maxDD = 0;
+  equity.forEach(v => {
+    if(v > peak) peak = v;
+    const dd = peak - v;
+    if(dd > maxDD) maxDD = dd;
+  });
+  return maxDD;
+}
+
+async function runBacktest(){
+  const status = document.getElementById('btStatus');
+  const box = document.getElementById('btResults');
+  let symbol = document.getElementById('btCoin').value.trim().toUpperCase();
+  const strategy = document.getElementById('btStrategy').value;
+  const interval = document.getElementById('btInterval').value;
+  const count = Math.min(parseInt(document.getElementById('btCandles').value) || 500, 1000);
+  if(!symbol){ status.textContent = 'Bitte Coin eintragen.'; status.className='down'; return; }
+  if(!symbol.endsWith('USDT')) symbol += 'USDT';
+
+  status.textContent = `Lade ${count} ${interval}-Kerzen für ${symbol}...`;
+  status.className = '';
+  box.innerHTML = `<div class="skeleton" style="width:50%;"></div><div class="skeleton" style="width:90%;"></div>`;
+
+  try{
+    const klines = await fetchKlines(symbol, interval, count);
+    const closes = klines.map(k => parseFloat(k[4]));
+    const signals = generateSignals(strategy, closes);
+    const { trades, equity } = simulateBacktest(closes, signals);
+
+    if(trades.length === 0){
+      box.innerHTML = '<span style="color:var(--dim);">Keine Signale in diesem Zeitraum — Regel hat nicht ausgelöst.</span>';
+      status.textContent = 'Fertig, aber 0 Trades.'; status.className = '';
+      return;
+    }
+
+    const wins = trades.filter(t => t.pct > 0);
+    const losses = trades.filter(t => t.pct <= 0);
+    const winRate = (wins.length/trades.length*100);
+    const grossWin = wins.reduce((s,t)=>s+t.pct,0);
+    const grossLoss = Math.abs(losses.reduce((s,t)=>s+t.pct,0));
+    const profitFactor = grossLoss > 0 ? grossWin/grossLoss : (grossWin>0?Infinity:0);
+    const totalReturn = trades.reduce((s,t)=>s+t.pct,0);
+    const maxDD = computeMaxDrawdown(equity);
+    const avgBars = trades.reduce((s,t)=>s+t.bars,0)/trades.length;
+
+    // equity curve sparkline
+    const W=600, H=140, PAD=10;
+    const min = Math.min(...equity), max = Math.max(...equity);
+    const range = (max-min)||1;
+    const points = equity.map((v,i) => `${PAD+(i/(equity.length-1))*(W-2*PAD)},${H-PAD-((v-min)/range)*(H-2*PAD)}`).join(' ');
+    const lineColor = totalReturn>=0 ? 'var(--green)' : 'var(--red)';
+
+    box.innerHTML = `
+      <div style="font-size:10px; text-transform:uppercase; letter-spacing:1.5px; color:var(--dim); margin-bottom:8px;">Equity-Kurve (Summe % über alle Trades, ungehebelt)</div>
+      <svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto; background:#00000015; border-radius:8px; margin-bottom:12px;">
+        <line x1="${PAD}" y1="${H-PAD-((0-min)/range)*(H-2*PAD)}" x2="${W-PAD}" y2="${H-PAD-((0-min)/range)*(H-2*PAD)}" stroke="var(--line-solid)" stroke-width="1"/>
+        <polyline points="${points}" fill="none" stroke="${lineColor}" stroke-width="2"/>
+      </svg>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:8px;">
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">TRADES</div><div style="font-weight:700;">${trades.length}</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">WIN-RATE</div><div class="${winRate>=50?'up':'down'}" style="font-weight:700;">${winRate.toFixed(0)}%</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">PROFIT-FAKTOR</div><div class="${profitFactor>=1?'up':'down'}" style="font-weight:700;">${profitFactor===Infinity?'∞':profitFactor.toFixed(2)}</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">GESAMT-RETURN</div><div class="${totalReturn>=0?'up':'down'}" style="font-weight:700;">${totalReturn>=0?'+':''}${totalReturn.toFixed(1)}%</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">MAX DRAWDOWN</div><div class="down" style="font-weight:700;">-${maxDD.toFixed(1)}%</div></div>
+        <div style="background:#00000020; border-radius:8px; padding:8px 10px;"><div style="color:var(--dim); font-size:9.5px;">Ø HALTEDAUER</div><div style="font-weight:700;">${avgBars.toFixed(1)} Kerzen</div></div>
+      </div>
+      <div class="legend" style="margin-top:10px;">Regel: ${strategy==='emacross' ? 'EMA9 kreuzt EMA21 (Long bei Aufwärtskreuzung, Short bei Abwärtskreuzung, immer im Markt)' : 'RSI(14) unter 30 = Long-Einstieg, über 70 = Short-Einstieg'}. Echte historische ${interval}-Kerzen von Binance, ungehebelt, keine Gebühren/Slippage eingerechnet — reale Ergebnisse wären tendenziell schlechter. Vergangene Performance garantiert nichts für die Zukunft.</div>
+    `;
+    status.textContent = `Fertig · ${new Date().toLocaleTimeString('de-DE')}`;
+    status.className = 'ok';
+  } catch(err){
+    status.textContent = `Fehler: ${err.message}`;
+    status.className = 'down';
+    box.innerHTML = '';
+  }
+}
+document.getElementById('btRunBtn').addEventListener('click', runBacktest);
+
+// ================= PAGE SWITCHER =================
+
+function showPage(name){
+  document.getElementById('pageDashboard').style.display = name === 'dashboard' ? 'block' : 'none';
+  document.getElementById('pageAccount').style.display = name === 'account' ? 'block' : 'none';
+  document.getElementById('tabDashboard').classList.toggle('active', name === 'dashboard');
+  document.getElementById('tabAccount').classList.toggle('active', name === 'account');
+}
+
+// ================= GLOBAL COIN SEARCH =================
+
+async function runGlobalSearch(){
+  const statusEl5 = document.getElementById('globalSearchStatus');
+  let query = document.getElementById('globalSearch').value.trim().toUpperCase();
+  if(!query){ statusEl5.textContent = 'Bitte ein Symbol eingeben.'; statusEl5.className='down'; return; }
+  if(!query.endsWith('USDT')) query += 'USDT';
+
+  statusEl5.textContent = 'Suche ' + query + '...';
+  statusEl5.className = '';
+
+  // 1) check already-loaded ticker data first (fast path)
+  let d = rawData.find(x => x.symbol === query);
+  if(d){
+    statusEl5.textContent = query + ' gefunden ✓ — analysiere...';
+    statusEl5.className = 'up';
+    loadLiquidationZones(query, parseFloat(d.lastPrice));
+    return;
+  }
+
+  // 2) not in the currently filtered/top list — try a direct price fetch (works for any valid Binance Futures symbol)
+  try{
+    const endpoint = market === 'futures' ? 'https://fapi.binance.com/fapi/v1/ticker/price' : 'https://api.binance.com/api/v3/ticker/price';
+    const res = await fetch(`${endpoint}?symbol=${query}`);
+    if(!res.ok) throw new Error('nicht gefunden');
+    const data = await res.json();
+    if(!data.price) throw new Error('nicht gefunden');
+    statusEl5.textContent = query + ' gefunden (außerhalb Top-Liste) ✓ — analysiere...';
+    statusEl5.className = 'up';
+    loadLiquidationZones(query, parseFloat(data.price));
+  } catch(err){
+    statusEl5.textContent = `${query} nicht gefunden — prüf die Schreibweise (z.B. "PEPE" statt "PEPE/USDT") oder ob es auf Binance ${market === 'futures' ? 'Futures' : 'Spot'} existiert.`;
+    statusEl5.className = 'down';
+  }
+}
+document.getElementById('globalSearchBtn').addEventListener('click', runGlobalSearch);
+
+loadJournal();
+loadPortfolio();
+loadPriceAlerts();
+
+fetchData();
+
+// Market-Scanner läuft ab jetzt immer automatisch alle 30 Sekunden
+setTimeout(runMarketScanner, 2000); // kurze Verzögerung, damit Ticker/Funding zuerst geladen sind
+setInterval(runMarketScanner, 30000);
+</script>
+</body>
+</html>

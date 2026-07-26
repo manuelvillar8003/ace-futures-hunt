@@ -84,6 +84,24 @@ function gradeFromScore(score: number, maxScore: number){
   return 'F';
 }
 
+function composeReasonSentence(trendLabel: string, structureLabel: string, funding: number | undefined, bias: string){
+  const parts: string[] = [];
+  if(trendLabel.includes('Aufwärts')) parts.push('der Trend zeigt nach oben');
+  else if(trendLabel.includes('Abwärts')) parts.push('der Trend zeigt nach unten');
+  else parts.push('der Trend ist seitwärts');
+
+  if(structureLabel.includes('Bullisch')) parts.push('die Preisstruktur macht Higher Highs/Higher Lows');
+  else if(structureLabel.includes('Bearisch')) parts.push('die Preisstruktur macht Lower Highs/Lower Lows');
+
+  if(funding !== undefined){
+    if(funding > 0.02) parts.push('die Funding Rate ist positiv (Longs zahlen), was bei einer Short-Idee für zusätzlichen Druck sorgen könnte');
+    else if(funding < -0.02) parts.push('die Funding Rate ist negativ (Shorts zahlen), was bei einer Long-Idee für zusätzlichen Squeeze-Druck sorgen könnte');
+  }
+
+  const dirWord = bias === 'LONG' ? 'für eine Long-Idee' : 'für eine Short-Idee';
+  return `Zusammengefasst: ${parts.join(', ')} — das spricht ${dirWord}.`;
+}
+
 function fmtPrice(p: number){
   const n = p;
   if(n === 0 || isNaN(n)) return '0';
@@ -114,7 +132,7 @@ async function sendTelegram(text: string){
 
 export default async (req: Request) => {
   const store = getStore("ace-alerts");
-  const minGrade = Netlify.env.get("MIN_GRADE") || "A";
+  const minGrade = Netlify.env.get("MIN_GRADE") || "B";
   const minRank = GRADE_RANK[minGrade] ?? GRADE_RANK["A"];
 
   try{
@@ -191,7 +209,7 @@ export default async (req: Request) => {
         const riskLevel = riskFlags >= 2 ? 'Hoch' : riskFlags === 1 ? 'Mittel' : 'Niedrig';
 
         return { symbol: c.symbol, price: entry, grade, bias, trend: trend.label, structure: structure.label,
-          fundingLabel: funding !== undefined ? funding.toFixed(3)+'%' : 'k.A.', riskLevel,
+          fundingLabel: funding !== undefined ? funding.toFixed(3)+'%' : 'k.A.', fundingRaw: funding, riskLevel,
           entry, stopRef, tp1, tp2, tp3, rr1, rr2, rr3 };
       } catch(err){
         return null;
@@ -206,9 +224,10 @@ export default async (req: Request) => {
       if(already) continue; // schon in den letzten Stunden gemeldet
 
       const emoji = r.bias === 'LONG' ? '🚀' : '🔻';
+      const reasonSentence = composeReasonSentence(r.trend, r.structure, r.fundingRaw, r.bias);
       const text = `${emoji} ${r.symbol.replace('USDT','')} ${r.bias} (Server-Scan, kein Tab nötig)\n\n` +
-        `Note: ${r.grade} · Risiko: ${r.riskLevel}\n` +
-        `Trend: ${r.trend} · Struktur: ${r.structure} · Funding: ${r.fundingLabel}\n\n` +
+        `Note: ${r.grade} · Risiko: ${r.riskLevel}\n\n` +
+        `${reasonSentence}\n\n` +
         `Referenz-Level (ATR/Struktur-basiert, keine Empfehlung):\n` +
         `Entry: ${fmtPrice(r.entry)}\nStop: ${fmtPrice(r.stopRef)}\n` +
         `TP1: ${fmtPrice(r.tp1)} (RR ${r.rr1})\nTP2: ${fmtPrice(r.tp2)} (RR ${r.rr2})\nTP3: ${fmtPrice(r.tp3)} (RR ${r.rr3})\n\n` +

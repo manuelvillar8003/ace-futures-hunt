@@ -217,27 +217,47 @@ export default async (req: Request) => {
     }));
 
     const valid = results.filter((r: any) => r !== null && GRADE_RANK[r.grade] >= minRank && r.bias !== 'NEUTRAL');
+    let sentCount = 0;
 
     for(const r of valid as any[]){
       const key = `${r.symbol}|${r.grade}|${r.bias}`;
-      const already = await store.get(key);
-      if(already) continue; // schon in den letzten Stunden gemeldet
+      try{
+        let already = null;
+        try{
+          already = await store.get(key);
+        } catch(getErr){
+          // Netlify Blobs wirft bei manchen Versionen einen Fehler statt null zurueckzugeben,
+          // wenn der Key noch nie existiert hat. Das darf NICHT den Alert verhindern -
+          // im Zweifel lieber einmal zu viel senden als schweigend nie zu senden.
+          console.log(`Blob-Get fuer ${key} fehlgeschlagen (wird als "noch nicht gemeldet" behandelt): ${(getErr as Error).message}`);
+        }
+        if(already) continue; // schon in den letzten Stunden gemeldet
 
-      const emoji = r.bias === 'LONG' ? '🚀' : '🔻';
-      const reasonSentence = composeReasonSentence(r.trend, r.structure, r.fundingRaw, r.bias);
-      const text = `${emoji} ${r.symbol.replace('USDT','')} ${r.bias} (Server-Scan, kein Tab nötig)\n\n` +
-        `Note: ${r.grade} · Risiko: ${r.riskLevel}\n\n` +
-        `${reasonSentence}\n\n` +
-        `Referenz-Level (ATR/Struktur-basiert, keine Empfehlung):\n` +
-        `Entry: ${fmtPrice(r.entry)}\nStop: ${fmtPrice(r.stopRef)}\n` +
-        `TP1: ${fmtPrice(r.tp1)} (RR ${r.rr1})\nTP2: ${fmtPrice(r.tp2)} (RR ${r.rr2})\nTP3: ${fmtPrice(r.tp3)} (RR ${r.rr3})\n\n` +
-        `Kein Finanzrat — eigene Prüfung + eigenes Risikomanagement nötig. ACE FUTURES HUNT`;
+        const emoji = r.bias === 'LONG' ? '🚀' : '🔻';
+        const reasonSentence = composeReasonSentence(r.trend, r.structure, r.fundingRaw, r.bias);
+        const text = `${emoji} ${r.symbol.replace('USDT','')} ${r.bias} (Server-Scan, kein Tab nötig)\n\n` +
+          `Note: ${r.grade} · Risiko: ${r.riskLevel}\n\n` +
+          `${reasonSentence}\n\n` +
+          `Referenz-Level (ATR/Struktur-basiert, keine Empfehlung):\n` +
+          `Entry: ${fmtPrice(r.entry)}\nStop: ${fmtPrice(r.stopRef)}\n` +
+          `TP1: ${fmtPrice(r.tp1)} (RR ${r.rr1})\nTP2: ${fmtPrice(r.tp2)} (RR ${r.rr2})\nTP3: ${fmtPrice(r.tp3)} (RR ${r.rr3})\n\n` +
+          `Kein Finanzrat — eigene Prüfung + eigenes Risikomanagement nötig. ACE FUTURES HUNT`;
 
-      await sendTelegram(text);
-      await store.set(key, JSON.stringify({ at: Date.now() }));
+        await sendTelegram(text);
+        sentCount++;
+
+        try{
+          await store.set(key, JSON.stringify({ at: Date.now() }));
+        } catch(setErr){
+          console.log(`Blob-Set fuer ${key} fehlgeschlagen (Dedupe fuer diesen Key evtl. beim naechsten Mal erneut gesendet): ${(setErr as Error).message}`);
+        }
+      } catch(candidateErr){
+        // Ein Fehler bei EINEM Kandidaten darf die anderen nicht blockieren.
+        console.log(`Fehler bei Kandidat ${r.symbol}: ${(candidateErr as Error).message}`);
+      }
     }
 
-    console.log(`Scan fertig: ${valid.length} Setups über Schwelle ${minGrade}, ${candidates.length} Kandidaten geprüft.`);
+    console.log(`Scan fertig: ${valid.length} Setups über Schwelle ${minGrade} gefunden, ${sentCount} Nachrichten gesendet, ${candidates.length} Kandidaten geprüft.`);
   } catch(err: any){
     console.error("Scan-Fehler:", err.message);
   }

@@ -264,9 +264,18 @@ export default async (req: Request) => {
       }
     }
 
-    console.log(`Scan fertig: ${valid.length} Setups über Schwelle ${minGrade} gefunden, ${sentCount} Nachrichten gesendet, ${candidates.length} Kandidaten geprüft.`);
+    const summary = `Scan fertig: ${valid.length} Setups über Schwelle ${minGrade} gefunden, ${sentCount} Nachrichten gesendet, ${candidates.length} Kandidaten geprüft.`;
+    console.log(summary);
+    // TEMPORÄR zum Debuggen: schickt bei JEDEM Lauf eine kurze Status-Zeile, damit wir ohne
+    // Netlify-Log-Ansicht sehen, ob/wo der Scan hängt. Später wieder entfernen.
+    await sendTelegram(`🔧 DEBUG: ${summary}\nBeste Kandidaten: ${candidates.slice(0,5).map((c:any)=>c.symbol).join(', ')}`);
   } catch(err: any){
     console.log("Scan-Fehler:", err.message);
+    try{
+      await sendTelegram(`🔧 DEBUG: Scan ist komplett fehlgeschlagen: ${err.message}`);
+    } catch(sendErr){
+      console.log("Konnte nicht mal die Debug-Fehlermeldung senden:", sendErr);
+    }
   }
 };
 

@@ -117,7 +117,7 @@ async function sendTelegram(text: string){
   const token = Netlify.env.get("TELEGRAM_BOT_TOKEN");
   const chatId = Netlify.env.get("TELEGRAM_CHAT_ID");
   if(!token || !chatId){
-    console.error("TELEGRAM_BOT_TOKEN oder TELEGRAM_CHAT_ID fehlt als Umgebungsvariable.");
+    console.log("TELEGRAM_BOT_TOKEN oder TELEGRAM_CHAT_ID fehlt als Umgebungsvariable.");
     return;
   }
   const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -126,22 +126,27 @@ async function sendTelegram(text: string){
     body: JSON.stringify({ chat_id: chatId, text })
   });
   if(!res.ok){
-    console.error("Telegram-Fehler:", await res.text());
+    console.log("Telegram-Fehler:", await res.text());
   }
 }
 
 export default async (req: Request) => {
+  console.log("scan-and-alert: Start");
   const store = getStore("ace-alerts");
   const minGrade = Netlify.env.get("MIN_GRADE") || "B";
   const minRank = GRADE_RANK[minGrade] ?? GRADE_RANK["A"];
+  console.log(`scan-and-alert: MIN_GRADE=${minGrade}, TOKEN gesetzt=${!!Netlify.env.get("TELEGRAM_BOT_TOKEN")}, CHAT_ID gesetzt=${!!Netlify.env.get("TELEGRAM_CHAT_ID")}`);
 
   try{
+    console.log("scan-and-alert: hole Ticker + Funding...");
     const [tickerRes, fundingRes] = await Promise.all([
       fetch('https://fapi.binance.com/fapi/v1/ticker/24hr'),
       fetch('https://fapi.binance.com/fapi/v1/premiumIndex')
     ]);
+    console.log(`scan-and-alert: Ticker-Status=${tickerRes.status}, Funding-Status=${fundingRes.status}`);
     const tickerData = await tickerRes.json();
     const fundingData = await fundingRes.json();
+    console.log(`scan-and-alert: ${Array.isArray(tickerData) ? tickerData.length : 'KEIN ARRAY'} Ticker-Eintraege erhalten`);
 
     const fundingMap: Record<string, number> = {};
     fundingData.forEach((f: any) => { fundingMap[f.symbol] = parseFloat(f.lastFundingRate) * 100; });
@@ -155,6 +160,7 @@ export default async (req: Request) => {
       if(parseFloat(d.quoteVolume) < 100000) return false;
       return true;
     });
+    console.log(`scan-and-alert: ${filtered.length} Paare nach Filter`);
 
     const maxVol = Math.max(...filtered.map((d: any) => parseFloat(d.quoteVolume)));
     const candidates = filtered.map((d: any) => {
@@ -165,6 +171,7 @@ export default async (req: Request) => {
       const quickScore = pct*0.6 + volScore*30 + fundingSignal*200;
       return { symbol: d.symbol, price: parseFloat(d.lastPrice), quickScore, volScore, meme: memeScore(d.symbol) };
     }).sort((a: any,b: any) => b.quickScore - a.quickScore).slice(0, 15);
+    console.log(`scan-and-alert: Top-Kandidaten: ${candidates.map((c:any)=>c.symbol).join(', ')}`);
 
     const results = await Promise.all(candidates.map(async (c: any) => {
       try{
@@ -259,7 +266,7 @@ export default async (req: Request) => {
 
     console.log(`Scan fertig: ${valid.length} Setups über Schwelle ${minGrade} gefunden, ${sentCount} Nachrichten gesendet, ${candidates.length} Kandidaten geprüft.`);
   } catch(err: any){
-    console.error("Scan-Fehler:", err.message);
+    console.log("Scan-Fehler:", err.message);
   }
 };
 

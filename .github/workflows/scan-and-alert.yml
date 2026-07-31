@@ -5,8 +5,11 @@ on:
     - cron: "*/5 * * * *"
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 jobs:
-  ping-test:
+  scan-and-alert:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,8 +20,17 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Run ping test
+      - name: Run scanner
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: node scripts/ping-test.js
+          MIN_GRADE: "B"
+        run: node scripts/scan-and-alert.js
+
+      - name: Save dedupe state
+        run: |
+          git config user.name "ACE Futures Hunt Bot"
+          git config user.email "actions@github.com"
+          git add alert-state.json
+          git diff --staged --quiet || git commit -m "Update alert dedupe state [skip ci]"
+          git push || echo "Nichts zu pushen oder Push fehlgeschlagen (kein Problem, naechster Lauf versucht es wieder)"

@@ -25,12 +25,17 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           MIN_GRADE: "B"
-        run: node scripts/scan-and-alert.js
+        run: node scripts/scan-and-alert.js > run-log.txt 2>&1 || echo "SCRIPT_FAILED=true" >> $GITHUB_ENV
+        continue-on-error: true
 
-      - name: Save dedupe state
+      - name: Commit run log (always, for debugging)
         run: |
           git config user.name "ACE Futures Hunt Bot"
           git config user.email "actions@github.com"
-          git add alert-state.json
-          git diff --staged --quiet || git commit -m "Update alert dedupe state [skip ci]"
-          git push || echo "Nichts zu pushen oder Push fehlgeschlagen (kein Problem, naechster Lauf versucht es wieder)"
+          git add run-log.txt alert-state.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "Update run log + dedupe state [skip ci]"
+          git push || echo "push failed, ignoring"
+
+      - name: Fail if script failed
+        if: env.SCRIPT_FAILED == 'true'
+        run: exit 1

@@ -274,7 +274,21 @@ async function main() {
   console.log(`Fertig. ${sentCount} Nachrichten gesendet.`);
 }
 
-main().catch((err) => {
+main().catch(async (err) => {
   console.error("Scan komplett fehlgeschlagen:", err);
+  try {
+    if (TOKEN && CHAT_ID) {
+      await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: `🔧 DEBUG: Scan-Skript ist komplett abgestürzt:\n\n${err?.stack || err?.message || String(err)}`.slice(0, 4000),
+        }),
+      });
+    }
+  } catch (sendErr) {
+    console.error("Konnte nicht mal die Debug-Fehlermeldung senden:", sendErr);
+  }
   process.exit(1);
 });

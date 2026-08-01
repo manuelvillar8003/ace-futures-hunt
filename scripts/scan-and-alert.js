@@ -1,6 +1,7 @@
-// ACE FUTURES HUNT — Server-seitiger Scanner (GitHub Actions statt Netlify Scheduled Functions,
-// nachdem Netlify Functions bei uns aus unklaren Gruenden nie zuverlaessig ausgeloest haben).
-// Laeuft alle 5 Minuten via .github/workflows/scan-and-alert.yml
+// ACE FUTURES HUNT — Server-seitiger Scanner
+// Datenquelle: BYBIT statt Binance, da Binance Cloud-Rechenzentrums-IPs (GitHub Actions,
+// Netlify) mit HTTP 451 "restricted location" komplett blockiert. Bybit hat diese
+// pauschale Cloud-IP-Sperre nach aktuellem Wissensstand nicht - wird hier empirisch getestet.
 
 const fs = require("fs");
 const path = require("path");
@@ -12,12 +13,10 @@ const STATE_FILE = path.join(__dirname, "..", "alert-state.json");
 
 const GRADE_RANK = { "A+": 6, A: 5, B: 4, C: 3, D: 2, F: 1 };
 const MEME_KEYWORDS = ["INU","MOON","ELON","DOGE","SHIB","PEPE","FLOKI","BABY","SAFEMOON","WOJAK","CHAD","1000","MINI"];
-const EXCLUDE_BASE = ["USDC","FDUSD","TUSD","DAI","USDP","EUR","TRY","BUSD","USD1"];
 
 function memeScore(symbol) {
-  const base = symbol.replace("USDT", "");
   let hits = 0;
-  MEME_KEYWORDS.forEach((k) => { if (base.includes(k)) hits++; });
+  MEME_KEYWORDS.forEach((k) => { if (symbol.includes(k)) hits++; });
   return Math.min(hits, 3);
 }
 
@@ -59,15 +58,6 @@ function analyzeStructure(highs, lows) {
   else if (lh && ll) { label = "Bearische Struktur"; points = -1; }
   else { label = "Range-Struktur"; points = 0; }
   return { label, points, lastSwingHigh: swingHighs.at(-1).price, lastSwingLow: swingLows.at(-1).price };
-}
-
-function analyzeSmartMoney(klines) {
-  let totalVol = 0, buyVol = 0;
-  klines.slice(-48).forEach((k) => { totalVol += parseFloat(k[5]); buyVol += parseFloat(k[9]); });
-  const buyRatio = totalVol > 0 ? buyVol / totalVol : 0.5;
-  let points = 0;
-  if (buyRatio > 0.56) points = 1; else if (buyRatio < 0.44) points = -1;
-  return { buyRatio, points };
 }
 
 function analyzeVolatility(highs, lows, closes) {
@@ -128,70 +118,52 @@ async function sendTelegram(text) {
   if (!res.ok) throw new Error(`Telegram lehnte ab: ${body}`);
 }
 
-function loadState() {
+async function sendDebug(text) {
   try {
-    return JSON.parse(fs.readFileSync(STATE_FILE, "utf8"));
-  } catch (err) {
-    return {};
+    if (TOKEN && CHAT_ID) await sendTelegram(text.slice(0, 4000));
+  } catch (e) {
+    console.error("Konnte Debug-Nachricht nicht senden:", e.message);
   }
 }
 
+function loadState() {
+  try { return JSON.parse(fs.readFileSync(STATE_FILE, "utf8")); } catch { return {}; }
+}
 function saveState(state) {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 
 async function main() {
-  console.log("Scan startet. MIN_GRADE =", MIN_GRADE, "| Token gesetzt:", !!TOKEN, "| Chat-ID gesetzt:", !!CHAT_ID);
+  console.log("Scan startet (Bybit). MIN_GRADE =", MIN_GRADE);
   if (!TOKEN || !CHAT_ID) {
     console.error("TELEGRAM_BOT_TOKEN oder TELEGRAM_CHAT_ID fehlt.");
     process.exit(1);
   }
-
   const minRank = GRADE_RANK[MIN_GRADE] ?? GRADE_RANK.B;
 
-  const [tickerRes, fundingRes] = await Promise.all([
-    fetch("https://fapi.binance.com/fapi/v1/ticker/24hr"),
-    fetch("https://fapi.binance.com/fapi/v1/premiumIndex"),
-  ]);
-  const tickerData = await tickerRes.json();
-  const fundingData = await fundingRes.json();
-  console.log(`Ticker HTTP-Status: ${tickerRes.status} | Funding HTTP-Status: ${fundingRes.status}`);
+  const tickerRes = await fetch("https://api.bybit.com/v5/market/tickers?category=linear");
+  console.log("Bybit Ticker HTTP-Status:", tickerRes.status);
+  const tickerJson = await tickerRes.json();
 
-  if (!Array.isArray(tickerData) || !Array.isArray(fundingData)) {
-    const msg = `🔧 DEBUG: Binance gab kein Array zurück.\nTicker-Status: ${tickerRes.status}, Body: ${JSON.stringify(tickerData).slice(0,500)}\nFunding-Status: ${fundingRes.status}, Body: ${JSON.stringify(fundingData).slice(0,500)}`;
-    console.error(msg);
-    if (TOKEN && CHAT_ID) {
-      await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: CHAT_ID, text: msg.slice(0, 4000) }),
-      });
-    }
+  if (tickerJson.retCode !== 0 || !tickerJson.result || !Array.isArray(tickerJson.result.list)) {
+    await sendDebug(`🔧 DEBUG: Bybit-Ticker unerwartet: ${JSON.stringify(tickerJson).slice(0, 800)}`);
     process.exit(1);
   }
-  console.log(`Ticker-Einträge: ${tickerData.length}`);
 
-  const fundingMap = {};
-  fundingData.forEach((f) => { fundingMap[f.symbol] = parseFloat(f.lastFundingRate) * 100; });
+  const allTickers = tickerJson.result.list.filter((d) => d.symbol.endsWith("USDT"));
+  console.log(`Bybit-Ticker-Einträge (USDT-Perp): ${allTickers.length}`);
 
-  const filtered = tickerData.filter((d) => {
-    if (!d.symbol.endsWith("USDT")) return false;
-    const base = d.symbol.slice(0, -4);
-    if (EXCLUDE_BASE.includes(base)) return false;
-    if (parseFloat(d.quoteVolume) < 100000) return false;
-    return true;
-  });
-  console.log(`Nach Filter: ${filtered.length} Paare`);
+  const filtered = allTickers.filter((d) => parseFloat(d.turnover24h) > 100000);
+  const maxVol = Math.max(...filtered.map((d) => parseFloat(d.turnover24h)));
 
-  const maxVol = Math.max(...filtered.map((d) => parseFloat(d.quoteVolume)));
   const candidates = filtered
     .map((d) => {
-      const pct = Math.abs(parseFloat(d.priceChangePercent));
-      const volScore = Math.log10(parseFloat(d.quoteVolume) + 1) / Math.log10(maxVol + 1);
-      const funding = fundingMap[d.symbol];
-      const fundingSignal = funding !== undefined ? Math.abs(funding) : 0;
+      const pct = Math.abs(parseFloat(d.price24hPcnt)) * 100; // Bybit gibt Dezimalbruch, nicht %
+      const volScore = Math.log10(parseFloat(d.turnover24h) + 1) / Math.log10(maxVol + 1);
+      const funding = parseFloat(d.fundingRate) * 100;
+      const fundingSignal = Math.abs(funding);
       const quickScore = pct * 0.6 + volScore * 30 + fundingSignal * 200;
-      return { symbol: d.symbol, price: parseFloat(d.lastPrice), quickScore, volScore, meme: memeScore(d.symbol) };
+      return { symbol: d.symbol, price: parseFloat(d.lastPrice), funding, quickScore, volScore, meme: memeScore(d.symbol) };
     })
     .sort((a, b) => b.quickScore - a.quickScore)
     .slice(0, 20);
@@ -200,29 +172,33 @@ async function main() {
   const results = await Promise.all(
     candidates.map(async (c) => {
       try {
-        const klinesRes = await fetch(`https://fapi.binance.com/fapi/v1/klines?symbol=${c.symbol}&interval=1h&limit=150`);
-        const klines = await klinesRes.json();
-        const highs = klines.map((k) => parseFloat(k[2]));
-        const lows = klines.map((k) => parseFloat(k[3]));
-        const closes = klines.map((k) => parseFloat(k[4]));
+        const klinesRes = await fetch(`https://api.bybit.com/v5/market/kline?category=linear&symbol=${c.symbol}&interval=60&limit=150`);
+        const klinesJson = await klinesRes.json();
+        if (klinesJson.retCode !== 0 || !klinesJson.result || !Array.isArray(klinesJson.result.list)) {
+          console.log(`Kline-Fehler bei ${c.symbol}:`, JSON.stringify(klinesJson).slice(0, 200));
+          return null;
+        }
+        // Bybit liefert neueste zuerst -> umdrehen fuer chronologische Reihenfolge
+        const rows = [...klinesJson.result.list].reverse();
+        const highs = rows.map((k) => parseFloat(k[2]));
+        const lows = rows.map((k) => parseFloat(k[3]));
+        const closes = rows.map((k) => parseFloat(k[4]));
+        if (closes.length < 55) return null;
 
         const trend = analyzeTrend(closes);
         const structure = analyzeStructure(highs, lows);
-        const smartMoney = analyzeSmartMoney(klines);
         const volatility = analyzeVolatility(highs, lows, closes);
-        const funding = fundingMap[c.symbol];
+        const funding = c.funding;
 
         let fundingPoints = 0;
-        if (funding !== undefined) {
-          if (funding > 0.05) fundingPoints = -1;
-          else if (funding > 0.02) fundingPoints = -0.5;
-          else if (funding < -0.05) fundingPoints = 1;
-          else if (funding < -0.02) fundingPoints = 0.5;
-        }
+        if (funding > 0.05) fundingPoints = -1;
+        else if (funding > 0.02) fundingPoints = -0.5;
+        else if (funding < -0.05) fundingPoints = 1;
+        else if (funding < -0.02) fundingPoints = 0.5;
 
-        const totalScore = trend.points + structure.points + smartMoney.points + fundingPoints;
-        const grade = gradeFromScore(totalScore, 4);
-        const bias = totalScore >= 1.2 ? "LONG" : totalScore <= -1.2 ? "SHORT" : "NEUTRAL";
+        const totalScore = trend.points + structure.points + fundingPoints;
+        const grade = gradeFromScore(totalScore, 3);
+        const bias = totalScore >= 1 ? "LONG" : totalScore <= -1 ? "SHORT" : "NEUTRAL";
 
         const dir = bias === "LONG" ? 1 : bias === "SHORT" ? -1 : 0;
         const atr = volatility.atr;
@@ -256,7 +232,6 @@ async function main() {
   const state = loadState();
   const now = Date.now();
   const TWELVE_HOURS = 12 * 60 * 60 * 1000;
-  // alte Eintraege aufraeumen
   Object.keys(state).forEach((k) => { if (now - state[k] > TWELVE_HOURS) delete state[k]; });
 
   let sentCount = 0;
@@ -267,7 +242,7 @@ async function main() {
     const emoji = r.bias === "LONG" ? "🚀" : "🔻";
     const reasonSentence = composeReasonSentence(r.trend, r.structure, r.fundingRaw, r.bias);
     const text =
-      `${emoji} ${r.symbol.replace("USDT", "")} ${r.bias} (Server-Scan via GitHub Actions)\n\n` +
+      `${emoji} ${r.symbol.replace("USDT", "")} ${r.bias} (Server-Scan via GitHub Actions, Datenquelle Bybit)\n\n` +
       `Note: ${r.grade} · Risiko: ${r.riskLevel}\n\n` +
       `${reasonSentence}\n\n` +
       `Referenz-Level (ATR/Struktur-basiert, keine Empfehlung):\n` +
@@ -285,24 +260,13 @@ async function main() {
   }
 
   saveState(state);
-  console.log(`Fertig. ${sentCount} Nachrichten gesendet.`);
+  const summary = `Fertig. ${sentCount} Nachrichten gesendet, ${valid.length} Setups gefunden, ${candidates.length} Kandidaten geprüft.`;
+  console.log(summary);
+  await sendDebug(`🔧 DEBUG (Bybit-Testlauf): ${summary}`);
 }
 
 main().catch(async (err) => {
   console.error("Scan komplett fehlgeschlagen:", err);
-  try {
-    if (TOKEN && CHAT_ID) {
-      await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: `🔧 DEBUG: Scan-Skript ist komplett abgestürzt:\n\n${err?.stack || err?.message || String(err)}`.slice(0, 4000),
-        }),
-      });
-    }
-  } catch (sendErr) {
-    console.error("Konnte nicht mal die Debug-Fehlermeldung senden:", sendErr);
-  }
+  await sendDebug(`🔧 DEBUG: Scan-Skript ist komplett abgestürzt:\n\n${err?.stack || err?.message || String(err)}`);
   process.exit(1);
 });

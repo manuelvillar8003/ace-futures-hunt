@@ -1,8 +1,7 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: AEON, SHIB, AAVE, UNI, MIRA, ZEC, HYPE, ADA, ONDO, PEPE, GRVT, LTC
+Top-Kandidaten: AEON, AAVE, SHIB, UNI, MIRA, ONDO, HYPE, NEAR, SOL, AVAX, BNB, LTC
 1 Setups über Schwelle B gefunden von 12 Kandidaten.
-Telegram-Status 200: {"ok":true,"result":{"message_id":67,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1785606794,"text":"\ud83d\udd3b AEON SHORT (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach unten, die Preisstruktur macht Lower Highs/Lower Lows \u2014 das spricht f\u00fcr eine Short-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.06729\nStop: 0.09553\nTP1: 0.05688 (RR 0.37)\nTP2: 0.04647 (RR 0.74)\nTP3: 0.03260 (RR 1.23)\n\nKein Finanzrat \u2014 eigene Pr\u00fcfung + eigenes Risikomanagement n\u00f6tig. ACE FUTURES HUNT"}}
-Fertig. 1 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
-Telegram-Status 200: {"ok":true,"result":{"message_id":68,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1785606794,"text":"\ud83d\udd27 DEBUG (CoinGecko-Testlauf): Fertig. 1 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten gepr\u00fcft (Quelle: CoinGecko)."}}
+Fertig. 0 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Telegram-Status 200: {"ok":true,"result":{"message_id":69,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1785607794,"text":"\ud83d\udd27 DEBUG (CoinGecko-Testlauf): Fertig. 0 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten gepr\u00fcft (Quelle: CoinGecko)."}}

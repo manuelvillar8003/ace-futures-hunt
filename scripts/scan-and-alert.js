@@ -1,7 +1,8 @@
 // ACE FUTURES HUNT — Server-seitiger Scanner
-// Datenquelle: BYBIT statt Binance, da Binance Cloud-Rechenzentrums-IPs (GitHub Actions,
-// Netlify) mit HTTP 451 "restricted location" komplett blockiert. Bybit hat diese
-// pauschale Cloud-IP-Sperre nach aktuellem Wissensstand nicht - wird hier empirisch getestet.
+// Datenquelle: COINGECKO (nicht Binance/Bybit direkt) - Binance blockiert Cloud-IPs mit HTTP 451,
+// Bybit blockiert vermutlich per Cloudflare (HTML statt JSON). CoinGecko ist ein reiner
+// Daten-Aggregator, der fuer genau solche Bot-Zugriffe gebaut ist und Cloud-IPs nicht sperrt.
+// Kompromiss: keine Funding-Rate (nur boersenspezifisch), dafuer Trend+Struktur aus echten Kursdaten.
 
 const fs = require("fs");
 const path = require("path");
@@ -12,11 +13,11 @@ const MIN_GRADE = process.env.MIN_GRADE || "B";
 const STATE_FILE = path.join(__dirname, "..", "alert-state.json");
 
 const GRADE_RANK = { "A+": 6, A: 5, B: 4, C: 3, D: 2, F: 1 };
-const MEME_KEYWORDS = ["INU","MOON","ELON","DOGE","SHIB","PEPE","FLOKI","BABY","SAFEMOON","WOJAK","CHAD","1000","MINI"];
+const MEME_KEYWORDS = ["inu","moon","elon","doge","shib","pepe","floki","baby","safemoon","wojak","chad"];
 
-function memeScore(symbol) {
+function memeScore(symbolLower) {
   let hits = 0;
-  MEME_KEYWORDS.forEach((k) => { if (symbol.includes(k)) hits++; });
+  MEME_KEYWORDS.forEach((k) => { if (symbolLower.includes(k)) hits++; });
   return Math.min(hits, 3);
 }
 
@@ -27,19 +28,20 @@ function sma(values, period) {
 }
 
 function analyzeTrend(closes) {
-  const s20 = sma(closes, 20), s50 = sma(closes, 50);
+  const s5 = sma(closes, 5), s15 = sma(closes, 15);
   const last = closes[closes.length - 1];
-  if (s20 === null || s50 === null) return { label: "Nicht genug Daten", points: 0 };
-  if (last > s20 && s20 > s50) return { label: "Aufwärtstrend", points: 1 };
-  if (last < s20 && s20 < s50) return { label: "Abwärtstrend", points: -1 };
+  if (s5 === null || s15 === null) return { label: "Nicht genug Daten", points: 0 };
+  if (last > s5 && s5 > s15) return { label: "Aufwärtstrend", points: 1 };
+  if (last < s5 && s5 < s15) return { label: "Abwärtstrend", points: -1 };
   return { label: "Seitwärts", points: 0 };
 }
 
 function findPivots(highs, lows) {
   const swingHighs = [], swingLows = [];
-  for (let i = 3; i < highs.length - 3; i++) {
-    if (highs[i] === Math.max(...highs.slice(i - 3, i + 4))) swingHighs.push({ i, price: highs[i] });
-    if (lows[i] === Math.min(...lows.slice(i - 3, i + 4))) swingLows.push({ i, price: lows[i] });
+  const w = 2;
+  for (let i = w; i < highs.length - w; i++) {
+    if (highs[i] === Math.max(...highs.slice(i - w, i + w + 1))) swingHighs.push({ i, price: highs[i] });
+    if (lows[i] === Math.min(...lows.slice(i - w, i + w + 1))) swingLows.push({ i, price: lows[i] });
   }
   return { swingHighs, swingLows };
 }
@@ -47,7 +49,7 @@ function findPivots(highs, lows) {
 function analyzeStructure(highs, lows) {
   const { swingHighs, swingLows } = findPivots(highs, lows);
   if (swingHighs.length < 2 || swingLows.length < 2) {
-    return { label: "Zu wenig Struktur", points: 0, lastSwingHigh: Math.max(...highs.slice(-30)), lastSwingLow: Math.min(...lows.slice(-30)) };
+    return { label: "Zu wenig Struktur", points: 0, lastSwingHigh: Math.max(...highs.slice(-10)), lastSwingLow: Math.min(...lows.slice(-10)) };
   }
   const hh = swingHighs.at(-1).price > swingHighs.at(-2).price;
   const hl = swingLows.at(-1).price > swingLows.at(-2).price;
@@ -65,7 +67,7 @@ function analyzeVolatility(highs, lows, closes) {
   for (let i = 1; i < closes.length; i++) {
     trs.push(Math.max(highs[i] - lows[i], Math.abs(highs[i] - closes[i - 1]), Math.abs(lows[i] - closes[i - 1])));
   }
-  const atr = sma(trs, 14) || closes.at(-1) * 0.01;
+  const atr = sma(trs, Math.min(14, trs.length)) || closes.at(-1) * 0.02;
   return { atr };
 }
 
@@ -89,22 +91,15 @@ function fmtPrice(n) {
   return n.toFixed(decimals);
 }
 
-function composeReasonSentence(trendLabel, structureLabel, funding, bias) {
+function composeReasonSentence(trendLabel, structureLabel, bias) {
   const parts = [];
   if (trendLabel.includes("Aufwärts")) parts.push("der Trend zeigt nach oben");
   else if (trendLabel.includes("Abwärts")) parts.push("der Trend zeigt nach unten");
   else parts.push("der Trend ist seitwärts");
-
   if (structureLabel.includes("Bullisch")) parts.push("die Preisstruktur macht Higher Highs/Higher Lows");
   else if (structureLabel.includes("Bearisch")) parts.push("die Preisstruktur macht Lower Highs/Lower Lows");
-
-  if (funding !== undefined) {
-    if (funding > 0.02) parts.push("die Funding Rate ist positiv (Longs zahlen)");
-    else if (funding < -0.02) parts.push("die Funding Rate ist negativ (Shorts zahlen)");
-  }
-
   const dirWord = bias === "LONG" ? "für eine Long-Idee" : "für eine Short-Idee";
-  return `Zusammengefasst: ${parts.join(", ")} — das spricht ${dirWord}.`;
+  return `Zusammengefasst: ${parts.join(", ")} — das spricht ${dirWord}. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)`;
 }
 
 async function sendTelegram(text) {
@@ -117,13 +112,9 @@ async function sendTelegram(text) {
   console.log(`Telegram-Status ${res.status}: ${body}`);
   if (!res.ok) throw new Error(`Telegram lehnte ab: ${body}`);
 }
-
 async function sendDebug(text) {
-  try {
-    if (TOKEN && CHAT_ID) await sendTelegram(text.slice(0, 4000));
-  } catch (e) {
-    console.error("Konnte Debug-Nachricht nicht senden:", e.message);
-  }
+  try { if (TOKEN && CHAT_ID) await sendTelegram(text.slice(0, 4000)); }
+  catch (e) { console.error("Konnte Debug-Nachricht nicht senden:", e.message); }
 }
 
 function loadState() {
@@ -132,99 +123,92 @@ function loadState() {
 function saveState(state) {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
+function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
 async function main() {
-  console.log("Scan startet (Bybit). MIN_GRADE =", MIN_GRADE);
+  console.log("Scan startet (CoinGecko). MIN_GRADE =", MIN_GRADE);
   if (!TOKEN || !CHAT_ID) {
     console.error("TELEGRAM_BOT_TOKEN oder TELEGRAM_CHAT_ID fehlt.");
     process.exit(1);
   }
   const minRank = GRADE_RANK[MIN_GRADE] ?? GRADE_RANK.B;
 
-  const tickerRes = await fetch("https://api.bybit.com/v5/market/tickers?category=linear");
-  console.log("Bybit Ticker HTTP-Status:", tickerRes.status);
-  const tickerJson = await tickerRes.json();
-
-  if (tickerJson.retCode !== 0 || !tickerJson.result || !Array.isArray(tickerJson.result.list)) {
-    await sendDebug(`🔧 DEBUG: Bybit-Ticker unerwartet: ${JSON.stringify(tickerJson).slice(0, 800)}`);
+  const marketsRes = await fetch(
+    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=30&page=1&price_change_percentage=24h"
+  );
+  console.log("CoinGecko Markets HTTP-Status:", marketsRes.status);
+  const marketsText = await marketsRes.text();
+  let markets;
+  try {
+    markets = JSON.parse(marketsText);
+  } catch (e) {
+    await sendDebug(`🔧 DEBUG: CoinGecko-Markets kein JSON. Status ${marketsRes.status}. Body: ${marketsText.slice(0, 600)}`);
     process.exit(1);
   }
+  if (!Array.isArray(markets)) {
+    await sendDebug(`🔧 DEBUG: CoinGecko-Markets unerwartet: ${JSON.stringify(markets).slice(0, 600)}`);
+    process.exit(1);
+  }
+  console.log(`CoinGecko-Einträge: ${markets.length}`);
 
-  const allTickers = tickerJson.result.list.filter((d) => d.symbol.endsWith("USDT"));
-  console.log(`Bybit-Ticker-Einträge (USDT-Perp): ${allTickers.length}`);
-
-  const filtered = allTickers.filter((d) => parseFloat(d.turnover24h) > 100000);
-  const maxVol = Math.max(...filtered.map((d) => parseFloat(d.turnover24h)));
-
-  const candidates = filtered
-    .map((d) => {
-      const pct = Math.abs(parseFloat(d.price24hPcnt)) * 100; // Bybit gibt Dezimalbruch, nicht %
-      const volScore = Math.log10(parseFloat(d.turnover24h) + 1) / Math.log10(maxVol + 1);
-      const funding = parseFloat(d.fundingRate) * 100;
-      const fundingSignal = Math.abs(funding);
-      const quickScore = pct * 0.6 + volScore * 30 + fundingSignal * 200;
-      return { symbol: d.symbol, price: parseFloat(d.lastPrice), funding, quickScore, volScore, meme: memeScore(d.symbol) };
-    })
-    .sort((a, b) => b.quickScore - a.quickScore)
-    .slice(0, 20);
+  const candidates = markets
+    .filter((m) => m.total_volume > 500000)
+    .map((m) => ({
+      id: m.id,
+      symbol: m.symbol.toUpperCase(),
+      price: m.current_price,
+      pct24h: m.price_change_percentage_24h || 0,
+      volume: m.total_volume,
+      meme: memeScore(m.id),
+    }))
+    .sort((a, b) => Math.abs(b.pct24h) - Math.abs(a.pct24h))
+    .slice(0, 12);
   console.log("Top-Kandidaten:", candidates.map((c) => c.symbol).join(", "));
 
-  const results = await Promise.all(
-    candidates.map(async (c) => {
-      try {
-        const klinesRes = await fetch(`https://api.bybit.com/v5/market/kline?category=linear&symbol=${c.symbol}&interval=60&limit=150`);
-        const klinesJson = await klinesRes.json();
-        if (klinesJson.retCode !== 0 || !klinesJson.result || !Array.isArray(klinesJson.result.list)) {
-          console.log(`Kline-Fehler bei ${c.symbol}:`, JSON.stringify(klinesJson).slice(0, 200));
-          return null;
-        }
-        // Bybit liefert neueste zuerst -> umdrehen fuer chronologische Reihenfolge
-        const rows = [...klinesJson.result.list].reverse();
-        const highs = rows.map((k) => parseFloat(k[2]));
-        const lows = rows.map((k) => parseFloat(k[3]));
-        const closes = rows.map((k) => parseFloat(k[4]));
-        if (closes.length < 55) return null;
+  const results = [];
+  for (const c of candidates) {
+    try {
+      const ohlcRes = await fetch(`https://api.coingecko.com/api/v3/coins/${c.id}/ohlc?vs_currency=usd&days=14`);
+      const ohlcText = await ohlcRes.text();
+      let ohlc;
+      try { ohlc = JSON.parse(ohlcText); } catch { console.log(`OHLC kein JSON bei ${c.symbol}: ${ohlcText.slice(0,150)}`); results.push(null); await sleep(1500); continue; }
+      if (!Array.isArray(ohlc) || ohlc.length < 20) { results.push(null); await sleep(1500); continue; }
 
-        const trend = analyzeTrend(closes);
-        const structure = analyzeStructure(highs, lows);
-        const volatility = analyzeVolatility(highs, lows, closes);
-        const funding = c.funding;
+      const highs = ohlc.map((k) => k[2]);
+      const lows = ohlc.map((k) => k[3]);
+      const closes = ohlc.map((k) => k[4]);
 
-        let fundingPoints = 0;
-        if (funding > 0.05) fundingPoints = -1;
-        else if (funding > 0.02) fundingPoints = -0.5;
-        else if (funding < -0.05) fundingPoints = 1;
-        else if (funding < -0.02) fundingPoints = 0.5;
+      const trend = analyzeTrend(closes);
+      const structure = analyzeStructure(highs, lows);
+      const volatility = analyzeVolatility(highs, lows, closes);
 
-        const totalScore = trend.points + structure.points + fundingPoints;
-        const grade = gradeFromScore(totalScore, 3);
-        const bias = totalScore >= 1 ? "LONG" : totalScore <= -1 ? "SHORT" : "NEUTRAL";
+      const totalScore = trend.points + structure.points;
+      const grade = gradeFromScore(totalScore, 2);
+      const bias = totalScore >= 1 ? "LONG" : totalScore <= -1 ? "SHORT" : "NEUTRAL";
 
-        const dir = bias === "LONG" ? 1 : bias === "SHORT" ? -1 : 0;
-        const atr = volatility.atr;
-        const entry = c.price;
-        const stopRef = dir >= 0 ? Math.min(entry - atr, structure.lastSwingLow) : Math.max(entry + atr, structure.lastSwingHigh);
-        const tp1 = dir >= 0 ? entry + 1.5 * atr : entry - 1.5 * atr;
-        const tp2 = dir >= 0 ? entry + 3 * atr : entry - 3 * atr;
-        const tp3 = dir >= 0 ? entry + 5 * atr : entry - 5 * atr;
-        const stopDist = Math.abs(entry - stopRef) || 1;
-        const rr1 = (Math.abs(tp1 - entry) / stopDist).toFixed(2);
-        const rr2 = (Math.abs(tp2 - entry) / stopDist).toFixed(2);
-        const rr3 = (Math.abs(tp3 - entry) / stopDist).toFixed(2);
+      const dir = bias === "LONG" ? 1 : bias === "SHORT" ? -1 : 0;
+      const atr = volatility.atr;
+      const entry = c.price;
+      const stopRef = dir >= 0 ? Math.min(entry - atr, structure.lastSwingLow) : Math.max(entry + atr, structure.lastSwingHigh);
+      const tp1 = dir >= 0 ? entry + 1.5 * atr : entry - 1.5 * atr;
+      const tp2 = dir >= 0 ? entry + 3 * atr : entry - 3 * atr;
+      const tp3 = dir >= 0 ? entry + 5 * atr : entry - 5 * atr;
+      const stopDist = Math.abs(entry - stopRef) || 1;
+      const rr1 = (Math.abs(tp1 - entry) / stopDist).toFixed(2);
+      const rr2 = (Math.abs(tp2 - entry) / stopDist).toFixed(2);
+      const rr3 = (Math.abs(tp3 - entry) / stopDist).toFixed(2);
 
-        const riskFlags = (atr / entry > 0.03 ? 1 : 0) + (c.volScore < 0.3 ? 1 : 0) + (c.meme > 0 ? 1 : 0);
-        const riskLevel = riskFlags >= 2 ? "Hoch" : riskFlags === 1 ? "Mittel" : "Niedrig";
+      const riskFlags = (atr / entry > 0.04 ? 1 : 0) + (c.meme > 0 ? 1 : 0);
+      const riskLevel = riskFlags >= 2 ? "Hoch" : riskFlags === 1 ? "Mittel" : "Niedrig";
 
-        return {
-          symbol: c.symbol, grade, bias, trend: trend.label, structure: structure.label,
-          fundingRaw: funding, riskLevel, entry, stopRef, tp1, tp2, tp3, rr1, rr2, rr3,
-        };
-      } catch (err) {
-        console.log(`Fehler bei ${c.symbol}: ${err.message}`);
-        return null;
-      }
-    })
-  );
+      results.push({ symbol: c.symbol, grade, bias, trend: trend.label, structure: structure.label,
+        riskLevel, entry, stopRef, tp1, tp2, tp3, rr1, rr2, rr3 });
+    } catch (err) {
+      console.log(`Fehler bei ${c.symbol}: ${err.message}`);
+      results.push(null);
+    }
+    await sleep(1500); // CoinGecko Free-Tier Rate-Limit schonen
+  }
 
   const valid = results.filter((r) => r && GRADE_RANK[r.grade] >= minRank && r.bias !== "NEUTRAL");
   console.log(`${valid.length} Setups über Schwelle ${MIN_GRADE} gefunden von ${candidates.length} Kandidaten.`);
@@ -238,31 +222,23 @@ async function main() {
   for (const r of valid) {
     const key = `${r.symbol}|${r.grade}|${r.bias}`;
     if (state[key]) continue;
-
     const emoji = r.bias === "LONG" ? "🚀" : "🔻";
-    const reasonSentence = composeReasonSentence(r.trend, r.structure, r.fundingRaw, r.bias);
+    const reasonSentence = composeReasonSentence(r.trend, r.structure, r.bias);
     const text =
-      `${emoji} ${r.symbol.replace("USDT", "")} ${r.bias} (Server-Scan via GitHub Actions, Datenquelle Bybit)\n\n` +
-      `Note: ${r.grade} · Risiko: ${r.riskLevel}\n\n` +
-      `${reasonSentence}\n\n` +
+      `${emoji} ${r.symbol} ${r.bias} (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\n` +
+      `Note: ${r.grade} · Risiko: ${r.riskLevel}\n\n${reasonSentence}\n\n` +
       `Referenz-Level (ATR/Struktur-basiert, keine Empfehlung):\n` +
       `Entry: ${fmtPrice(r.entry)}\nStop: ${fmtPrice(r.stopRef)}\n` +
       `TP1: ${fmtPrice(r.tp1)} (RR ${r.rr1})\nTP2: ${fmtPrice(r.tp2)} (RR ${r.rr2})\nTP3: ${fmtPrice(r.tp3)} (RR ${r.rr3})\n\n` +
       `Kein Finanzrat — eigene Prüfung + eigenes Risikomanagement nötig. ACE FUTURES HUNT`;
-
-    try {
-      await sendTelegram(text);
-      state[key] = now;
-      sentCount++;
-    } catch (err) {
-      console.log(`Konnte Alert für ${r.symbol} nicht senden: ${err.message}`);
-    }
+    try { await sendTelegram(text); state[key] = now; sentCount++; }
+    catch (err) { console.log(`Konnte Alert für ${r.symbol} nicht senden: ${err.message}`); }
   }
 
   saveState(state);
-  const summary = `Fertig. ${sentCount} Nachrichten gesendet, ${valid.length} Setups gefunden, ${candidates.length} Kandidaten geprüft.`;
+  const summary = `Fertig. ${sentCount} Nachrichten gesendet, ${valid.length} Setups gefunden, ${candidates.length} Kandidaten geprüft (Quelle: CoinGecko).`;
   console.log(summary);
-  await sendDebug(`🔧 DEBUG (Bybit-Testlauf): ${summary}`);
+  await sendDebug(`🔧 DEBUG (CoinGecko-Testlauf): ${summary}`);
 }
 
 main().catch(async (err) => {

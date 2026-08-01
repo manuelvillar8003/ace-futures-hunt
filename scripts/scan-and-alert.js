@@ -155,7 +155,21 @@ async function main() {
   ]);
   const tickerData = await tickerRes.json();
   const fundingData = await fundingRes.json();
-  console.log(`Ticker-Einträge: ${Array.isArray(tickerData) ? tickerData.length : "KEIN ARRAY: " + JSON.stringify(tickerData).slice(0,200)}`);
+  console.log(`Ticker HTTP-Status: ${tickerRes.status} | Funding HTTP-Status: ${fundingRes.status}`);
+
+  if (!Array.isArray(tickerData) || !Array.isArray(fundingData)) {
+    const msg = `🔧 DEBUG: Binance gab kein Array zurück.\nTicker-Status: ${tickerRes.status}, Body: ${JSON.stringify(tickerData).slice(0,500)}\nFunding-Status: ${fundingRes.status}, Body: ${JSON.stringify(fundingData).slice(0,500)}`;
+    console.error(msg);
+    if (TOKEN && CHAT_ID) {
+      await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: msg.slice(0, 4000) }),
+      });
+    }
+    process.exit(1);
+  }
+  console.log(`Ticker-Einträge: ${tickerData.length}`);
 
   const fundingMap = {};
   fundingData.forEach((f) => { fundingMap[f.symbol] = parseFloat(f.lastFundingRate) * 100; });

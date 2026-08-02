@@ -1,8 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: HOME, ADA, ENA, PEPE, ERA, AVAX, WLD, UNI, LINK, HYPE, XLM, NEAR
-3 Setups über Schwelle B gefunden von 12 Kandidaten.
-Telegram-Status 200: {"ok":true,"result":{"message_id":80,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1785687268,"text":"\ud83d\ude80 HOME LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.008456\nStop: 0.005621\nTP1: 0.009286 (RR 0.29)\nTP2: 0.01012 (RR 0.59)\nTP3: 0.01122 (RR 0.98)\n\nACE FUTURES HUNT"}}
-Telegram-Status 200: {"ok":true,"result":{"message_id":81,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1785687268,"text":"\ud83d\ude80 PEPE LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.000002890\nStop: 0.000002730\nTP1: 0.000002974 (RR 0.52)\nTP2: 0.000003057 (RR 1.04)\nTP3: 0.000003169 (RR 1.74)\n\nACE FUTURES HUNT"}}
-Fertig. 2 Nachrichten gesendet, 3 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Top-Kandidaten: HOME, ENA, ADA, ERA, PEPE, WLD, AVAX, SHIB, UNI, LINK, BNB, XRP
+2 Setups über Schwelle B gefunden von 12 Kandidaten.
+Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

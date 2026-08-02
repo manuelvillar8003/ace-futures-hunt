@@ -142,11 +142,11 @@ async function main() {
   try {
     markets = JSON.parse(marketsText);
   } catch (e) {
-    await sendDebug(`🔧 DEBUG: CoinGecko-Markets kein JSON. Status ${marketsRes.status}. Body: ${marketsText.slice(0, 600)}`);
+    console.error(`CoinGecko-Markets kein JSON. Status ${marketsRes.status}. Body: ${marketsText.slice(0, 600)}`);
     process.exit(1);
   }
   if (!Array.isArray(markets)) {
-    await sendDebug(`🔧 DEBUG: CoinGecko-Markets unerwartet: ${JSON.stringify(markets).slice(0, 600)}`);
+    console.error(`CoinGecko-Markets unerwartet: ${JSON.stringify(markets).slice(0, 600)}`);
     process.exit(1);
   }
   console.log(`CoinGecko-Einträge: ${markets.length}`);
@@ -230,7 +230,7 @@ async function main() {
       `Referenz-Level (ATR/Struktur-basiert, keine Empfehlung):\n` +
       `Entry: ${fmtPrice(r.entry)}\nStop: ${fmtPrice(r.stopRef)}\n` +
       `TP1: ${fmtPrice(r.tp1)} (RR ${r.rr1})\nTP2: ${fmtPrice(r.tp2)} (RR ${r.rr2})\nTP3: ${fmtPrice(r.tp3)} (RR ${r.rr3})\n\n` +
-      `Kein Finanzrat — eigene Prüfung + eigenes Risikomanagement nötig. ACE FUTURES HUNT`;
+      `ACE FUTURES HUNT`;
     try { await sendTelegram(text); state[key] = now; sentCount++; }
     catch (err) { console.log(`Konnte Alert für ${r.symbol} nicht senden: ${err.message}`); }
   }
@@ -238,11 +238,9 @@ async function main() {
   saveState(state);
   const summary = `Fertig. ${sentCount} Nachrichten gesendet, ${valid.length} Setups gefunden, ${candidates.length} Kandidaten geprüft (Quelle: CoinGecko).`;
   console.log(summary);
-  await sendDebug(`🔧 DEBUG (CoinGecko-Testlauf): ${summary}`);
 }
 
 main().catch(async (err) => {
   console.error("Scan komplett fehlgeschlagen:", err);
-  await sendDebug(`🔧 DEBUG: Scan-Skript ist komplett abgestürzt:\n\n${err?.stack || err?.message || String(err)}`);
   process.exit(1);
 });

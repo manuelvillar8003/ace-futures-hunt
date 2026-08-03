@@ -1,6 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: BICO, GRVT, UNI, HYPE, ENA, ZEC, WLD, NEAR, ADA, AAVE, BTC, LTC
+Top-Kandidaten: BICO, UNI, GRVT, HYPE, ZEC, ENA, ONDO, WLD, ADA, NEAR, LTC, LINK
 1 Setups über Schwelle B gefunden von 12 Kandidaten.
 Fertig. 0 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

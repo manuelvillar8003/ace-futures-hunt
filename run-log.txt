@@ -1,6 +1,7 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: UNI, BICO, ENA, LINK, MIRA, GRVT, ZEC, HYPE, WLD, ETH, XRP, ADA
-1 Setups über Schwelle B gefunden von 12 Kandidaten.
-Fertig. 0 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Top-Kandidaten: UNI, DOT, AVAX, ADA, ENA, WLD, NEAR, HYPE, MIRA, GRVT, PEPE, ZEC
+2 Setups über Schwelle B gefunden von 12 Kandidaten.
+Telegram-Status 200: {"ok":true,"result":{"message_id":87,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1785817441,"text":"\ud83d\ude80 DOT LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Niedrig\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.83874\nStop: 0.78754\nTP1: 0.85646 (RR 0.35)\nTP2: 0.87417 (RR 0.69)\nTP3: 0.89778 (RR 1.15)\n\nACE FUTURES HUNT"}}
+Fertig. 1 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

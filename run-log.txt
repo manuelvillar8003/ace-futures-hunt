@@ -1,6 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: HEI, CYS, GRVT, PUMP, SPCXB, UNI, ZEC, HYPE, PAXG, XAUT, ETH, LTC
+Top-Kandidaten: HEI, CYS, GRVT, SPCXB, PUMP, UNI, PAXG, XAUT, ZEC, HYPE, ETH, LTC
 2 Setups über Schwelle B gefunden von 12 Kandidaten.
 Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

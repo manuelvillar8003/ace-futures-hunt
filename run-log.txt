@@ -1,7 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: HEI, CYS, GRVT, PUMP, ZEC, UNI, SPCXB, PAXG, XAUT, HYPE, EUL, ADA
+Top-Kandidaten: HEI, CYS, GRVT, PUMP, SPCXB, UNI, ZEC, HYPE, PAXG, XAUT, ETH, LTC
 2 Setups über Schwelle B gefunden von 12 Kandidaten.
-Telegram-Status 200: {"ok":true,"result":{"message_id":94,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1785949094,"text":"\ud83d\ude80 CYS LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.73852\nStop: 0.49483\nTP1: 0.82305 (RR 0.35)\nTP2: 0.90758 (RR 0.69)\nTP3: 1.020 (RR 1.16)\n\nACE FUTURES HUNT"}}
-Fertig. 1 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

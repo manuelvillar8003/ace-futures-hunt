@@ -1,6 +1,7 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: HEI, CYS, SNDKB, GRVT, AAVE, ZEC, ETH, XAUT, HYPE, PAXG, XRP, ADA
+Top-Kandidaten: HEI, GRVT, SNDKB, ZEC, AAVE, AEON, ADA, AVAX, HYPE, PAXG, SUI, XAUT
 1 Setups über Schwelle B gefunden von 12 Kandidaten.
-Fertig. 0 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Telegram-Status 200: {"ok":true,"result":{"message_id":98,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786014556,"text":"\ud83d\udd3b AAVE SHORT (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Niedrig\n\nZusammengefasst: der Trend zeigt nach unten, die Preisstruktur macht Lower Highs/Lower Lows \u2014 das spricht f\u00fcr eine Short-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 87.480\nStop: 92.100\nTP1: 85.363 (RR 0.46)\nTP2: 83.246 (RR 0.92)\nTP3: 80.423 (RR 1.53)\n\nACE FUTURES HUNT"}}
+Fertig. 1 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

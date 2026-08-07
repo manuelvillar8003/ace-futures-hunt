@@ -1,6 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: ACE, BICO, HEI, ADA, GRVT, AVAX, ZBT, ERA, BABY, AAVE, LTC, XRP
+Top-Kandidaten: ACE, BICO, HEI, ZBT, ADA, GRVT, AVAX, BABY, AAVE, XRP, FIGR_HELOC, LTC
 2 Setups über Schwelle B gefunden von 12 Kandidaten.
 Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

@@ -1,7 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: BICO, SPCXB, HEI, NEAR, BABY, ZEC, UNI, XRP, FIGR_HELOC, XAUT, PAXG, DOGE
+Top-Kandidaten: BICO, HEI, SPCXB, ADA, ZEC, NEAR, BABY, XRP, XAUT, PAXG, FIGR_HELOC, UNI
 1 Setups über Schwelle B gefunden von 12 Kandidaten.
-Telegram-Status 200: {"ok":true,"result":{"message_id":102,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786118857,"text":"\ud83d\ude80 BICO LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.05484\nStop: 0.03337\nTP1: 0.06346 (RR 0.40)\nTP2: 0.07208 (RR 0.80)\nTP3: 0.08357 (RR 1.34)\n\nACE FUTURES HUNT"}}
-Fertig. 1 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Fertig. 0 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

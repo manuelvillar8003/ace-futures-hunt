@@ -1,3 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
-CoinGecko Markets HTTP-Status: 400
-CoinGecko-Markets unerwartet: {"timestamp":"2026-08-07T23:45:13.112+00:00","error_code":10010,"status":{"error_message":"If you are using Pro API key, please change your root URL from api.coingecko.com to pro-api.coingecko.com  Please refer here for more details: https://docs.coingecko.com/reference/authentication"}}
+CoinGecko Markets HTTP-Status: 200
+CoinGecko-Einträge: 30
+Top-Kandidaten: BICO, SPCXB, ERA, NEAR, BABY, HYPE, ZEC, XAUT, PAXG, FIGR_HELOC, XRP, SOL
+2 Setups über Schwelle B gefunden von 12 Kandidaten.
+Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

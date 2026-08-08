@@ -1,7 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: MMT, BICO, SPCXB, BABY, HYPE, FIGR_HELOC, SUI, NEAR, SOL, LINK, DOGE, ZEC
-3 Setups über Schwelle B gefunden von 12 Kandidaten.
-Telegram-Status 200: {"ok":true,"result":{"message_id":107,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786190455,"text":"\ud83d\ude80 BABY LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.01204\nStop: 0.01145\nTP1: 0.01256 (RR 0.87)\nTP2: 0.01308 (RR 1.75)\nTP3: 0.01377 (RR 2.91)\n\nACE FUTURES HUNT"}}
-Fertig. 1 Nachrichten gesendet, 3 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Top-Kandidaten: MMT, SPCXB, BICO, BABY, HYPE, SOL, NEAR, FIGR_HELOC, SUI, ZEC, LINK, AVAX
+2 Setups über Schwelle B gefunden von 12 Kandidaten.
+Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

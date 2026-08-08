@@ -1,7 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: BICO, MMT, SPCXB, FIGR_HELOC, SOL, NEAR, AVAX, DOGE, HYPE, XRP, XAUT, SUI
+Top-Kandidaten: BICO, MMT, SPCXB, NEAR, SOL, FIGR_HELOC, ENA, HYPE, SUI, AVAX, DOGE, BNB
 2 Setups über Schwelle B gefunden von 12 Kandidaten.
-Telegram-Status 200: {"ok":true,"result":{"message_id":106,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786174783,"text":"\ud83d\ude80 MMT LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.23086\nStop: 0.16154\nTP1: 0.24740 (RR 0.24)\nTP2: 0.26394 (RR 0.48)\nTP3: 0.28600 (RR 0.80)\n\nACE FUTURES HUNT"}}
-Fertig. 1 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

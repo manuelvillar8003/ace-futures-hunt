@@ -1,6 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: MMT, SPCXB, BICO, BABY, HYPE, SOL, NEAR, FIGR_HELOC, SUI, ZEC, LINK, AVAX
+Top-Kandidaten: MMT, BICO, SPCXB, BABY, HYPE, FIGR_HELOC, SUI, SOL, ZEC, UNI, NEAR, ADA
 2 Setups über Schwelle B gefunden von 12 Kandidaten.
 Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

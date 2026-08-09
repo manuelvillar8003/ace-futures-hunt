@@ -1,6 +1,7 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: TUT, CYS, BICO, BABY, MMT, TAO, ZEC, SOL, BNB, ADA, LTC, AVAX
+Top-Kandidaten: TUT, BMT, BICO, BABY, MMT, TAO, ZEC, SOL, ADA, BNB, LTC, HYPE
 2 Setups über Schwelle B gefunden von 12 Kandidaten.
-Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Telegram-Status 200: {"ok":true,"result":{"message_id":114,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786279754,"text":"\ud83d\ude80 MMT LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.22009\nStop: 0.19101\nTP1: 0.24777 (RR 0.95)\nTP2: 0.27546 (RR 1.90)\nTP3: 0.31237 (RR 3.17)\n\nACE FUTURES HUNT"}}
+Fertig. 1 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

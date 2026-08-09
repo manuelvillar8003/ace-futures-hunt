@@ -1,6 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: TUT, BMT, BICO, CYS, PUMP, BABY, TAO, ZEC, MMT, ADA, BNB, LTC
-2 Setups über Schwelle B gefunden von 12 Kandidaten.
-Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Top-Kandidaten: TUT, PUMP, BICO, TAO, MMT, BABY, ZEC, XMR, BNB, SOL, LTC, AAVE
+1 Setups über Schwelle B gefunden von 12 Kandidaten.
+Fertig. 0 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

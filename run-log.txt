@@ -1,7 +1,7 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: TUT, BICO, KAITO, CYS, BABY, MMT, TAO, SOL, SUI, BNB, AAVE, NEAR
-2 Setups über Schwelle B gefunden von 12 Kandidaten.
-Telegram-Status 200: {"ok":true,"result":{"message_id":111,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786251099,"text":"\ud83d\udd3b KAITO SHORT (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach unten, die Preisstruktur macht Lower Highs/Lower Lows \u2014 das spricht f\u00fcr eine Short-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.70239\nStop: 0.75960\nTP1: 0.64439 (RR 1.01)\nTP2: 0.58640 (RR 2.03)\nTP3: 0.50908 (RR 3.38)\n\nACE FUTURES HUNT"}}
-Fertig. 1 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Top-Kandidaten: TUT, BICO, KAITO, BABY, MMT, TAO, ADA, SUI, UNI, SOL, BNB, AVAX
+3 Setups über Schwelle B gefunden von 12 Kandidaten.
+Telegram-Status 200: {"ok":true,"result":{"message_id":112,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786253809,"text":"\ud83d\ude80 BICO LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.07100\nStop: 0.05076\nTP1: 0.08201 (RR 0.54)\nTP2: 0.09302 (RR 1.09)\nTP3: 0.10771 (RR 1.81)\n\nACE FUTURES HUNT"}}
+Fertig. 1 Nachrichten gesendet, 3 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

@@ -1,6 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: TUT, BMT, WLD, PUMP, ZEC, UNI, LTC, ETH, MMT, ADA, NEAR, HYPE
+Top-Kandidaten: TUT, WLD, PUMP, ZEC, UNI, LTC, ETH, ADA, XRP, AAVE, AVAX, NEAR
 0 Setups über Schwelle B gefunden von 12 Kandidaten.
 Fertig. 0 Nachrichten gesendet, 0 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

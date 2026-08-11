@@ -1,7 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: BEAT, GRVT, UNI, ZEC, NEAR, ADA, AVAX, WLD, LINK, XRP, SUI, SOL
+Top-Kandidaten: BEAT, GRVT, ZEC, UNI, ADA, NEAR, AVAX, LINK, WLD, SUI, SOL, BNB
 1 Setups über Schwelle B gefunden von 12 Kandidaten.
-Telegram-Status 200: {"ok":true,"result":{"message_id":123,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786466009,"text":"\ud83d\udd3b UNI SHORT (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Niedrig\n\nZusammengefasst: der Trend zeigt nach unten, die Preisstruktur macht Lower Highs/Lower Lows \u2014 das spricht f\u00fcr eine Short-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 3.730\nStop: 4.020\nTP1: 3.604 (RR 0.44)\nTP2: 3.477 (RR 0.87)\nTP3: 3.309 (RR 1.45)\n\nACE FUTURES HUNT"}}
-Fertig. 1 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Fertig. 0 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

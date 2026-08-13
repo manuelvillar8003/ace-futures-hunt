@@ -1,6 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: APR, BABY, MMT, UNI, HYPE, AVAX, ZEC, DOGE, ADA, LINK, TRX, BCH
-2 Setups über Schwelle B gefunden von 12 Kandidaten.
-Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Top-Kandidaten: MMT, HYPE, UNI, AVAX, ZEC, DOGE, ADA, AAVE, BCH, XRP, TRX, LINK
+1 Setups über Schwelle B gefunden von 12 Kandidaten.
+Fertig. 0 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

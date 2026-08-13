@@ -1,6 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: MMT, WLD, PEPE, HYPE, BCH, AVAX, XAUT, AAVE, DOGE, ZEC, LINK, LTC
+Top-Kandidaten: MMT, PEPE, BCH, AAVE, HYPE, DOGE, XAUT, UNI, WLD, ETH, XRP, LTC
 0 Setups über Schwelle B gefunden von 12 Kandidaten.
 Fertig. 0 Nachrichten gesendet, 0 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

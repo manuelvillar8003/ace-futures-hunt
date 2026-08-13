@@ -1,10 +1,6 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: APR, PROM, BABY, UNI, DOGE, HYPE, NEAR, ZEC, ADA, XRP, SUI, LTC
-OHLC kein JSON bei UNI: <!DOCTYPE html>
-<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-US
+Top-Kandidaten: APR, BABY, UNI, HYPE, DOGE, ADA, ZEC, AVAX, XRP, SUI, AAVE, BNB
 2 Setups über Schwelle B gefunden von 12 Kandidaten.
-Telegram-Status 200: {"ok":true,"result":{"message_id":133,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786582015,"text":"\ud83d\udd3b BABY SHORT (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Hoch\n\nZusammengefasst: der Trend zeigt nach unten, die Preisstruktur macht Lower Highs/Lower Lows \u2014 das spricht f\u00fcr eine Short-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.01034\nStop: 0.01343\nTP1: 0.009552 (RR 0.25)\nTP2: 0.008767 (RR 0.51)\nTP3: 0.007721 (RR 0.84)\n\nACE FUTURES HUNT"}}
-Fertig. 1 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

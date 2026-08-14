@@ -17,6 +17,15 @@
       "entry": 0.263717,
       "loggedAt": 1786733432396,
       "evaluated": {}
+    },
+    {
+      "id": "dappos",
+      "symbol": "DOS",
+      "grade": "A+",
+      "bias": "SHORT",
+      "entry": 0.274237,
+      "loggedAt": 1786743915918,
+      "evaluated": {}
     }
   ]
 }

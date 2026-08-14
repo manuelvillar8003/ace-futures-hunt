@@ -26,6 +26,15 @@
       "entry": 0.274237,
       "loggedAt": 1786743915918,
       "evaluated": {}
+    },
+    {
+      "id": "litecoin",
+      "symbol": "LTC",
+      "grade": "A+",
+      "bias": "SHORT",
+      "entry": 43.62,
+      "loggedAt": 1786749489970,
+      "evaluated": {}
     }
   ]
 }

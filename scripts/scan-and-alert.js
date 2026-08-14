@@ -125,6 +125,105 @@ function saveState(state) {
 }
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
+// ================= FORWARD-TRACKING (echte Win-Rate ueber Zeit) =================
+const TRACKING_FILE = path.join(__dirname, "..", "tracking-log.json");
+const HORIZONS = [
+  { key: "h24", ms: 24 * 60 * 60 * 1000, label: "24h" },
+  { key: "h48", ms: 48 * 60 * 60 * 1000, label: "48h" },
+  { key: "d7", ms: 7 * 24 * 60 * 60 * 1000, label: "7 Tage" },
+];
+
+function loadTracking() {
+  try { return JSON.parse(fs.readFileSync(TRACKING_FILE, "utf8")); } catch { return { entries: [] }; }
+}
+function saveTracking(data) {
+  fs.writeFileSync(TRACKING_FILE, JSON.stringify(data, null, 2));
+}
+
+// Loggt JEDES gefundene Setup (auch unterhalb der Alert-Schwelle) fuer spaetere Auswertung,
+// damit wir Win-Rate pro Notenklasse (A+, A, B, C...) vergleichen koennen, nicht nur die,
+// die tatsaechlich einen Telegram-Alert ausgeloest haben.
+function logNewSetups(results, tracking) {
+  const now = Date.now();
+  const TWELVE_HOURS = 12 * 60 * 60 * 1000;
+  let newCount = 0;
+  for (const r of results) {
+    if (!r || r.bias === "NEUTRAL") continue;
+    const recentDup = tracking.entries.find(
+      (e) => e.symbol === r.symbol && e.grade === r.grade && e.bias === r.bias && now - e.loggedAt < TWELVE_HOURS
+    );
+    if (recentDup) continue;
+    tracking.entries.push({
+      id: r.id, symbol: r.symbol, grade: r.grade, bias: r.bias,
+      entry: r.entry, loggedAt: now, evaluated: {},
+    });
+    newCount++;
+  }
+  if (newCount > 0) console.log(`${newCount} neue Setups zum Tracking hinzugefuegt.`);
+}
+
+// Prueft alle Eintraege, bei denen ein Zeit-Horizont faellig ist, holt den aktuellen Preis
+// und markiert Gewinn/Verlust (Schwelle 0.5% um Markt-Rauschen nicht als "Sieg" zu werten).
+async function evaluatePendingSetups(tracking) {
+  const now = Date.now();
+  const due = [];
+  for (const e of tracking.entries) {
+    for (const h of HORIZONS) {
+      if (!e.evaluated[h.key] && now - e.loggedAt >= h.ms) due.push({ entry: e, horizon: h });
+    }
+  }
+  if (due.length === 0) { console.log("Keine faelligen Auswertungen."); return; }
+
+  const uniqueIds = [...new Set(due.map((d) => d.entry.id))];
+  console.log(`${due.length} faellige Auswertungen fuer ${uniqueIds.length} Coins.`);
+
+  // CoinGecko simple/price unterstuetzt mehrere IDs auf einmal -> 1 Call statt viele
+  const priceMap = {};
+  for (let i = 0; i < uniqueIds.length; i += 50) {
+    const batch = uniqueIds.slice(i, i + 50);
+    try {
+      const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${batch.join(",")}&vs_currencies=usd`);
+      const json = await res.json();
+      Object.entries(json).forEach(([id, v]) => { priceMap[id] = v.usd; });
+    } catch (err) {
+      console.log("Preis-Abfrage fuer Auswertung fehlgeschlagen:", err.message);
+    }
+    await sleep(1500);
+  }
+
+  for (const { entry, horizon } of due) {
+    const currentPrice = priceMap[entry.id];
+    if (currentPrice === undefined) continue;
+    const pctMove = ((currentPrice - entry.entry) / entry.entry) * 100 * (entry.bias === "LONG" ? 1 : -1);
+    const win = pctMove > 0.5; // Bewegung in vorhergesagte Richtung, ueber Rauschgrenze
+    entry.evaluated[horizon.key] = { price: currentPrice, pctMove: Number(pctMove.toFixed(2)), win, evaluatedAt: now };
+  }
+}
+
+function computeAndLogStats(tracking) {
+  const byGradeHorizon = {};
+  tracking.entries.forEach((e) => {
+    HORIZONS.forEach((h) => {
+      const res = e.evaluated[h.key];
+      if (!res) return;
+      const key = `${e.grade}|${h.key}`;
+      if (!byGradeHorizon[key]) byGradeHorizon[key] = { wins: 0, total: 0 };
+      byGradeHorizon[key].total++;
+      if (res.win) byGradeHorizon[key].wins++;
+    });
+  });
+  console.log("=== ECHTE WIN-RATE (aus Forward-Tracking) ===");
+  Object.entries(byGradeHorizon)
+    .sort()
+    .forEach(([key, v]) => {
+      const [grade, hkey] = key.split("|");
+      const horizonLabel = HORIZONS.find((h) => h.key === hkey).label;
+      const wr = ((v.wins / v.total) * 100).toFixed(0);
+      console.log(`  Note ${grade} @ ${horizonLabel}: ${wr}% Win-Rate (${v.wins}/${v.total})`);
+    });
+  return byGradeHorizon;
+}
+
 async function main() {
   console.log("Scan startet (CoinGecko). MIN_GRADE =", MIN_GRADE);
   if (!TOKEN || !CHAT_ID) {
@@ -201,7 +300,7 @@ async function main() {
       const riskFlags = (atr / entry > 0.04 ? 1 : 0) + (c.meme > 0 ? 1 : 0);
       const riskLevel = riskFlags >= 2 ? "Hoch" : riskFlags === 1 ? "Mittel" : "Niedrig";
 
-      results.push({ symbol: c.symbol, grade, bias, trend: trend.label, structure: structure.label,
+      results.push({ id: c.id, symbol: c.symbol, grade, bias, trend: trend.label, structure: structure.label,
         riskLevel, entry, stopRef, tp1, tp2, tp3, rr1, rr2, rr3 });
     } catch (err) {
       console.log(`Fehler bei ${c.symbol}: ${err.message}`);
@@ -236,6 +335,31 @@ async function main() {
   }
 
   saveState(state);
+
+  // ---- Forward-Tracking: jedes Setup loggen, faellige auswerten, echte Win-Rate berechnen ----
+  const tracking = loadTracking();
+  // Forward-Tracking: nur die Setups, die tatsaechlich die Alert-Schwelle erreicht haben
+  // (also das, was du wirklich in Telegram bekommst) - nicht alle Kandidaten im Hintergrund.
+  logNewSetups(valid, tracking);
+  await evaluatePendingSetups(tracking);
+  saveTracking(tracking);
+  const stats = computeAndLogStats(tracking);
+
+  // Einmal pro Tag (zwischen 8-8:05 Uhr UTC) eine Zusammenfassung nach Telegram schicken,
+  // damit du die echte Win-Rate auch siehst, ohne die Repo-Dateien selbst anzuschauen.
+  const nowDate = new Date();
+  if (nowDate.getUTCHours() === 8 && nowDate.getUTCMinutes() < 5 && Object.keys(stats).length > 0) {
+    const lines = Object.entries(stats)
+      .sort()
+      .map(([key, v]) => {
+        const [grade, hkey] = key.split("|");
+        const horizonLabel = HORIZONS.find((h) => h.key === hkey).label;
+        const wr = ((v.wins / v.total) * 100).toFixed(0);
+        return `Note ${grade} @ ${horizonLabel}: ${wr}% (${v.wins}/${v.total})`;
+      });
+    await sendTelegram(`📊 Tägliche Win-Rate-Statistik (Forward-Tracking, alle bisherigen Setups):\n\n${lines.join("\n")}`);
+  }
+
   const summary = `Fertig. ${sentCount} Nachrichten gesendet, ${valid.length} Setups gefunden, ${candidates.length} Kandidaten geprüft (Quelle: CoinGecko).`;
   console.log(summary);
 }

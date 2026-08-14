@@ -1,6 +1,7 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: AKE, SNDKB, DOS, ALLO, UNI, BCH, ADA, FIGR_HELOC, AAVE, HYPE, ZEC, DOGE
-2 Setups über Schwelle B gefunden von 12 Kandidaten.
-Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Top-Kandidaten: AKE, SNDKB, UNI, ALLO, BCH, FIGR_HELOC, AAVE, ADA, HYPE, ZEC, BTC, DOGE
+3 Setups über Schwelle B gefunden von 12 Kandidaten.
+Telegram-Status 200: {"ok":true,"result":{"message_id":138,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786708870,"text":"\ud83d\udd3b UNI SHORT (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Niedrig\n\nZusammengefasst: der Trend zeigt nach unten, die Preisstruktur macht Lower Highs/Lower Lows \u2014 das spricht f\u00fcr eine Short-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 3.200\nStop: 3.520\nTP1: 3.085 (RR 0.36)\nTP2: 2.971 (RR 0.72)\nTP3: 2.818 (RR 1.19)\n\nACE FUTURES HUNT"}}
+Fertig. 1 Nachrichten gesendet, 3 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

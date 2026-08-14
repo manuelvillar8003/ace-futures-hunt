@@ -1,0 +1,22 @@
+{
+  "entries": [
+    {
+      "id": "uniswap",
+      "symbol": "UNI",
+      "grade": "A+",
+      "bias": "SHORT",
+      "entry": 3.2,
+      "loggedAt": 1786733432396,
+      "evaluated": {}
+    },
+    {
+      "id": "allora",
+      "symbol": "ALLO",
+      "grade": "A+",
+      "bias": "SHORT",
+      "entry": 0.263717,
+      "loggedAt": 1786733432396,
+      "evaluated": {}
+    }
+  ]
+}

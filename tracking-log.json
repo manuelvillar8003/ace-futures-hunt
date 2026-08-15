@@ -80,6 +80,15 @@
       "entry": 0.01408058,
       "loggedAt": 1786791715653,
       "evaluated": {}
+    },
+    {
+      "id": "chainlink",
+      "symbol": "LINK",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 9.48,
+      "loggedAt": 1786808948268,
+      "evaluated": {}
     }
   ]
 }

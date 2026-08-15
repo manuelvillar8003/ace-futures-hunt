@@ -1,8 +1,12 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: ACE, CAP, UNI, LTC, ALLO, ADA, XRP, HYPE, SUI, SOL, DOS, FIGR_HELOC
-2 Setups über Schwelle B gefunden von 12 Kandidaten.
+Top-Kandidaten: ACE, CAP, UNI, AAVE, LTC, HYPE, LINK, ADA, SOL, ALLO, XRP, ZEC
+3 Setups über Schwelle B gefunden von 12 Kandidaten.
+Telegram-Status 200: {"ok":true,"result":{"message_id":142,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786754565,"text":"\ud83d\ude80 CAP LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.06654\nStop: 0.05284\nTP1: 0.07631 (RR 0.71)\nTP2: 0.08607 (RR 1.43)\nTP3: 0.09909 (RR 2.38)\n\nACE FUTURES HUNT"}}
+Telegram-Status 200: {"ok":true,"result":{"message_id":143,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786754565,"text":"\ud83d\udd3b UNI SHORT (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Niedrig\n\nZusammengefasst: der Trend zeigt nach unten, die Preisstruktur macht Lower Highs/Lower Lows \u2014 das spricht f\u00fcr eine Short-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 3.230\nStop: 3.520\nTP1: 3.123 (RR 0.37)\nTP2: 3.016 (RR 0.74)\nTP3: 2.873 (RR 1.23)\n\nACE FUTURES HUNT"}}
+Telegram-Status 200: {"ok":true,"result":{"message_id":144,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786754565,"text":"\ud83d\udd3b AAVE SHORT (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Niedrig\n\nZusammengefasst: der Trend zeigt nach unten, die Preisstruktur macht Lower Highs/Lower Lows \u2014 das spricht f\u00fcr eine Short-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 86.450\nStop: 89.510\nTP1: 84.746 (RR 0.56)\nTP2: 83.043 (RR 1.11)\nTP3: 80.771 (RR 1.86)\n\nACE FUTURES HUNT"}}
+2 neue Setups zum Tracking hinzugefuegt.
 Keine faelligen Auswertungen.
 === ECHTE WIN-RATE (aus Forward-Tracking) ===
-Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Fertig. 3 Nachrichten gesendet, 3 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

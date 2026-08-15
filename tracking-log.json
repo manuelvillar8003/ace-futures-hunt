@@ -35,6 +35,24 @@
       "entry": 43.62,
       "loggedAt": 1786749489970,
       "evaluated": {}
+    },
+    {
+      "id": "cap-4",
+      "symbol": "CAP",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 0.066542,
+      "loggedAt": 1786754565606,
+      "evaluated": {}
+    },
+    {
+      "id": "aave",
+      "symbol": "AAVE",
+      "grade": "A+",
+      "bias": "SHORT",
+      "entry": 86.45,
+      "loggedAt": 1786754565606,
+      "evaluated": {}
     }
   ]
 }

@@ -1,8 +1,10 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: ACE, CAP, LINK, UNI, PLUME, AVAX, DOS, LTC, ADA, AAVE, HYPE, XAUT
-1 Setups über Schwelle B gefunden von 12 Kandidaten.
+Top-Kandidaten: ACE, CAP, UNI, LINK, AVAX, DOS, PLUME, LTC, ADA, XAUT, AAVE, DOGE
+2 Setups über Schwelle B gefunden von 12 Kandidaten.
+Telegram-Status 200: {"ok":true,"result":{"message_id":146,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786782298,"text":"\ud83d\ude80 ACE LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Mittel\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 0.27171\nStop: 0.10379\nTP1: 0.33942 (RR 0.40)\nTP2: 0.40714 (RR 0.81)\nTP3: 0.49743 (RR 1.34)\n\nACE FUTURES HUNT"}}
+1 neue Setups zum Tracking hinzugefuegt.
 Keine faelligen Auswertungen.
 === ECHTE WIN-RATE (aus Forward-Tracking) ===
-Fertig. 0 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Fertig. 1 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

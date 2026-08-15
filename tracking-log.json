@@ -62,6 +62,15 @@
       "entry": 9.58,
       "loggedAt": 1786764949449,
       "evaluated": {}
+    },
+    {
+      "id": "endurance",
+      "symbol": "ACE",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 0.271707,
+      "loggedAt": 1786782298866,
+      "evaluated": {}
     }
   ]
 }

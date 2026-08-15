@@ -1,3 +1,8 @@
 Scan startet (CoinGecko). MIN_GRADE = B
-CoinGecko Markets HTTP-Status: 429
-CoinGecko-Markets unerwartet: {"status":{"error_code":429,"error_message":"You've exceeded the Rate Limit. Please visit https://www.coingecko.com/en/api/pricing to subscribe to our API plans for higher rate limits."}}
+CoinGecko Markets HTTP-Status: 200
+CoinGecko-Einträge: 30
+Top-Kandidaten: COW, ACE, LINK, PLUME, KII, AVAX, BCH, CAP, AAVE, HYPE, DOS, SUI
+2 Setups über Schwelle B gefunden von 12 Kandidaten.
+Keine faelligen Auswertungen.
+=== ECHTE WIN-RATE (aus Forward-Tracking) ===
+Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

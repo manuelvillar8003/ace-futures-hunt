@@ -53,6 +53,15 @@
       "entry": 86.45,
       "loggedAt": 1786754565606,
       "evaluated": {}
+    },
+    {
+      "id": "chainlink",
+      "symbol": "LINK",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 9.58,
+      "loggedAt": 1786764949449,
+      "evaluated": {}
     }
   ]
 }

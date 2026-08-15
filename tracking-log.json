@@ -71,6 +71,15 @@
       "entry": 0.271707,
       "loggedAt": 1786782298866,
       "evaluated": {}
+    },
+    {
+      "id": "plume",
+      "symbol": "PLUME",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 0.01408058,
+      "loggedAt": 1786791715653,
+      "evaluated": {}
     }
   ]
 }

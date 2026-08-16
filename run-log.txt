@@ -1,8 +1,7 @@
-Scan startet (CoinGecko). MIN_GRADE = B
+Scan startet (CoinGecko, BTC/ETH-Fokus). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
-CoinGecko-Einträge: 30
-Top-Kandidaten: CYS, DOS, HEMI, ALLO, XMR, AVAX, KII, ADA, HYPE, LINK, WLD, UNI
-0 Setups über Schwelle B gefunden von 12 Kandidaten.
-9 faellige Auswertungen fuer 9 Coins.
-=== ECHTE WIN-RATE (aus Forward-Tracking) ===
-Fertig. 0 Nachrichten gesendet, 0 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+CoinGecko-Einträge: 2
+Kandidaten: BTCUSDT, ETHUSDT
+0 Setups über Schwelle B gefunden von 2 Kandidaten.
+=== ECHTE WIN-RATE (TP/Stop-basiert, aus Forward-Tracking) ===
+Fertig. 0 Nachrichten gesendet, 0 Setups gefunden, 2 Kandidaten geprüft (Quelle: CoinGecko).

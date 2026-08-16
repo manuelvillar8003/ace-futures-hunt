@@ -125,13 +125,12 @@ function saveState(state) {
 }
 function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
 
-// ================= FORWARD-TRACKING (echte Win-Rate ueber Zeit) =================
+// ================= FORWARD-TRACKING (echte RR-basierte Win-Rate) =================
+// Prueft nicht mehr "hat sich der Preis nach X Stunden bewegt", sondern die eigentlich
+// relevante Frage: wurde TP1/TP2/TP3 ODER der Stop zuerst erreicht? Laeuft alle 5 Minuten
+// mit, prueft bei jedem Durchlauf den aktuellen Preis gegen alle offenen Setups.
 const TRACKING_FILE = path.join(__dirname, "..", "tracking-log.json");
-const HORIZONS = [
-  { key: "h24", ms: 24 * 60 * 60 * 1000, label: "24h" },
-  { key: "h48", ms: 48 * 60 * 60 * 1000, label: "48h" },
-  { key: "d7", ms: 7 * 24 * 60 * 60 * 1000, label: "7 Tage" },
-];
+const MAX_LIFETIME_MS = 7 * 24 * 60 * 60 * 1000; // nach 7 Tagen ohne Treffer: als EXPIRED schliessen
 
 function loadTracking() {
   try { return JSON.parse(fs.readFileSync(TRACKING_FILE, "utf8")); } catch { return { entries: [] }; }
@@ -140,14 +139,13 @@ function saveTracking(data) {
   fs.writeFileSync(TRACKING_FILE, JSON.stringify(data, null, 2));
 }
 
-// Loggt JEDES gefundene Setup (auch unterhalb der Alert-Schwelle) fuer spaetere Auswertung,
-// damit wir Win-Rate pro Notenklasse (A+, A, B, C...) vergleichen koennen, nicht nur die,
-// die tatsaechlich einen Telegram-Alert ausgeloest haben.
-function logNewSetups(results, tracking) {
+// Loggt jedes Setup, das tatsaechlich als Alert rausging (valid), mit allen Referenz-Leveln,
+// damit wir spaeter pruefen koennen was zuerst getroffen wurde.
+function logNewSetups(alertedResults, tracking) {
   const now = Date.now();
   const TWELVE_HOURS = 12 * 60 * 60 * 1000;
   let newCount = 0;
-  for (const r of results) {
+  for (const r of alertedResults) {
     if (!r || r.bias === "NEUTRAL") continue;
     const recentDup = tracking.entries.find(
       (e) => e.symbol === r.symbol && e.grade === r.grade && e.bias === r.bias && now - e.loggedAt < TWELVE_HOURS
@@ -155,29 +153,23 @@ function logNewSetups(results, tracking) {
     if (recentDup) continue;
     tracking.entries.push({
       id: r.id, symbol: r.symbol, grade: r.grade, bias: r.bias,
-      entry: r.entry, loggedAt: now, evaluated: {},
+      entry: r.entry, stopRef: r.stopRef, tp1: r.tp1, tp2: r.tp2, tp3: r.tp3,
+      loggedAt: now, resolved: null,
     });
     newCount++;
   }
-  if (newCount > 0) console.log(`${newCount} neue Setups zum Tracking hinzugefuegt.`);
+  if (newCount > 0) console.log(`${newCount} neue Setups zum RR-Tracking hinzugefuegt.`);
 }
 
-// Prueft alle Eintraege, bei denen ein Zeit-Horizont faellig ist, holt den aktuellen Preis
-// und markiert Gewinn/Verlust (Schwelle 0.5% um Markt-Rauschen nicht als "Sieg" zu werten).
+// Prueft ALLE noch offenen Setups gegen den aktuellen Preis: wurde Stop oder ein TP erreicht?
+// Da wir alle 5 Minuten checken, ist die Erkennung praktisch in Echtzeit (kleine Verzoegerung
+// durch das Check-Intervall, aber der zuerst erreichte Level wird auch zuerst erkannt).
 async function evaluatePendingSetups(tracking) {
   const now = Date.now();
-  const due = [];
-  for (const e of tracking.entries) {
-    for (const h of HORIZONS) {
-      if (!e.evaluated[h.key] && now - e.loggedAt >= h.ms) due.push({ entry: e, horizon: h });
-    }
-  }
-  if (due.length === 0) { console.log("Keine faelligen Auswertungen."); return; }
+  const open = tracking.entries.filter((e) => !e.resolved);
+  if (open.length === 0) { console.log("Keine offenen Setups zum Pruefen."); return; }
 
-  const uniqueIds = [...new Set(due.map((d) => d.entry.id))];
-  console.log(`${due.length} faellige Auswertungen fuer ${uniqueIds.length} Coins.`);
-
-  // CoinGecko simple/price unterstuetzt mehrere IDs auf einmal -> 1 Call statt viele
+  const uniqueIds = [...new Set(open.map((e) => e.id))];
   const priceMap = {};
   for (let i = 0; i < uniqueIds.length; i += 50) {
     const batch = uniqueIds.slice(i, i + 50);
@@ -186,46 +178,68 @@ async function evaluatePendingSetups(tracking) {
       const json = await res.json();
       Object.entries(json).forEach(([id, v]) => { priceMap[id] = v.usd; });
     } catch (err) {
-      console.log("Preis-Abfrage fuer Auswertung fehlgeschlagen:", err.message);
+      console.log("Preis-Abfrage fuer Tracking fehlgeschlagen:", err.message);
     }
     await sleep(1500);
   }
 
-  for (const { entry, horizon } of due) {
-    const currentPrice = priceMap[entry.id];
-    if (currentPrice === undefined) continue;
-    const pctMove = ((currentPrice - entry.entry) / entry.entry) * 100 * (entry.bias === "LONG" ? 1 : -1);
-    const win = pctMove > 0.5; // Bewegung in vorhergesagte Richtung, ueber Rauschgrenze
-    entry.evaluated[horizon.key] = { price: currentPrice, pctMove: Number(pctMove.toFixed(2)), win, evaluatedAt: now };
+  let resolvedCount = 0;
+  for (const e of open) {
+    const price = priceMap[e.id];
+    if (price === undefined) continue;
+    const isLong = e.bias === "LONG";
+
+    let outcome = null;
+    if (isLong) {
+      if (price <= e.stopRef) outcome = "STOP";
+      else if (price >= e.tp3) outcome = "TP3";
+      else if (price >= e.tp2) outcome = "TP2";
+      else if (price >= e.tp1) outcome = "TP1";
+    } else {
+      if (price >= e.stopRef) outcome = "STOP";
+      else if (price <= e.tp3) outcome = "TP3";
+      else if (price <= e.tp2) outcome = "TP2";
+      else if (price <= e.tp1) outcome = "TP1";
+    }
+
+    if (outcome) {
+      e.resolved = { outcome, price, resolvedAt: now, win: outcome !== "STOP" };
+      resolvedCount++;
+    } else if (now - e.loggedAt > MAX_LIFETIME_MS) {
+      const pctMove = ((price - e.entry) / e.entry) * 100 * (isLong ? 1 : -1);
+      e.resolved = { outcome: "EXPIRED", price, resolvedAt: now, win: pctMove > 0 };
+      resolvedCount++;
+    }
   }
+  if (resolvedCount > 0) console.log(`${resolvedCount} Setups wurden gerade aufgeloest (Stop/TP getroffen oder abgelaufen).`);
 }
 
 function computeAndLogStats(tracking) {
-  const byGradeHorizon = {};
+  const byGrade = {};
   tracking.entries.forEach((e) => {
-    HORIZONS.forEach((h) => {
-      const res = e.evaluated[h.key];
-      if (!res) return;
-      const key = `${e.grade}|${h.key}`;
-      if (!byGradeHorizon[key]) byGradeHorizon[key] = { wins: 0, total: 0 };
-      byGradeHorizon[key].total++;
-      if (res.win) byGradeHorizon[key].wins++;
-    });
+    if (!e.resolved) return;
+    if (!byGrade[e.grade]) byGrade[e.grade] = { wins: 0, total: 0, tp1: 0, tp2: 0, tp3: 0, stop: 0, expired: 0 };
+    const g = byGrade[e.grade];
+    g.total++;
+    if (e.resolved.win) g.wins++;
+    if (e.resolved.outcome === "TP1") g.tp1++;
+    if (e.resolved.outcome === "TP2") g.tp2++;
+    if (e.resolved.outcome === "TP3") g.tp3++;
+    if (e.resolved.outcome === "STOP") g.stop++;
+    if (e.resolved.outcome === "EXPIRED") g.expired++;
   });
-  console.log("=== ECHTE WIN-RATE (aus Forward-Tracking) ===");
-  Object.entries(byGradeHorizon)
+  console.log("=== ECHTE WIN-RATE (TP/Stop-basiert, aus Forward-Tracking) ===");
+  Object.entries(byGrade)
     .sort()
-    .forEach(([key, v]) => {
-      const [grade, hkey] = key.split("|");
-      const horizonLabel = HORIZONS.find((h) => h.key === hkey).label;
-      const wr = ((v.wins / v.total) * 100).toFixed(0);
-      console.log(`  Note ${grade} @ ${horizonLabel}: ${wr}% Win-Rate (${v.wins}/${v.total})`);
+    .forEach(([grade, g]) => {
+      const wr = ((g.wins / g.total) * 100).toFixed(0);
+      console.log(`  Note ${grade}: ${wr}% Win-Rate (${g.wins}/${g.total}) — TP1:${g.tp1} TP2:${g.tp2} TP3:${g.tp3} Stop:${g.stop} Expired:${g.expired}`);
     });
-  return byGradeHorizon;
+  return byGrade;
 }
 
 async function main() {
-  console.log("Scan startet (CoinGecko). MIN_GRADE =", MIN_GRADE);
+  console.log("Scan startet (CoinGecko, BTC/ETH-Fokus). MIN_GRADE =", MIN_GRADE);
   if (!TOKEN || !CHAT_ID) {
     console.error("TELEGRAM_BOT_TOKEN oder TELEGRAM_CHAT_ID fehlt.");
     process.exit(1);
@@ -233,7 +247,7 @@ async function main() {
   const minRank = GRADE_RANK[MIN_GRADE] ?? GRADE_RANK.B;
 
   const marketsRes = await fetch(
-    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=30&page=1&price_change_percentage=24h"
+    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum&price_change_percentage=24h"
   );
   console.log("CoinGecko Markets HTTP-Status:", marketsRes.status);
   const marketsText = await marketsRes.text();
@@ -250,19 +264,17 @@ async function main() {
   }
   console.log(`CoinGecko-Einträge: ${markets.length}`);
 
-  const candidates = markets
-    .filter((m) => m.total_volume > 500000)
-    .map((m) => ({
-      id: m.id,
-      symbol: m.symbol.toUpperCase(),
-      price: m.current_price,
-      pct24h: m.price_change_percentage_24h || 0,
-      volume: m.total_volume,
-      meme: memeScore(m.id),
-    }))
-    .sort((a, b) => Math.abs(b.pct24h) - Math.abs(a.pct24h))
-    .slice(0, 12);
-  console.log("Top-Kandidaten:", candidates.map((c) => c.symbol).join(", "));
+  // Bewusst nur BTC/ETH: liquider, weniger manipulationsanfaellig, zuverlaessigere
+  // Auswertung als Low-Cap-Altcoins.
+  const candidates = markets.map((m) => ({
+    id: m.id,
+    symbol: m.symbol.toUpperCase() + "USDT",
+    price: m.current_price,
+    pct24h: m.price_change_percentage_24h || 0,
+    volume: m.total_volume,
+    meme: 0,
+  }));
+  console.log("Kandidaten:", candidates.map((c) => c.symbol).join(", "));
 
   const results = [];
   for (const c of candidates) {
@@ -324,7 +336,7 @@ async function main() {
     const emoji = r.bias === "LONG" ? "🚀" : "🔻";
     const reasonSentence = composeReasonSentence(r.trend, r.structure, r.bias);
     const text =
-      `${emoji} ${r.symbol} ${r.bias} (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\n` +
+      `${emoji} ${r.symbol.replace("USDT","")} ${r.bias} (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\n` +
       `Note: ${r.grade} · Risiko: ${r.riskLevel}\n\n${reasonSentence}\n\n` +
       `Referenz-Level (ATR/Struktur-basiert, keine Empfehlung):\n` +
       `Entry: ${fmtPrice(r.entry)}\nStop: ${fmtPrice(r.stopRef)}\n` +

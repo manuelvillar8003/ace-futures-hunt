@@ -89,6 +89,15 @@
       "entry": 9.48,
       "loggedAt": 1786808948268,
       "evaluated": {}
+    },
+    {
+      "id": "monero",
+      "symbol": "XMR",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 417.07,
+      "loggedAt": 1786890978844,
+      "evaluated": {}
     }
   ]
 }

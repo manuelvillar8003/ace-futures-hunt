@@ -2,7 +2,9 @@ Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
 Top-Kandidaten: CYS, HEMI, DOS, ALLO, XMR, AVAX, HYPE, ADA, LINK, KII, WLD, BNB
-0 Setups über Schwelle B gefunden von 12 Kandidaten.
+1 Setups über Schwelle B gefunden von 12 Kandidaten.
+Telegram-Status 200: {"ok":true,"result":{"message_id":149,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1786890978,"text":"\ud83d\ude80 XMR LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Niedrig\n\nZusammengefasst: der Trend zeigt nach oben, die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 417.070\nStop: 400.110\nTP1: 425.428 (RR 0.49)\nTP2: 433.786 (RR 0.99)\nTP3: 444.931 (RR 1.64)\n\nACE FUTURES HUNT"}}
+1 neue Setups zum Tracking hinzugefuegt.
 9 faellige Auswertungen fuer 9 Coins.
 === ECHTE WIN-RATE (aus Forward-Tracking) ===
-Fertig. 0 Nachrichten gesendet, 0 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).
+Fertig. 1 Nachrichten gesendet, 1 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

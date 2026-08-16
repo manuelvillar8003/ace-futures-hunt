@@ -1,8 +1,8 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: ACE, COW, CYS, ROBO, LINK, PLUME, WLD, KII, HYPE, UNI, LTC, AAVE
+Top-Kandidaten: ACE, CYS, COW, ROBO, KII, LINK, PLUME, DOS, AVAX, WLD, ADA, UNI
 0 Setups über Schwelle B gefunden von 12 Kandidaten.
-4 faellige Auswertungen fuer 4 Coins.
+6 faellige Auswertungen fuer 6 Coins.
 === ECHTE WIN-RATE (aus Forward-Tracking) ===
 Fertig. 0 Nachrichten gesendet, 0 Setups gefunden, 12 Kandidaten geprüft (Quelle: CoinGecko).

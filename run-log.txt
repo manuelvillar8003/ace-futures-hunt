@@ -1,7 +1,7 @@
 Scan startet (CoinGecko). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 30
-Top-Kandidaten: CYS, HEMI, DOS, ALLO, KII, AVAX, HYPE, XMR, ADA, AAVE, BNB, LTC
+Top-Kandidaten: CYS, HEMI, DOS, ALLO, XMR, AVAX, HYPE, ADA, LINK, KII, WLD, BNB
 0 Setups über Schwelle B gefunden von 12 Kandidaten.
 9 faellige Auswertungen fuer 9 Coins.
 === ECHTE WIN-RATE (aus Forward-Tracking) ===

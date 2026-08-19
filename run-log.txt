@@ -2,6 +2,6 @@ Scan startet (CoinGecko, BTC/ETH-Fokus). MIN_GRADE = B
 CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 2
 Kandidaten: BTCUSDT, ETHUSDT
-2 Setups über Schwelle B gefunden von 2 Kandidaten.
+0 Setups über Schwelle B gefunden von 2 Kandidaten.
 === ECHTE WIN-RATE (TP/Stop-basiert, aus Forward-Tracking) ===
-Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 2 Kandidaten geprüft (Quelle: CoinGecko).
+Fertig. 0 Nachrichten gesendet, 0 Setups gefunden, 2 Kandidaten geprüft (Quelle: CoinGecko).

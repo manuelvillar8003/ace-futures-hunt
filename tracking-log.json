@@ -110,7 +110,12 @@
       "tp2": 1958.9021428571432,
       "tp3": 1989.0835714285718,
       "loggedAt": 1787069812640,
-      "resolved": null
+      "resolved": {
+        "outcome": "TP1",
+        "price": 1940.27,
+        "resolvedAt": 1787150981579,
+        "win": true
+      }
     },
     {
       "id": "bitcoin",
@@ -123,7 +128,12 @@
       "tp2": 65915.71428571429,
       "tp3": 66814.85714285714,
       "loggedAt": 1787099416845,
-      "resolved": null
+      "resolved": {
+        "outcome": "TP1",
+        "price": 65469,
+        "resolvedAt": 1787150981579,
+        "win": true
+      }
     },
     {
       "id": "ethereum",
@@ -136,7 +146,12 @@
       "tp2": 1962.1942857142858,
       "tp3": 1993.617142857143,
       "loggedAt": 1787127685269,
-      "resolved": null
+      "resolved": {
+        "outcome": "TP1",
+        "price": 1940.27,
+        "resolvedAt": 1787150981579,
+        "win": true
+      }
     },
     {
       "id": "bitcoin",
@@ -149,7 +164,12 @@
       "tp2": 65748.85714285714,
       "tp3": 66579.42857142857,
       "loggedAt": 1787143025403,
-      "resolved": null
+      "resolved": {
+        "outcome": "TP1",
+        "price": 65469,
+        "resolvedAt": 1787150981579,
+        "win": true
+      }
     }
   ]
 }

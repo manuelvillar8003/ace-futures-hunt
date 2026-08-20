@@ -231,7 +231,12 @@
       "tp2": 74560,
       "tp3": 76606,
       "loggedAt": 1787237535742,
-      "resolved": null
+      "resolved": {
+        "outcome": "TP1",
+        "price": 73087,
+        "resolvedAt": 1787269243652,
+        "win": true
+      }
     },
     {
       "id": "ethereum",

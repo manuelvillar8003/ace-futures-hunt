@@ -206,6 +206,19 @@
         "resolvedAt": 1787214132425,
         "win": true
       }
+    },
+    {
+      "id": "ethereum",
+      "symbol": "ETHUSDT",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 2280.32,
+      "stopRef": 1905.44,
+      "tp1": 2347.1182142857147,
+      "tp2": 2413.9164285714287,
+      "tp3": 2502.9807142857144,
+      "loggedAt": 1787216523880,
+      "resolved": null
     }
   ]
 }

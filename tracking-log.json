@@ -219,6 +219,19 @@
       "tp3": 2502.9807142857144,
       "loggedAt": 1787216523880,
       "resolved": null
+    },
+    {
+      "id": "bitcoin",
+      "symbol": "BTCUSDT",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 71491,
+      "stopRef": 64124,
+      "tp1": 73025.5,
+      "tp2": 74560,
+      "tp3": 76606,
+      "loggedAt": 1787237535742,
+      "resolved": null
     }
   ]
 }

@@ -188,6 +188,19 @@
         "resolvedAt": 1787173386161,
         "win": true
       }
+    },
+    {
+      "id": "bitcoin",
+      "symbol": "BTCUSDT",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 69750,
+      "stopRef": 64124,
+      "tp1": 70974.96428571429,
+      "tp2": 72199.92857142857,
+      "tp3": 73833.21428571429,
+      "loggedAt": 1787191520696,
+      "resolved": null
     }
   ]
 }

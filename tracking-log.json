@@ -232,6 +232,19 @@
       "tp3": 76606,
       "loggedAt": 1787237535742,
       "resolved": null
+    },
+    {
+      "id": "ethereum",
+      "symbol": "ETHUSDT",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 2317.22,
+      "stopRef": 1905.44,
+      "tp1": 2397.2364285714284,
+      "tp2": 2477.252857142857,
+      "tp3": 2583.9414285714283,
+      "loggedAt": 1787259797516,
+      "resolved": null
     }
   ]
 }

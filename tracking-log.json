@@ -218,7 +218,12 @@
       "tp2": 2413.9164285714287,
       "tp3": 2502.9807142857144,
       "loggedAt": 1787216523880,
-      "resolved": null
+      "resolved": {
+        "outcome": "TP1",
+        "price": 2350.1,
+        "resolvedAt": 1787278527337,
+        "win": true
+      }
     },
     {
       "id": "bitcoin",

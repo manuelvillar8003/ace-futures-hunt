@@ -37,7 +37,13 @@
       "bias": "SHORT",
       "entry": 0.274237,
       "loggedAt": 1786743915918,
-      "evaluated": {}
+      "evaluated": {},
+      "resolved": {
+        "outcome": "EXPIRED",
+        "price": 0.249379,
+        "resolvedAt": 1787349583786,
+        "win": true
+      }
     },
     {
       "id": "litecoin",
@@ -302,7 +308,12 @@
       "tp2": 2579.7121428571427,
       "tp3": 2697.8735714285713,
       "loggedAt": 1787303257163,
-      "resolved": null
+      "resolved": {
+        "outcome": "TP1",
+        "price": 2514.28,
+        "resolvedAt": 1787349583786,
+        "win": true
+      }
     },
     {
       "id": "bitcoin",

@@ -254,7 +254,12 @@
       "tp2": 2477.252857142857,
       "tp3": 2583.9414285714283,
       "loggedAt": 1787259797516,
-      "resolved": null
+      "resolved": {
+        "outcome": "TP1",
+        "price": 2400.06,
+        "resolvedAt": 1787303255167,
+        "win": true
+      }
     },
     {
       "id": "bitcoin",
@@ -273,6 +278,19 @@
         "resolvedAt": 1787299006358,
         "win": true
       }
+    },
+    {
+      "id": "ethereum",
+      "symbol": "ETHUSDT",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 2402.47,
+      "stopRef": 1905.44,
+      "tp1": 2491.091071428571,
+      "tp2": 2579.7121428571427,
+      "tp3": 2697.8735714285713,
+      "loggedAt": 1787303257163,
+      "resolved": null
     }
   ]
 }

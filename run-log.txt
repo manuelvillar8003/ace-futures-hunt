@@ -3,6 +3,7 @@ CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 2
 Kandidaten: BTCUSDT, ETHUSDT
 2 Setups über Schwelle B gefunden von 2 Kandidaten.
+1 Setups wurden gerade aufgeloest (Stop/TP getroffen oder abgelaufen).
 === ECHTE WIN-RATE (TP/Stop-basiert, aus Forward-Tracking) ===
-  Note A+: 86% Win-Rate (12/14) — TP1:10 TP2:1 TP3:0 Stop:0 Expired:3
+  Note A+: 80% Win-Rate (12/15) — TP1:10 TP2:1 TP3:0 Stop:0 Expired:4
 Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 2 Kandidaten geprüft (Quelle: CoinGecko).

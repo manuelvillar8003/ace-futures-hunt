@@ -52,7 +52,13 @@
       "bias": "SHORT",
       "entry": 43.62,
       "loggedAt": 1786749489970,
-      "evaluated": {}
+      "evaluated": {},
+      "resolved": {
+        "outcome": "EXPIRED",
+        "price": 53.47,
+        "resolvedAt": 1787355365891,
+        "win": false
+      }
     },
     {
       "id": "cap-4",

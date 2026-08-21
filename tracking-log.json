@@ -267,7 +267,12 @@
       "tp2": 77860.5,
       "tp3": 80083.5,
       "loggedAt": 1787282831503,
-      "resolved": null
+      "resolved": {
+        "outcome": "TP1",
+        "price": 76319,
+        "resolvedAt": 1787299006358,
+        "win": true
+      }
     }
   ]
 }

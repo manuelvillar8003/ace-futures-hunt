@@ -3,9 +3,6 @@ CoinGecko Markets HTTP-Status: 200
 CoinGecko-Einträge: 2
 Kandidaten: BTCUSDT, ETHUSDT
 2 Setups über Schwelle B gefunden von 2 Kandidaten.
-1 Setups wurden gerade aufgeloest (Stop/TP getroffen oder abgelaufen).
-Telegram-Status 200: {"ok":true,"result":{"message_id":160,"from":{"id":8867206742,"is_bot":true,"first_name":"Ace Futures Hunt","username":"AceFuturesHuntBot"},"chat":{"id":801616656,"first_name":"ZHcrypto","username":"mvm8003","type":"private"},"date":1787303257,"text":"\ud83d\ude80 ETH LONG (Server-Scan via GitHub Actions, Quelle: CoinGecko)\n\nNote: A+ \u00b7 Risiko: Niedrig\n\nZusammengefasst: der Trend zeigt nach oben (Preis \u00fcber beiden gleitenden Durchschnitten), die Preisstruktur macht Higher Highs/Higher Lows \u2014 das spricht f\u00fcr eine Long-Idee.\n\n\ud83d\udca1 Higher Highs/Higher Lows hei\u00dft: jeder R\u00fccksetzer h\u00e4lt \u00fcber dem letzten Tief \u2014 klassisches Zeichen f\u00fcr intakten Aufw\u00e4rtstrend, kein reiner Zufalls-Pump.\n\n(Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert \u2014 Note beruht nur auf Trend+Struktur.)\n\nReferenz-Level (ATR/Struktur-basiert, keine Empfehlung):\nEntry: 2.402,47\nStop: 1.905,44\nTP1: 2.491,09 (RR 0.18)\nTP2: 2.579,71 (RR 0.36)\nTP3: 2.697,87 (RR 0.59)\n\n\ud83d\udcca Bisherige Erfolgsquote \u00fcber alle Setups: 100% (10/10) (kleine Stichprobe, noch nicht statistisch belastbar).\n\nACE FUTURES HUNT"}}
-1 neue Setups zum RR-Tracking hinzugefuegt.
 === ECHTE WIN-RATE (TP/Stop-basiert, aus Forward-Tracking) ===
   Note A+: 100% Win-Rate (10/10) — TP1:9 TP2:1 TP3:0 Stop:0 Expired:0
-Fertig. 1 Nachrichten gesendet, 2 Setups gefunden, 2 Kandidaten geprüft (Quelle: CoinGecko).
+Fertig. 0 Nachrichten gesendet, 2 Setups gefunden, 2 Kandidaten geprüft (Quelle: CoinGecko).

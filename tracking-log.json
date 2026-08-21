@@ -7,7 +7,13 @@
       "bias": "SHORT",
       "entry": 3.2,
       "loggedAt": 1786733432396,
-      "evaluated": {}
+      "evaluated": {},
+      "resolved": {
+        "outcome": "EXPIRED",
+        "price": 3.94,
+        "resolvedAt": 1787339040570,
+        "win": false
+      }
     },
     {
       "id": "allora",
@@ -16,7 +22,13 @@
       "bias": "SHORT",
       "entry": 0.263717,
       "loggedAt": 1786733432396,
-      "evaluated": {}
+      "evaluated": {},
+      "resolved": {
+        "outcome": "EXPIRED",
+        "price": 0.301664,
+        "resolvedAt": 1787339040570,
+        "win": false
+      }
     },
     {
       "id": "dappos",

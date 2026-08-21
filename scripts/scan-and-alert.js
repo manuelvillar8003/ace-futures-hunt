@@ -13,12 +13,23 @@ const MIN_GRADE = process.env.MIN_GRADE || "B";
 const STATE_FILE = path.join(__dirname, "..", "alert-state.json");
 
 const GRADE_RANK = { "A+": 6, A: 5, B: 4, C: 3, D: 2, F: 1 };
-const MEME_KEYWORDS = ["inu","moon","elon","doge","shib","pepe","floki","baby","safemoon","wojak","chad"];
 
-function memeScore(symbolLower) {
-  let hits = 0;
-  MEME_KEYWORDS.forEach((k) => { if (symbolLower.includes(k)) hits++; });
-  return Math.min(hits, 3);
+function fetchWithRetry(url, options, retries = 2, delayMs = 2000) {
+  return fetch(url, options).then(async (res) => {
+    if (!res.ok && retries > 0 && (res.status === 429 || res.status >= 500)) {
+      console.log(`HTTP ${res.status} bei ${url} — retry in ${delayMs}ms (${retries} Versuche übrig)`);
+      await new Promise((r) => setTimeout(r, delayMs));
+      return fetchWithRetry(url, options, retries - 1, delayMs * 2);
+    }
+    return res;
+  }).catch(async (err) => {
+    if (retries > 0) {
+      console.log(`Netzwerkfehler bei ${url} (${err.message}) — retry in ${delayMs}ms (${retries} Versuche übrig)`);
+      await new Promise((r) => setTimeout(r, delayMs));
+      return fetchWithRetry(url, options, retries - 1, delayMs * 2);
+    }
+    throw err;
+  });
 }
 
 function sma(values, period) {
@@ -93,13 +104,35 @@ function fmtPrice(n) {
 
 function composeReasonSentence(trendLabel, structureLabel, bias) {
   const parts = [];
-  if (trendLabel.includes("Aufwärts")) parts.push("der Trend zeigt nach oben");
-  else if (trendLabel.includes("Abwärts")) parts.push("der Trend zeigt nach unten");
-  else parts.push("der Trend ist seitwärts");
-  if (structureLabel.includes("Bullisch")) parts.push("die Preisstruktur macht Higher Highs/Higher Lows");
-  else if (structureLabel.includes("Bearisch")) parts.push("die Preisstruktur macht Lower Highs/Lower Lows");
+  const tips = [];
+  if (trendLabel.includes("Aufwärts")) {
+    parts.push("der Trend zeigt nach oben (Preis über beiden gleitenden Durchschnitten)");
+  } else if (trendLabel.includes("Abwärts")) {
+    parts.push("der Trend zeigt nach unten (Preis unter beiden gleitenden Durchschnitten)");
+  } else {
+    parts.push("der Trend ist seitwärts");
+  }
+  if (structureLabel.includes("Bullisch")) {
+    parts.push("die Preisstruktur macht Higher Highs/Higher Lows");
+    tips.push("Higher Highs/Higher Lows heißt: jeder Rücksetzer hält über dem letzten Tief — klassisches Zeichen für intakten Aufwärtstrend, kein reiner Zufalls-Pump.");
+  } else if (structureLabel.includes("Bearisch")) {
+    parts.push("die Preisstruktur macht Lower Highs/Lower Lows");
+    tips.push("Lower Highs/Lower Lows heißt: jede Erholung bleibt unter dem letzten Hoch — klassisches Zeichen für intakten Abwärtstrend.");
+  }
   const dirWord = bias === "LONG" ? "für eine Long-Idee" : "für eine Short-Idee";
-  return `Zusammengefasst: ${parts.join(", ")} — das spricht ${dirWord}. (Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert.)`;
+  let text = `Zusammengefasst: ${parts.join(", ")} — das spricht ${dirWord}.`;
+  if (tips.length > 0) text += `\n\n💡 ${tips.join(" ")}`;
+  text += `\n\n(Hinweis: ohne Funding-Rate, da CoinGecko keine Futures-Daten liefert — Note beruht nur auf Trend+Struktur.)`;
+  return text;
+}
+
+function composeStatsLine(tracking) {
+  const resolved = tracking.entries.filter((e) => e.resolved);
+  if (resolved.length === 0) return "📊 Bisherige Erfolgsquote: noch keine abgeschlossenen Setups (Tracking läuft erst seit kurzem).";
+  const wins = resolved.filter((e) => e.resolved.win).length;
+  const wr = ((wins / resolved.length) * 100).toFixed(0);
+  const cautionNote = resolved.length < 20 ? " (kleine Stichprobe, noch nicht statistisch belastbar)" : "";
+  return `📊 Bisherige Erfolgsquote über alle Setups: ${wr}% (${wins}/${resolved.length})${cautionNote}.`;
 }
 
 async function sendTelegram(text) {
@@ -111,10 +144,6 @@ async function sendTelegram(text) {
   const body = await res.text();
   console.log(`Telegram-Status ${res.status}: ${body}`);
   if (!res.ok) throw new Error(`Telegram lehnte ab: ${body}`);
-}
-async function sendDebug(text) {
-  try { if (TOKEN && CHAT_ID) await sendTelegram(text.slice(0, 4000)); }
-  catch (e) { console.error("Konnte Debug-Nachricht nicht senden:", e.message); }
 }
 
 function loadState() {
@@ -174,7 +203,7 @@ async function evaluatePendingSetups(tracking) {
   for (let i = 0; i < uniqueIds.length; i += 50) {
     const batch = uniqueIds.slice(i, i + 50);
     try {
-      const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${batch.join(",")}&vs_currencies=usd`);
+      const res = await fetchWithRetry(`https://api.coingecko.com/api/v3/simple/price?ids=${batch.join(",")}&vs_currencies=usd`);
       const json = await res.json();
       Object.entries(json).forEach(([id, v]) => { priceMap[id] = v.usd; });
     } catch (err) {
@@ -246,7 +275,7 @@ async function main() {
   }
   const minRank = GRADE_RANK[MIN_GRADE] ?? GRADE_RANK.B;
 
-  const marketsRes = await fetch(
+  const marketsRes = await fetchWithRetry(
     "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum&price_change_percentage=24h"
   );
   console.log("CoinGecko Markets HTTP-Status:", marketsRes.status);
@@ -279,7 +308,7 @@ async function main() {
   const results = [];
   for (const c of candidates) {
     try {
-      const ohlcRes = await fetch(`https://api.coingecko.com/api/v3/coins/${c.id}/ohlc?vs_currency=usd&days=14`);
+      const ohlcRes = await fetchWithRetry(`https://api.coingecko.com/api/v3/coins/${c.id}/ohlc?vs_currency=usd&days=14`);
       const ohlcText = await ohlcRes.text();
       let ohlc;
       try { ohlc = JSON.parse(ohlcText); } catch { console.log(`OHLC kein JSON bei ${c.symbol}: ${ohlcText.slice(0,150)}`); results.push(null); await sleep(1500); continue; }
@@ -329,6 +358,12 @@ async function main() {
   const TWELVE_HOURS = 12 * 60 * 60 * 1000;
   Object.keys(state).forEach((k) => { if (now - state[k] > TWELVE_HOURS) delete state[k]; });
 
+  // Tracking zuerst laden + offene Setups auswerten, damit die Win-Rate in der
+  // gleich verschickten Nachricht aktuell ist (nicht von letztem Lauf).
+  const tracking = loadTracking();
+  await evaluatePendingSetups(tracking);
+  const statsLine = composeStatsLine(tracking);
+
   let sentCount = 0;
   for (const r of valid) {
     const key = `${r.symbol}|${r.grade}|${r.bias}`;
@@ -341,6 +376,7 @@ async function main() {
       `Referenz-Level (ATR/Struktur-basiert, keine Empfehlung):\n` +
       `Entry: ${fmtPrice(r.entry)}\nStop: ${fmtPrice(r.stopRef)}\n` +
       `TP1: ${fmtPrice(r.tp1)} (RR ${r.rr1})\nTP2: ${fmtPrice(r.tp2)} (RR ${r.rr2})\nTP3: ${fmtPrice(r.tp3)} (RR ${r.rr3})\n\n` +
+      `${statsLine}\n\n` +
       `ACE FUTURES HUNT`;
     try { await sendTelegram(text); state[key] = now; sentCount++; }
     catch (err) { console.log(`Konnte Alert für ${r.symbol} nicht senden: ${err.message}`); }
@@ -348,26 +384,19 @@ async function main() {
 
   saveState(state);
 
-  // ---- Forward-Tracking: jedes Setup loggen, faellige auswerten, echte Win-Rate berechnen ----
-  const tracking = loadTracking();
-  // Forward-Tracking: nur die Setups, die tatsaechlich die Alert-Schwelle erreicht haben
-  // (also das, was du wirklich in Telegram bekommst) - nicht alle Kandidaten im Hintergrund.
+  // ---- Forward-Tracking: neue verschickte Setups loggen, Datei speichern ----
   logNewSetups(valid, tracking);
-  await evaluatePendingSetups(tracking);
   saveTracking(tracking);
   const stats = computeAndLogStats(tracking);
 
-  // Einmal pro Tag (zwischen 8-8:05 Uhr UTC) eine Zusammenfassung nach Telegram schicken,
-  // damit du die echte Win-Rate auch siehst, ohne die Repo-Dateien selbst anzuschauen.
+  // Einmal pro Tag (zwischen 8-8:05 Uhr UTC) eine ausfuehrlichere Zusammenfassung schicken.
   const nowDate = new Date();
-  if (nowDate.getUTCHours() === 8 && nowDate.getUTCMinutes() < 5 && Object.keys(stats).length > 0) {
+  if (nowDate.getUTCHours() === 8 && nowDate.getUTCMinutes() < 15 && Object.keys(stats).length > 0) {
     const lines = Object.entries(stats)
       .sort()
-      .map(([key, v]) => {
-        const [grade, hkey] = key.split("|");
-        const horizonLabel = HORIZONS.find((h) => h.key === hkey).label;
-        const wr = ((v.wins / v.total) * 100).toFixed(0);
-        return `Note ${grade} @ ${horizonLabel}: ${wr}% (${v.wins}/${v.total})`;
+      .map(([grade, g]) => {
+        const wr = ((g.wins / g.total) * 100).toFixed(0);
+        return `Note ${grade}: ${wr}% (${g.wins}/${g.total}) — TP1:${g.tp1} TP2:${g.tp2} TP3:${g.tp3} Stop:${g.stop} Expired:${g.expired}`;
       });
     await sendTelegram(`📊 Tägliche Win-Rate-Statistik (Forward-Tracking, alle bisherigen Setups):\n\n${lines.join("\n")}`);
   }

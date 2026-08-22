@@ -127,7 +127,13 @@
       "bias": "LONG",
       "entry": 0.01408058,
       "loggedAt": 1786791715653,
-      "evaluated": {}
+      "evaluated": {},
+      "resolved": {
+        "outcome": "EXPIRED",
+        "price": 0.01391676,
+        "resolvedAt": 1787397194035,
+        "win": false
+      }
     },
     {
       "id": "chainlink",

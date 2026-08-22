@@ -112,7 +112,13 @@
       "bias": "LONG",
       "entry": 0.271707,
       "loggedAt": 1786782298866,
-      "evaluated": {}
+      "evaluated": {},
+      "resolved": {
+        "outcome": "EXPIRED",
+        "price": 0.231824,
+        "resolvedAt": 1787387355288,
+        "win": false
+      }
     },
     {
       "id": "plume",

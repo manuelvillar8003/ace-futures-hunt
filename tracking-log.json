@@ -67,7 +67,13 @@
       "bias": "LONG",
       "entry": 0.066542,
       "loggedAt": 1786754565606,
-      "evaluated": {}
+      "evaluated": {},
+      "resolved": {
+        "outcome": "EXPIRED",
+        "price": 0.066262,
+        "resolvedAt": 1787359483049,
+        "win": false
+      }
     },
     {
       "id": "aave",
@@ -76,7 +82,13 @@
       "bias": "SHORT",
       "entry": 86.45,
       "loggedAt": 1786754565606,
-      "evaluated": {}
+      "evaluated": {},
+      "resolved": {
+        "outcome": "EXPIRED",
+        "price": 122.46,
+        "resolvedAt": 1787359483049,
+        "win": false
+      }
     },
     {
       "id": "chainlink",

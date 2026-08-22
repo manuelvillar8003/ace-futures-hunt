@@ -142,7 +142,13 @@
       "bias": "LONG",
       "entry": 9.48,
       "loggedAt": 1786808948268,
-      "evaluated": {}
+      "evaluated": {},
+      "resolved": {
+        "outcome": "EXPIRED",
+        "price": 11.58,
+        "resolvedAt": 1787414084908,
+        "win": true
+      }
     },
     {
       "id": "monero",

@@ -97,7 +97,13 @@
       "bias": "LONG",
       "entry": 9.58,
       "loggedAt": 1786764949449,
-      "evaluated": {}
+      "evaluated": {},
+      "resolved": {
+        "outcome": "EXPIRED",
+        "price": 12.44,
+        "resolvedAt": 1787370780499,
+        "win": true
+      }
     },
     {
       "id": "endurance",
@@ -357,6 +363,19 @@
       "tp2": 2650.4357142857143,
       "tp3": 2786.672857142857,
       "loggedAt": 1787347081879,
+      "resolved": null
+    },
+    {
+      "id": "bitcoin",
+      "symbol": "BTCUSDT",
+      "grade": "A+",
+      "bias": "LONG",
+      "entry": 78579,
+      "stopRef": 64124,
+      "tp1": 80867.03571428571,
+      "tp2": 83155.07142857143,
+      "tp3": 86205.78571428571,
+      "loggedAt": 1787370782631,
       "resolved": null
     }
   ]
